@@ -174,6 +174,9 @@ select {
   --radius-button: 999px;
   --radius-image: 12px;
 
+  /* Glass (shared shadow tint across .glass-card and .glass-btn's hover) */
+  --glass-shadow-color: rgba(126, 42, 60, 0.16);
+
   /* Layout */
   --content-max-width: 1200px;
 }
@@ -285,4 +288,82 @@ h1 em {
   font-style: italic;
   font-weight: inherit;
   color: var(--ink-primary);
+}
+
+/* ---- Components: glass ----------------------------------------------------
+   backdrop-filter barely does anything over the smooth mesh gradient — there's
+   no detail behind it to blur. The border, the inset top highlight, and the
+   shadow are what actually read as "glass" here; don't thin them out.
+   ---------------------------------------------------------------------- */
+
+.glass-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.34));
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-card);
+  box-shadow: 0 8px 24px var(--glass-shadow-color), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.glass-btn,
+.glass-nav-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  color: var(--ink-secondary); /* small/bold UI text — needs ink-secondary's contrast, not ink-primary's (see accessibility note above) */
+  text-align: center;
+  cursor: pointer;
+  border-radius: var(--radius-button);
+  /* Rest state: thin, transparent, background disperses through. */
+  background: linear-gradient(200deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.32));
+  backdrop-filter: blur(8px) saturate(140%);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  transition:
+    backdrop-filter 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.glass-btn {
+  padding: var(--space-sm) var(--space-lg);
+  font-size: var(--fs-body);
+}
+
+.glass-nav-pill {
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--fs-small);
+}
+
+/* Hover: frost thickens, light source swings from 200deg to 45deg (135deg
+   gradient angle) — the rotation is what makes the reflection travel. */
+.glass-btn:hover,
+.glass-nav-pill:hover {
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.46) 0%,
+    rgba(255, 255, 255, 0.26) 45%,
+    rgba(255, 255, 255, 0.34) 100%
+  );
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.55), 0 8px 24px var(--glass-shadow-color);
+}
+
+/* Where backdrop-filter isn't supported there's no blur to obscure what's
+   behind these, so the low rest-state alpha reads as barely-there. Raise it
+   to a flatter, more opaque white so cards and buttons stay legible. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-card,
+  .glass-btn,
+  .glass-nav-pill {
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  .glass-btn:hover,
+  .glass-nav-pill:hover {
+    background: rgba(255, 255, 255, 0.7);
+  }
 }
