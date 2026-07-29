@@ -89,7 +89,8 @@ if (sparkleZones.length > 0) {
   const SPARKLE_VELOCITY_THRESHOLD = 0.25; // px/ms — below this, stationary-ish movement spawns nothing
   const SPARKLE_DRIFT = 10; // px, downward drift over the sparkle's lifetime
   const SPARKLE_END_SCALE = 0.4; // scale at end of life (starts at 1)
-  const SPARKLE_COLORS = ["#F0C8CE", "#F2DFC0", "#D6DEEA"]; // rose, pale gold, ice blue
+  // Solid, flat tints only — no gradient, no glow.
+  const SPARKLE_COLORS = ["#F2C4CE", "#F6D2BE", "#F1DFC2", "#CFE4DE", "#CBD3EC", "#DCCDE6"];
   const SVG_NS = "http://www.w3.org/2000/svg";
   // Opacity peaks shortly after spawn (a quick flash-in) before fading out
   // over the rest of the lifetime, rather than a flat fade from frame one.
@@ -99,36 +100,16 @@ if (sparkleZones.length > 0) {
   let rafHandle = null;
   let lastPointer = null; // { x, y, time }
   let lastSpawnTime = 0;
-  let sparkleCounter = 0;
 
-  // Inlined (not an <img>) so `currentColor` in the gradient stops picks up
-  // the `color` set per-instance below — each instance gets its own
-  // gradient IDs since multiple sparkles are alive in the DOM at once and
-  // SVG ids share one document-wide namespace.
+  // Inlined (not an <img>) so the path's `fill="currentColor"` picks up the
+  // `color` set per-instance below — a flat single-colour star, no defs/
+  // gradients needed since there's nothing to namespace per instance.
   function buildSparkleSvg() {
-    sparkleCounter += 1;
-    const coreId = `sparkle-core-${sparkleCounter}`;
-    const haloId = `sparkle-halo-${sparkleCounter}`;
-
     const svg = document.createElementNS(SVG_NS, "svg");
     svg.setAttribute("viewBox", "0 0 64 64");
     svg.classList.add("sparkle");
     svg.innerHTML = `
-      <defs>
-        <radialGradient id="${coreId}" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1"/>
-          <stop offset="35%" stop-color="currentColor" stop-opacity=".95"/>
-          <stop offset="100%" stop-color="currentColor" stop-opacity="0"/>
-        </radialGradient>
-        <radialGradient id="${haloId}" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#FFFFFF" stop-opacity=".55"/>
-          <stop offset="60%" stop-color="currentColor" stop-opacity=".18"/>
-          <stop offset="100%" stop-color="currentColor" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-      <circle cx="32" cy="32" r="18" fill="url(#${haloId})"/>
-      <path d="M32 2 C 33.4 20.2 36.6 26.8 44.2 28.6 C 51.4 30.3 56.6 31.2 62 32 C 56.6 32.8 51.4 33.7 44.2 35.4 C 36.6 37.2 33.4 43.8 32 62 C 30.6 43.8 27.4 37.2 19.8 35.4 C 12.6 33.7 7.4 32.8 2 32 C 7.4 31.2 12.6 30.3 19.8 28.6 C 27.4 26.8 30.6 20.2 32 2 Z" fill="url(#${coreId})"/>
-      <path d="M32 12 C 32.8 26 34.6 29.6 39.6 30.8 C 44 31.4 47 31.7 50 32 C 47 32.3 44 32.6 39.6 33.2 C 34.6 34.4 32.8 38 32 52 C 31.2 38 29.4 34.4 24.4 33.2 C 20 32.6 17 32.3 14 32 C 17 31.7 20 31.4 24.4 30.8 C 29.4 29.6 31.2 26 32 12 Z" fill="#FFFFFF" fill-opacity=".85"/>
+      <path d="M32 1 C 33.5 20 36.8 26.6 44.4 28.5 C 51.6 30.2 56.8 31.1 63 32 C 56.8 32.9 51.6 33.8 44.4 35.5 C 36.8 37.4 33.5 44 32 63 C 30.5 44 27.2 37.4 19.6 35.5 C 12.4 33.8 7.2 32.9 1 32 C 7.2 31.1 12.4 30.2 19.6 28.5 C 27.2 26.6 30.5 20 32 1 Z" fill="currentColor"/>
     `;
     return svg;
   }
@@ -137,14 +118,13 @@ if (sparkleZones.length > 0) {
     if (activeSparkles.length >= SPARKLE_MAX) return;
 
     const size = 14 + Math.random() * 12; // 14-26px
-    const rotation = Math.random() * 90; // 0-90deg on spawn
+    const rotation = Math.random() * 360;
     const color = SPARKLE_COLORS[Math.floor(Math.random() * SPARKLE_COLORS.length)];
 
     const svg = buildSparkleSvg();
     svg.style.width = `${size}px`;
     svg.style.height = `${size}px`;
     svg.style.color = color;
-    svg.style.filter = "drop-shadow(0 0 5px rgba(255, 255, 255, 0.65))";
 
     document.body.appendChild(svg);
     activeSparkles.push({
@@ -241,8 +221,8 @@ if (
   const FLIGHT_END_SCALE = 0.6;
 
   const imgSrc = window.location.pathname.includes("/case-studies/")
-    ? "../assets/img/butterfly.png?v=2"
-    : "assets/img/butterfly.png?v=2";
+    ? "../assets/img/butterfly-pale.png"
+    : "assets/img/butterfly-pale.png";
 
   function pageRect(el) {
     const r = el.getBoundingClientRect();

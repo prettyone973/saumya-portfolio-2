@@ -1547,13 +1547,13 @@ section + section {
 /* ---- Sparkle trail --------------------------------------------------------
    Spawned/animated entirely by js/main.js inside .sparkle-zone elements
    (the project cards). Each sparkle is the SVG from assets/img/sparkle.svg
-   inlined directly (not an <img>) so its gradients' `currentColor` stops
-   pick up the `color` set per-instance in JS — that's also how the tint
-   and the drop-shadow glow are applied. This is just the shared layout:
-   fixed positioning so it tracks the viewport not any scrolling ancestor,
-   and only transform/opacity ever get touched per frame (GPU) — size,
-   color, and rotation are set once at creation (per-instance, in JS) and
-   left alone otherwise.
+   inlined directly (not an <img>) — a flat single-colour star — so its
+   `fill="currentColor"` picks up the `color` set per-instance in JS; that's
+   the only styling applied (no gradient, no glow filter). This is just the
+   shared layout: fixed positioning so it tracks the viewport not any
+   scrolling ancestor, and only transform/opacity ever get touched per
+   frame (GPU) — size, color, and rotation are set once at creation
+   (per-instance, in JS) and left alone otherwise.
    ---------------------------------------------------------------------- */
 
 .sparkle {
