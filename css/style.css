@@ -38,6 +38,14 @@
 }
 
 @font-face {
+  font-family: "Lato";
+  font-style: italic;
+  font-weight: 900;
+  font-display: swap;
+  src: url("../assets/fonts/lato-900-italic.woff2") format("woff2");
+}
+
+@font-face {
   font-family: "Istok Web";
   font-style: normal;
   font-weight: 400;
@@ -110,43 +118,59 @@ select {
   color: inherit;
 }
 
-/* ---- Design tokens -------------------------------------------------------
-   Placeholder values — the actual palette/scale get filled in once the
-   visual redesign is defined. Categories are set up now so every later
-   page/component can be built against these variables instead of literals.
-   ---------------------------------------------------------------------- */
+/* ---- Design tokens ---------------------------------------------------- */
 
 :root {
   /* Typography */
-  --font-primary: "Lato", sans-serif;
-  --font-secondary: "Istok Web", sans-serif;
+  --font-display: "Lato", sans-serif; /* headings */
+  --font-body: "Istok Web", sans-serif; /* body copy */
 
   --fw-regular: 400;
   --fw-bold: 700;
   --fw-black: 900;
 
-  /* Color — TBD */
-  --color-bg: #ffffff;
-  --color-surface: #ffffff;
-  --color-text: #111111;
-  --color-text-muted: #555555;
-  --color-accent: #111111;
-  --color-border: #e0e0e0;
+  /* Colour
+     ------------------------------------------------------------------
+     Accessibility note: --ink-primary on our light backgrounds (peach/
+     blush/cream) measures ~4.3–5.0:1 — enough for headings and other
+     large/bold text (needs 3:1), but NOT enough for small body text,
+     including over the hero panel. Body copy always uses --ink-secondary
+     (measures 6.0–8.3:1), never --ink-primary, regardless of background.
+     ------------------------------------------------------------------ */
+  --ink-primary: #983449; /* headings, accents */
+  --ink-secondary: #5b3940; /* all body text */
+  --peach: #f5cfc0;
+  --blush: #efc6d3;
+  --grey-blue: #c6c5d4;
+  --cream: #fae8dc;
 
-  /* Spacing scale */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 1rem;
-  --space-4: 1.5rem;
-  --space-5: 2rem;
-  --space-6: 3rem;
-  --space-7: 4rem;
-  --space-8: 6rem;
+  /* Type scale (desktop values in the comments; clamp() fluid-scales
+     down between a 375px and 1440px viewport so nothing needs a media
+     query just to shrink text). */
+  --fs-h1: clamp(2.25rem, 1.63rem + 2.63vw, 4rem); /* 64px */
+  --lh-h1: 1.08;
+  --fs-h2: clamp(1.625rem, 1.32rem + 1.32vw, 2.5rem); /* 40px */
+  --lh-h2: 1.15;
+  --fs-h3: clamp(1.25rem, 1.07rem + 0.75vw, 1.75rem); /* 28px */
+  --lh-h3: 1.2;
+  --fs-body: clamp(1rem, 0.98rem + 0.09vw, 1.0625rem); /* 17px */
+  --lh-body: 1.6;
+  --fs-small: clamp(0.8125rem, 0.79rem + 0.09vw, 0.875rem); /* 14px */
+  --lh-small: 1.5;
 
-  /* Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
+  /* Spacing scale (4 / 8 / 16 / 24 / 40 / 64 / 96 px) */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  /* Radii */
+  --radius-card: 14px;
+  --radius-button: 999px;
+  --radius-image: 12px;
 
   /* Layout */
   --content-max-width: 1200px;
@@ -155,10 +179,18 @@ select {
 /* ---- Base ----------------------------------------------------------------- */
 
 body {
-  font-family: var(--font-primary);
+  font-family: var(--font-body);
   font-weight: var(--fw-regular);
-  color: var(--color-text);
-  background-color: var(--color-bg);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--ink-secondary);
+  background-color: var(--cream);
+}
+
+small,
+.text-small {
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
 }
 
 h1,
@@ -167,5 +199,36 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-secondary);
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  color: var(--ink-primary);
+}
+
+/* h1 signature style: first half plain white, second half italic +
+   ink-primary. Intended for the hero panel — mark the emphasised half
+   with <em>:  <h1>Designs that <em>actually work</em></h1>
+   h1's own color is white since the hero panel this pattern lives on is
+   a dark/saturated background, not the light peach/blush/cream used
+   elsewhere (see accessibility note above). */
+h1 {
+  font-weight: var(--fw-black);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  color: #ffffff;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+}
+
+h3 {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-h3);
+}
+
+h1 em {
+  font-style: italic;
+  font-weight: inherit;
+  color: var(--ink-primary);
 }
