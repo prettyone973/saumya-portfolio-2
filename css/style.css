@@ -249,22 +249,49 @@ body > * {
 }
 
 /* ---- Hero (index.html only) ------------------------------------------------
-   Full-viewport coral photo. Its bottom ~200px fades to transparent via a
-   mask, so body's mesh gradient (already sitting behind it) bleeds through
-   and the seam into the next section is soft rather than a hard cut.
+   Full-viewport coral photo, on a separate ::before layer so it can be
+   blurred without softening the glass panel/buttons sitting on top of it.
+   `inset: -4%` overscans the photo beyond .hero's own box so the blur's
+   soft edge never shows; `overflow: hidden` on .hero clips that overscan
+   back down. The photo's bottom ~200px fades to transparent via a mask,
+   so the mesh gradient behind everything bleeds through and the seam into
+   the next section is soft rather than a hard cut.
+
+   Mobile source (hero-coral.jpg/.webp, portrait, <768px) is still pending —
+   only the desktop crop has been supplied so far. Below 768px this falls
+   back to the desktop image via background-size: cover (a slightly
+   off-center crop of a landscape photo) rather than a blank layer; swap in
+   the real mobile media query once that file exists.
    ---------------------------------------------------------------------- */
 
 .hero {
+  position: relative;
   min-height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--space-xl);
   padding: var(--content-padding);
-  background: url("../assets/img/hero-coral.jpg") center / cover no-repeat;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -4%;
+  background-image: url("../assets/img/hero-coral-desktop.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px);
+  z-index: 0;
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 200px), transparent 100%);
   mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 200px), transparent 100%);
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
 }
 
 small,
