@@ -88,6 +88,9 @@ if (sparkleZones.length > 0) {
   const SPARKLE_MIN_INTERVAL = 45; // ms between spawns, on top of the velocity gate
   const SPARKLE_VELOCITY_THRESHOLD = 0.25; // px/ms — below this, stationary-ish movement spawns nothing
   const SPARKLE_DRIFT = 10; // px, downward drift over the sparkle's lifetime
+  const SPARKLE_END_SCALE = 0.4; // scale at end of life (starts at 1)
+  const SPARKLE_COLORS = ["#F0C8CE", "#F2DFC0", "#D6DEEA"]; // rose, pale gold, ice blue
+  const SVG_NS = "http://www.w3.org/2000/svg";
   // Opacity peaks shortly after spawn (a quick flash-in) before fading out
   // over the rest of the lifetime, rather than a flat fade from frame one.
   const SPARKLE_PEAK_T = 0.15;
@@ -96,26 +99,56 @@ if (sparkleZones.length > 0) {
   let rafHandle = null;
   let lastPointer = null; // { x, y, time }
   let lastSpawnTime = 0;
+  let sparkleCounter = 0;
+
+  // Inlined (not an <img>) so `currentColor` in the gradient stops picks up
+  // the `color` set per-instance below — each instance gets its own
+  // gradient IDs since multiple sparkles are alive in the DOM at once and
+  // SVG ids share one document-wide namespace.
+  function buildSparkleSvg() {
+    sparkleCounter += 1;
+    const coreId = `sparkle-core-${sparkleCounter}`;
+    const haloId = `sparkle-halo-${sparkleCounter}`;
+
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("viewBox", "0 0 64 64");
+    svg.classList.add("sparkle");
+    svg.innerHTML = `
+      <defs>
+        <radialGradient id="${coreId}" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1"/>
+          <stop offset="35%" stop-color="currentColor" stop-opacity=".95"/>
+          <stop offset="100%" stop-color="currentColor" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="${haloId}" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#FFFFFF" stop-opacity=".55"/>
+          <stop offset="60%" stop-color="currentColor" stop-opacity=".18"/>
+          <stop offset="100%" stop-color="currentColor" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="32" cy="32" r="18" fill="url(#${haloId})"/>
+      <path d="M32 2 C 33.4 20.2 36.6 26.8 44.2 28.6 C 51.4 30.3 56.6 31.2 62 32 C 56.6 32.8 51.4 33.7 44.2 35.4 C 36.6 37.2 33.4 43.8 32 62 C 30.6 43.8 27.4 37.2 19.8 35.4 C 12.6 33.7 7.4 32.8 2 32 C 7.4 31.2 12.6 30.3 19.8 28.6 C 27.4 26.8 30.6 20.2 32 2 Z" fill="url(#${coreId})"/>
+      <path d="M32 12 C 32.8 26 34.6 29.6 39.6 30.8 C 44 31.4 47 31.7 50 32 C 47 32.3 44 32.6 39.6 33.2 C 34.6 34.4 32.8 38 32 52 C 31.2 38 29.4 34.4 24.4 33.2 C 20 32.6 17 32.3 14 32 C 17 31.7 20 31.4 24.4 30.8 C 29.4 29.6 31.2 26 32 12 Z" fill="#FFFFFF" fill-opacity=".85"/>
+    `;
+    return svg;
+  }
 
   function spawnSparkle(x, y) {
     if (activeSparkles.length >= SPARKLE_MAX) return;
 
     const size = 14 + Math.random() * 12; // 14-26px
-    const rotation = Math.random() * 360;
-    const hueRotate = Math.random() * 50 - 25; // -25deg to +25deg
+    const rotation = Math.random() * 90; // 0-90deg on spawn
+    const color = SPARKLE_COLORS[Math.floor(Math.random() * SPARKLE_COLORS.length)];
 
-    const img = document.createElement("img");
-    img.src = "assets/img/sparkle.png?v=2";
-    img.alt = "";
-    img.draggable = false;
-    img.classList.add("sparkle");
-    img.style.width = `${size}px`;
-    img.style.height = `${size}px`;
-    img.style.filter = `hue-rotate(${hueRotate}deg) drop-shadow(0 0 6px rgba(255, 255, 255, 0.7))`;
+    const svg = buildSparkleSvg();
+    svg.style.width = `${size}px`;
+    svg.style.height = `${size}px`;
+    svg.style.color = color;
+    svg.style.filter = "drop-shadow(0 0 5px rgba(255, 255, 255, 0.65))";
 
-    document.body.appendChild(img);
+    document.body.appendChild(svg);
     activeSparkles.push({
-      el: img,
+      el: svg,
       baseX: x - size / 2,
       baseY: y - size / 2,
       rotation,
@@ -134,7 +167,7 @@ if (sparkleZones.length > 0) {
       // performance.now() taken during the pointermove that just spawned
       // this sparkle, which would otherwise make t briefly negative.
       const t = Math.min(Math.max((now - s.startTime) / SPARKLE_DURATION, 0), 1);
-      const scale = 1 - t;
+      const scale = 1 - (1 - SPARKLE_END_SCALE) * t;
       const drift = t * SPARKLE_DRIFT;
       // Ramp up to full opacity by SPARKLE_PEAK_T, then fade out over the
       // remaining lifetime.
