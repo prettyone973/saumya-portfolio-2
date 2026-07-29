@@ -36,23 +36,39 @@ if (document.documentElement.classList.contains("page-transitions-js")) {
   });
 }
 
-// Home page: the nav is fixed, but its backdrop isn't — it starts over the
-// dark hero photo (white brand text) and ends up over the light mesh
-// gradient once scrolled past (needs the normal dark ink-primary text).
-// Toggle the modifier class based on whether the hero is still behind the
-// nav, rather than hardcoding it per-page.
-const heroEl = document.querySelector(".hero");
-const navEl = document.querySelector(".site-nav");
+// Hero parallax: background drifts at ~0.5x scroll speed while the page's
+// actual content scrolls at the normal 1x. The native CSS scroll-timeline
+// in style.css handles this with zero JS on supporting browsers; this rAF
+// fallback only runs when that's unavailable, and never under reduced
+// motion (matching the CSS gate exactly, so precisely one mechanism ever
+// drives --hero-parallax-y).
+const heroForParallax = document.querySelector(".hero");
 
-if (heroEl && navEl) {
-  const HERO_FADE_HEIGHT = 200; // must match .hero's mask-image fade distance in style.css
+if (
+  heroForParallax &&
+  !CSS.supports("animation-timeline", "scroll()") &&
+  !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+) {
+  let ticking = false;
 
-  const updateNavTone = () => {
-    const heroBottom = heroEl.getBoundingClientRect().bottom;
-    navEl.classList.toggle("site-nav--on-hero", heroBottom > navEl.offsetHeight + HERO_FADE_HEIGHT);
+  const updateHeroParallax = () => {
+    const heroHeight = heroForParallax.offsetHeight || window.innerHeight;
+    const scrollY = Math.min(window.scrollY, heroHeight); // hero's fully scrolled past beyond this
+    heroForParallax.style.setProperty("--hero-parallax-y", `${scrollY * 0.5}px`);
+    ticking = false;
   };
-  updateNavTone();
-  window.addEventListener("scroll", updateNavTone, { passive: true });
+
+  updateHeroParallax();
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateHeroParallax);
+      }
+    },
+    { passive: true }
+  );
 }
 
 // Sparkle trail: inside .sparkle-zone elements only (the project cards).
@@ -67,18 +83,15 @@ if (sparkleZones.length > 0) {
   const noReducedMotion = window.matchMedia("(prefers-reduced-motion: no-preference)");
   const sparkleTrailEnabled = () => finePointer.matches && noReducedMotion.matches;
 
-  const SPARKLE_COLORS = ["#F0C8CE", "#F2DFC0", "#D6DEEA"]; // rose, pale gold, ice blue — never a full rainbow
   const SPARKLE_DURATION = 700; // ms
   const SPARKLE_MAX = 15;
   const SPARKLE_MIN_INTERVAL = 45; // ms between spawns, on top of the velocity gate
   const SPARKLE_VELOCITY_THRESHOLD = 0.25; // px/ms — below this, stationary-ish movement spawns nothing
   const SPARKLE_DRIFT = 10; // px, downward drift over the sparkle's lifetime
-  // 4-point star / "twinkle" shape: outer tips at N/E/S/W, pinched inner
-  // vertices on the diagonals, in a 16x16 viewBox.
-  const SPARKLE_STAR_POINTS = "8,0 9.98,6.02 16,8 9.98,9.98 8,16 6.02,9.98 0,8 6.02,6.02";
-  const SVG_NS = "http://www.w3.org/2000/svg";
+  // Opacity peaks shortly after spawn (a quick flash-in) before fading out
+  // over the rest of the lifetime, rather than a flat fade from frame one.
+  const SPARKLE_PEAK_T = 0.15;
 
-  let colorIndex = 0;
   const activeSparkles = [];
   let rafHandle = null;
   let lastPointer = null; // { x, y, time }
@@ -87,25 +100,22 @@ if (sparkleZones.length > 0) {
   function spawnSparkle(x, y) {
     if (activeSparkles.length >= SPARKLE_MAX) return;
 
-    const size = 6 + Math.random() * 8; // 6-14px
+    const size = 14 + Math.random() * 12; // 14-26px
     const rotation = Math.random() * 360;
-    const color = SPARKLE_COLORS[colorIndex % SPARKLE_COLORS.length];
-    colorIndex += 1;
+    const hueRotate = Math.random() * 50 - 25; // -25deg to +25deg
 
-    const svg = document.createElementNS(SVG_NS, "svg");
-    svg.setAttribute("viewBox", "0 0 16 16");
-    svg.setAttribute("width", String(size));
-    svg.setAttribute("height", String(size));
-    svg.classList.add("sparkle");
+    const img = document.createElement("img");
+    img.src = "assets/img/sparkle.png";
+    img.alt = "";
+    img.draggable = false;
+    img.classList.add("sparkle");
+    img.style.width = `${size}px`;
+    img.style.height = `${size}px`;
+    img.style.filter = `hue-rotate(${hueRotate}deg) drop-shadow(0 0 6px rgba(255, 255, 255, 0.7))`;
 
-    const poly = document.createElementNS(SVG_NS, "polygon");
-    poly.setAttribute("points", SPARKLE_STAR_POINTS);
-    poly.setAttribute("fill", color);
-    svg.appendChild(poly);
-
-    document.body.appendChild(svg);
+    document.body.appendChild(img);
     activeSparkles.push({
-      el: svg,
+      el: img,
       baseX: x - size / 2,
       baseY: y - size / 2,
       rotation,
@@ -126,8 +136,11 @@ if (sparkleZones.length > 0) {
       const t = Math.min(Math.max((now - s.startTime) / SPARKLE_DURATION, 0), 1);
       const scale = 1 - t;
       const drift = t * SPARKLE_DRIFT;
+      // Ramp up to full opacity by SPARKLE_PEAK_T, then fade out over the
+      // remaining lifetime.
+      const opacity = t < SPARKLE_PEAK_T ? t / SPARKLE_PEAK_T : 1 - (t - SPARKLE_PEAK_T) / (1 - SPARKLE_PEAK_T);
 
-      s.el.style.opacity = String(1 - t);
+      s.el.style.opacity = String(opacity);
       s.el.style.transform = `translate(${s.baseX}px, ${s.baseY + drift}px) rotate(${s.rotation}deg) scale(${scale})`;
 
       if (t >= 1) {
@@ -165,18 +178,22 @@ if (sparkleZones.length > 0) {
   );
 }
 
-// Butterfly easter egg: two per page, injected into hand-placed
-// .butterfly-slot anchors in the page's HTML (never auto-placed). Fully
-// skipped — not just visually hidden — under reduced motion or below the
-// 768px breakpoint, and per-butterfly once it's flown away this session.
-const butterflySlots = document.querySelectorAll(".butterfly-slot");
-
+// Butterfly easter egg: a couple per page, placed at random within a set
+// of computed "safe zones" (viewport edge margins + the whitespace gaps
+// between sections) rather than fixed anchor points, so they never fall
+// into the same rhythm relative to the content. Fully skipped — not just
+// visually hidden — under reduced motion or below the 768px breakpoint,
+// and per-butterfly once it's flown away this session.
 if (
-  butterflySlots.length > 0 &&
   !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
   window.innerWidth >= 768
 ) {
-  const SVG_NS = "http://www.w3.org/2000/svg";
+  const BUTTERFLY_COUNT = 2;
+  const SIZE_MIN = 44; // px
+  const SIZE_MAX = 52; // px
+  const CLEARANCE = 20; // px min gap from any obstacle or other butterfly
+  const MARGIN_ZONE_WIDTH = 140; // px strip in from each viewport edge
+  const MAX_SAMPLES_PER_ZONE = 25;
   const FLAP_MIN_DELAY = 3000; // ms
   const FLAP_MAX_DELAY = 9000; // ms
   const FLIGHT_DURATION = 1200; // ms
@@ -184,46 +201,109 @@ if (
   const FLIGHT_ARC = 60; // px, perpendicular bow of the curved path
   const FLIGHT_END_SCALE = 0.6;
 
-  let gradientCounter = 0;
+  const imgSrc = window.location.pathname.includes("/case-studies/")
+    ? "../assets/img/butterfly.png"
+    : "assets/img/butterfly.png";
 
-  function buildButterflySvg() {
-    gradientCounter += 1;
-    const gradientId = `butterfly-grad-${gradientCounter}`;
+  function pageRect(el) {
+    const r = el.getBoundingClientRect();
+    return {
+      left: r.left + window.scrollX,
+      right: r.right + window.scrollX,
+      top: r.top + window.scrollY,
+      bottom: r.bottom + window.scrollY,
+    };
+  }
 
-    const svg = document.createElementNS(SVG_NS, "svg");
-    svg.setAttribute("viewBox", "0 0 32 32");
-    svg.setAttribute("aria-hidden", "true");
-    svg.setAttribute("focusable", "false");
-    svg.classList.add("butterfly");
-    // Purely decorative and mouse-only: no tabindex, no role, so it's
-    // naturally excluded from the tab order without extra work.
-    svg.innerHTML = `
-      <defs>
-        <linearGradient id="${gradientId}" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stop-color="#F0C8CE"/>
-          <stop offset="0.5" stop-color="#F2DFC0"/>
-          <stop offset="1" stop-color="#D6DEEA"/>
-        </linearGradient>
-      </defs>
-      <g class="butterfly__wing butterfly__wing-left" style="fill: url(#${gradientId});">
-        <ellipse cx="9" cy="12" rx="7" ry="8.5"/>
-        <ellipse cx="11" cy="21" rx="4.5" ry="5"/>
-      </g>
-      <g class="butterfly__wing butterfly__wing-right" style="fill: url(#${gradientId});">
-        <ellipse cx="23" cy="12" rx="7" ry="8.5"/>
-        <ellipse cx="21" cy="21" rx="4.5" ry="5"/>
-      </g>
-      <path class="butterfly__body" d="M16 6 C14.5 6 14 7 14 9 L14 24 C14 25.5 15 25.8 16 25.8 C17 25.8 18 25.5 18 24 L18 9 C18 7 17.5 6 16 6 Z"/>
-      <path class="butterfly__antenna" d="M15 7 C13.5 4.5 12 4 11 3.5 M17 7 C18.5 4.5 20 4 21 3.5" fill="none"/>
-    `;
-    return svg;
+  function rectsClear(a, b, clearance) {
+    return (
+      a.right + clearance < b.left ||
+      a.left - clearance > b.right ||
+      a.bottom + clearance < b.top ||
+      a.top - clearance > b.bottom
+    );
+  }
+
+  // Obstacles: anything a butterfly shouldn't land on top of — controls,
+  // links and body text/images. Checked with real page rects, so a zone
+  // only has to be roughly right; this is what keeps placement safe even
+  // if the zone geometry loosely overlaps content.
+  const obstacles = Array.from(
+    document.querySelectorAll(
+      "a, button, [role='button'], input, textarea, select, .glass-btn, .glass-card, h1, h2, h3, h4, h5, p, li, img, label"
+    )
+  ).map(pageRect);
+
+  const nav = document.querySelector(".site-nav");
+  const footer = document.querySelector(".site-footer");
+  const docHeight = document.documentElement.scrollHeight;
+  const viewportWidth = window.innerWidth;
+
+  const safeTop = (nav ? pageRect(nav).bottom : 0) + 24;
+  const safeBottom = (footer ? pageRect(footer).top : docHeight) - 24;
+
+  function buildZones() {
+    const zones = [];
+
+    if (safeBottom - safeTop > SIZE_MIN + CLEARANCE * 2) {
+      if (MARGIN_ZONE_WIDTH > SIZE_MIN + CLEARANCE * 2) {
+        zones.push({ left: 8, right: MARGIN_ZONE_WIDTH, top: safeTop, bottom: safeBottom });
+        zones.push({
+          left: viewportWidth - MARGIN_ZONE_WIDTH,
+          right: viewportWidth - 8,
+          top: safeTop,
+          bottom: safeBottom,
+        });
+      }
+    }
+
+    // Gaps between adjacent top-level content blocks (the whitespace
+    // between sections/containers) — a horizontal band spanning the
+    // content column at each gap wide enough to hold a butterfly.
+    const contentRoot = document.querySelector(".page-content, main");
+    const blocks = contentRoot
+      ? Array.from(contentRoot.children).filter((el) => el.getBoundingClientRect().height > 0)
+      : [];
+    for (let i = 0; i < blocks.length - 1; i += 1) {
+      const gapTop = pageRect(blocks[i]).bottom;
+      const gapBottom = pageRect(blocks[i + 1]).top;
+      if (gapBottom - gapTop >= SIZE_MIN + CLEARANCE * 2) {
+        const contentLeft = Math.min(pageRect(blocks[i]).left, pageRect(blocks[i + 1]).left);
+        const contentRight = Math.max(pageRect(blocks[i]).right, pageRect(blocks[i + 1]).right);
+        zones.push({ left: contentLeft, right: contentRight, top: gapTop + 8, bottom: gapBottom - 8 });
+      }
+    }
+
+    return zones.filter((z) => z.right - z.left >= SIZE_MIN && z.bottom - z.top >= SIZE_MIN);
+  }
+
+  function shuffled(arr) {
+    const copy = arr.slice();
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function tryPlaceInZone(zone, size, placedRects) {
+    for (let attempt = 0; attempt < MAX_SAMPLES_PER_ZONE; attempt += 1) {
+      const left = zone.left + Math.random() * Math.max(0, zone.right - zone.left - size);
+      const top = zone.top + Math.random() * Math.max(0, zone.bottom - zone.top - size);
+      const candidate = { left, right: left + size, top, bottom: top + size };
+
+      const clearsObstacles = obstacles.every((o) => rectsClear(candidate, o, CLEARANCE));
+      const clearsPlaced = placedRects.every((p) => rectsClear(candidate, p, CLEARANCE));
+      if (clearsObstacles && clearsPlaced) return candidate;
+    }
+    return null;
   }
 
   function easeOutCubic(x) {
     return 1 - Math.pow(1 - x, 3);
   }
 
-  function flyAway(butterfly, wings, storageKey) {
+  function flyAway(butterfly, img, storageKey) {
     const rect = butterfly.getBoundingClientRect();
     const vw = window.innerWidth;
     const vh = window.innerHeight;
@@ -256,10 +336,8 @@ if (
     const rotationTarget = (Math.random() * 30 - 15) + (targetX > 0 ? 20 : targetX < 0 ? -20 : 0);
     const start = performance.now();
 
-    wings.forEach((wing) => {
-      wing.classList.remove("is-flapping");
-      wing.classList.add("is-launching");
-    });
+    img.classList.remove("is-flapping");
+    img.classList.add("is-launching");
 
     function tick(now) {
       const linear = Math.min((now - start) / FLIGHT_DURATION, 1);
@@ -284,36 +362,59 @@ if (
     requestAnimationFrame(tick);
   }
 
-  butterflySlots.forEach((slot) => {
-    const id = slot.dataset.butterflyId;
-    if (!id) return;
+  window.addEventListener("load", () => {
+    const zones = buildZones();
+    if (zones.length === 0) return;
 
-    const storageKey = `butterfly-flown:${id}`;
-    if (sessionStorage.getItem(storageKey)) return; // already flown this session
+    const placedRects = [];
 
-    const butterfly = buildButterflySvg();
-    slot.appendChild(butterfly);
-    const wings = butterfly.querySelectorAll(".butterfly__wing");
+    for (let i = 0; i < BUTTERFLY_COUNT; i += 1) {
+      const storageKey = `butterfly-flown:${window.location.pathname}:${i}`;
+      if (sessionStorage.getItem(storageKey)) continue; // already flown this session
 
-    wings.forEach((wing) => {
-      wing.addEventListener("animationend", (e) => {
+      const size = SIZE_MIN + Math.random() * (SIZE_MAX - SIZE_MIN);
+      let placement = null;
+      for (const zone of shuffled(zones)) {
+        placement = tryPlaceInZone(zone, size, placedRects);
+        if (placement) break;
+      }
+      if (!placement) continue; // no safe spot found — skip rather than overlap content
+
+      placedRects.push(placement);
+
+      const butterfly = document.createElement("div");
+      butterfly.className = "butterfly";
+      butterfly.setAttribute("aria-hidden", "true");
+      butterfly.style.width = `${size}px`;
+      butterfly.style.height = `${size}px`;
+      butterfly.style.left = `${placement.left}px`;
+      butterfly.style.top = `${placement.top}px`;
+
+      const img = document.createElement("img");
+      img.className = "butterfly__img";
+      img.src = imgSrc;
+      img.alt = "";
+      img.draggable = false;
+      butterfly.appendChild(img);
+      document.body.appendChild(butterfly);
+
+      img.addEventListener("animationend", (e) => {
         if (e.animationName === "butterfly-flap") {
-          wing.classList.remove("is-flapping", "is-launching");
+          img.classList.remove("is-flapping", "is-launching");
         }
       });
-    });
 
-    function scheduleFlap() {
-      const delay = FLAP_MIN_DELAY + Math.random() * (FLAP_MAX_DELAY - FLAP_MIN_DELAY);
-      setTimeout(() => {
-        if (!butterfly.isConnected) return; // flown away — stop rescheduling
-        wings.forEach((wing) => wing.classList.add("is-flapping"));
-        scheduleFlap();
-      }, delay);
+      (function scheduleFlap() {
+        const delay = FLAP_MIN_DELAY + Math.random() * (FLAP_MAX_DELAY - FLAP_MIN_DELAY);
+        setTimeout(() => {
+          if (!butterfly.isConnected) return; // flown away — stop rescheduling
+          img.classList.add("is-flapping");
+          scheduleFlap();
+        }, delay);
+      })();
+
+      butterfly.addEventListener("click", () => flyAway(butterfly, img, storageKey));
     }
-    scheduleFlap();
-
-    butterfly.addEventListener("click", () => flyAway(butterfly, wings, storageKey));
   });
 }
 

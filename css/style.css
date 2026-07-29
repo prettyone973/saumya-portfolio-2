@@ -253,9 +253,19 @@ body > * {
    blurred without softening the glass panel/buttons sitting on top of it.
    `inset: -4%` overscans the photo beyond .hero's own box so the blur's
    soft edge never shows; `overflow: hidden` on .hero clips that overscan
-   back down. The photo's bottom ~200px fades to transparent via a mask,
-   so the mesh gradient behind everything bleeds through and the seam into
-   the next section is soft rather than a hard cut.
+   back down. The photo's bottom ~320px fades to transparent via a
+   multi-stop mask (a straight linear ramp reads as an abrupt edge right
+   where the fade starts — easing the alpha in gradually, then dropping
+   faster near the end, reads as a much softer blend), so the mesh gradient
+   behind everything bleeds through and the seam into the next section is
+   soft rather than a hard cut.
+
+   The background also drifts at ~0.5x the page's scroll speed (the
+   foreground/content scrolls at the normal 1x), via the --hero-parallax-y
+   custom property — set by a native `animation-timeline: scroll()` where
+   supported, or by a rAF scroll handler in main.js otherwise. Never
+   animate background-position for this; it's a layout-triggering property
+   and is slow. transform (translate3d) is compositor-only.
 
    Mobile source (hero-coral.jpg/.webp, portrait, <768px) is still pending —
    only the desktop crop has been supplied so far. Below 768px this falls
@@ -263,6 +273,15 @@ body > * {
    off-center crop of a landscape photo) rather than a blank layer; swap in
    the real mobile media query once that file exists.
    ---------------------------------------------------------------------- */
+
+/* Custom properties aren't animatable/interpolable by default — without
+   this registration, the scroll-timeline keyframes below would just snap
+   between 0 and 50vh at the midpoint instead of smoothly tracking scroll. */
+@property --hero-parallax-y {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
 
 .hero {
   position: relative;
@@ -274,6 +293,7 @@ body > * {
   justify-content: center;
   gap: var(--space-xl);
   padding: var(--content-padding);
+  --hero-parallax-y: 0px;
 }
 
 .hero::before {
@@ -294,8 +314,48 @@ body > * {
   background-position: center;
   filter: blur(2px);
   z-index: 0;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 200px), transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - 200px), transparent 100%);
+  transform: translate3d(0, var(--hero-parallax-y), 0);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 60%,
+    rgba(0, 0, 0, 0.85) 74%,
+    rgba(0, 0, 0, 0.5) 86%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 60%,
+    rgba(0, 0, 0, 0.85) 74%,
+    rgba(0, 0, 0, 0.5) 86%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* Native scroll-linked parallax where supported: maps scrolling through the
+   hero's own height (0 -> 100vh) onto the background moving down by half
+   that (0 -> 50vh), i.e. exactly 0.5x the scroll speed, with no JS at all.
+   Gated on both the feature and reduced-motion; main.js's rAF fallback is
+   gated the same way (feature absent, or reduced-motion) so exactly one
+   mechanism ever drives --hero-parallax-y. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero::before {
+      animation: hero-parallax linear;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100vh;
+    }
+  }
+}
+
+@keyframes hero-parallax {
+  from {
+    --hero-parallax-y: 0px;
+  }
+  to {
+    --hero-parallax-y: 50vh;
+  }
 }
 
 .hero > * {
@@ -453,18 +513,24 @@ section + section {
 }
 
 /* ---- Site nav ----------------------------------------------------------
-   Fixed, full-width, and transparent — no backing strip, matching the
-   Figma hero reference exactly (brand text and pills float directly on
-   whatever's behind them). The right-hand links are full .glass-nav-pill
-   components, which already carry their own frosted background, so they
-   stay legible regardless. The brand text is ink-primary by default
-   (reads fine directly on the light mesh gradient on every non-hero page)
-   and switched to white with `.site-nav--on-hero`, used only on index.html
-   where the brand text sits directly on the dark/saturated hero photo.
+   Not sticky: position: absolute (not fixed), so it sits at the top of the
+   page/hero and scrolls away with it like any other content, rather than
+   staying pinned as the user scrolls. It's still full-width and
+   transparent — no backing strip, matching the Figma hero reference
+   exactly (brand text and pills float directly on whatever's behind them).
+   The right-hand links are full .glass-nav-pill components, which already
+   carry their own frosted background, so they stay legible regardless.
+   The brand text is ink-primary by default (reads fine directly on the
+   light mesh gradient on every non-hero page) and white via the static
+   `.site-nav--on-hero` modifier on index.html only, where the brand text
+   sits directly on the dark/saturated hero photo. Since nav now scrolls
+   away together with the hero instead of lingering pinned over the
+   gradient section below it, that tone never needs to change after load —
+   no scroll listener required.
    ---------------------------------------------------------------------- */
 
 .site-nav {
-  position: fixed;
+  position: absolute;
   inset-block-start: 0;
   inset-inline: 0;
   z-index: 10;
@@ -1453,34 +1519,36 @@ section + section {
 /* ---- Custom cursor -------------------------------------------------------
    Desktop only: a fine (mouse-class) pointer and no reduced-motion
    preference. Native `cursor` property, not a JS element trailing the
-   mouse — that always lags a frame and reads as fake. Interactive
-   elements keep the normal pointer/hand cursor as the click affordance.
+   mouse — that always lags a frame and reads as fake. Applied to
+   interactive elements too (not just body) so it stays iridescent over
+   links/buttons instead of reverting to the default hand pointer;
+   `image-set()` swaps in the 2x asset on retina displays. `.glass-nav-pill`
+   and `.email-pill button` are named explicitly to win over their own
+   unconditional `cursor: pointer` (same specificity, later in the
+   cascade) — that pointer stays as the affordance everywhere else this
+   media query doesn't match (touch, reduced motion).
    ---------------------------------------------------------------------- */
 
 @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  body {
-    cursor: url("../assets/img/cursor.png") 4 4, auto;
-  }
-
+  body,
   a,
   button,
   [role="button"],
   .glass-btn,
+  .glass-card,
   .glass-nav-pill,
-  input,
-  select,
-  textarea,
-  label {
-    cursor: pointer;
+  .email-pill button {
+    cursor: image-set(url("../assets/img/cursor.png") 1x, url("../assets/img/cursor@2x.png") 2x) 4 4, auto;
   }
 }
 
 /* ---- Sparkle trail --------------------------------------------------------
    Spawned/animated entirely by js/main.js inside .sparkle-zone elements
-   (the project cards). This is just the shared visual for each spawned
-   star: fixed positioning so it tracks the viewport not any scrolling
-   ancestor, and only transform/opacity ever get touched per frame (GPU),
-   set once at creation and left alone otherwise.
+   (the project cards), using assets/img/sparkle.png. This is just the
+   shared visual for each spawned sparkle: fixed positioning so it tracks
+   the viewport not any scrolling ancestor, and only transform/opacity
+   ever get touched per frame (GPU) — size and the hue-rotate/glow filter
+   are set once at creation (per-instance, in JS) and left alone otherwise.
    ---------------------------------------------------------------------- */
 
 .sparkle {
@@ -1493,87 +1561,63 @@ section + section {
 }
 
 /* ---- Butterfly easter egg -------------------------------------------------
-   Two per page, injected by js/main.js into hand-placed .butterfly-slot
-   anchors (see each page's HTML) — never auto-placed, never near real
-   controls. Hidden entirely below 768px and whenever the resting-flap
-   scheduler/click handling in main.js decides not to run (reduced motion,
-   already flown this session). No cursor override on hover — it must stay
-   discoverable without looking like a normal clickable control.
+   A couple per page, placed by js/main.js at random points within computed
+   safe zones (viewport margins + gaps between sections) — never on top of
+   real content, never auto-placed at a predictable spot. Hidden entirely
+   below 768px and whenever main.js decides not to run at all (reduced
+   motion). No cursor override on hover — it must stay discoverable without
+   looking like a normal clickable control.
    ---------------------------------------------------------------------- */
-
-.butterfly-slot {
-  position: relative;
-  display: inline-block;
-  width: 0;
-  height: 0;
-  overflow: visible;
-}
-
-@media (max-width: 767px) {
-  .butterfly-slot {
-    display: none;
-  }
-}
 
 .butterfly {
   position: absolute;
-  width: 30px;
-  height: 30px;
-  /* The reset's `svg { max-width: 100% }` would otherwise resolve against
-     .butterfly-slot's zero-width containing block and clamp this to 0. */
-  max-width: none;
   transition: transform 0.2s ease;
+  z-index: 5;
+}
+
+@media (max-width: 767px) {
+  .butterfly {
+    display: none;
+  }
 }
 
 .butterfly:hover {
   transform: scale(1.08);
 }
 
-.butterfly__wing {
-  transform-box: fill-box;
-  fill-opacity: 0.62;
-}
-
-.butterfly__wing-left {
-  transform-origin: 100% 50%;
-}
-
-.butterfly__wing-right {
-  transform-origin: 0% 50%;
-}
-
-.butterfly__body {
-  fill: rgba(55, 30, 30, 0.35);
-}
-
-.butterfly__antenna {
-  stroke: rgba(55, 30, 30, 0.35);
-  stroke-width: 0.6;
+.butterfly__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  pointer-events: none;
 }
 
 /* One flap: close then open, played once per trigger (never a looping
    cycle — that reads as a GIF). Resting uses the slower duration; the
-   launch burst reuses the same keyframes at a faster pace, 3 times. */
+   launch burst reuses the same keyframes at a faster pace, 3 times. A
+   flat image can't flap independent wings like the old SVG did, so this
+   approximates it with a horizontal squeeze of the whole butterfly. */
 @keyframes butterfly-flap {
   0%,
   100% {
     transform: scaleX(1);
   }
   50% {
-    transform: scaleX(0.18);
+    transform: scaleX(0.7);
   }
 }
 
-.butterfly__wing.is-flapping {
+.butterfly__img.is-flapping {
   animation: butterfly-flap 0.5s ease-in-out 1;
 }
 
-.butterfly__wing.is-launching {
+.butterfly__img.is-launching {
   animation: butterfly-flap 0.18s ease-in-out 3;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .butterfly-slot {
+  .butterfly {
     display: none;
   }
 }
