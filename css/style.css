@@ -678,17 +678,181 @@ section + section {
   }
 }
 
-.project-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  padding: var(--space-lg);
-  height: 100%;
+/* ---- Flip card (project cards) --------------------------------------------
+   .card sets up the 3D scene (perspective) and a fixed aspect-ratio so both
+   faces have somewhere to live; .card-inner is the piece that actually
+   rotates on hover/focus. The two faces sit absolutely positioned on top of
+   each other inside it — the back pre-rotated 180deg, both with
+   backface-visibility: hidden — so only one is ever actually visible.
+   ---------------------------------------------------------------------- */
+
+.card {
+  display: block;
+  position: relative;
+  perspective: 1200px;
+  aspect-ratio: 3 / 4.85;
   transition: transform 0.2s ease;
 }
 
-.project-card:hover {
+.card:hover {
   transform: translateY(-4px);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--ink-primary);
+  outline-offset: 4px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover .card-inner,
+.card:focus-within .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  /* Thick frosted glass slab: the warm under-glow bleeding from the bottom
+     edge (the second box-shadow layer) is what reads as light passing
+     through thick glass — the main visual signature of this treatment. */
+  border-radius: 20px;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.38));
+  backdrop-filter: blur(16px) saturate(155%);
+  -webkit-backdrop-filter: blur(16px) saturate(155%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.9) inset,
+    0 -18px 30px -12px rgba(247, 190, 150, 0.55),
+    0 18px 40px -14px rgba(126, 42, 60, 0.2);
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover .card-front,
+.card:hover .card-back {
+  box-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.95) inset,
+    0 -22px 38px -12px rgba(247, 190, 150, 0.75),
+    0 24px 52px -14px rgba(126, 42, 60, 0.24);
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+.card-meta {
+  font-size: 14px;
+  color: rgba(91, 57, 64, 0.8);
+}
+
+.card-cta {
+  margin-top: auto;
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  color: var(--ink-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-inner {
+    transition: none;
+  }
+
+  .card:hover .card-inner,
+  .card:focus-within .card-inner {
+    transform: none;
+  }
+
+  .card-back {
+    transform: none;
+  }
+
+  .card-front,
+  .card-back {
+    transition: opacity 0.25s ease;
+  }
+
+  .card-front {
+    opacity: 1;
+  }
+
+  .card-back {
+    opacity: 0;
+  }
+
+  .card:hover .card-front,
+  .card:focus-within .card-front {
+    opacity: 0;
+  }
+
+  .card:hover .card-back,
+  .card:focus-within .card-back {
+    opacity: 1;
+  }
+}
+
+/* Touch: no hover state to flip from, so there's no hidden face to reveal —
+   show everything in one flat stack instead (description directly under
+   the title), and let the whole card keep working as a single tap target.
+   The glass-slab look moves to .card itself since .card-front/.card-back
+   are no longer separate stacked layers here. */
+@media (pointer: coarse) {
+  .card {
+    aspect-ratio: auto;
+    padding: var(--space-lg);
+    border-radius: 20px;
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.38));
+    backdrop-filter: blur(16px) saturate(155%);
+    -webkit-backdrop-filter: blur(16px) saturate(155%);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow:
+      0 2px 0 rgba(255, 255, 255, 0.9) inset,
+      0 -18px 30px -12px rgba(247, 190, 150, 0.55),
+      0 18px 40px -14px rgba(126, 42, 60, 0.2);
+  }
+
+  .card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    transition: none;
+  }
+
+  .card:hover .card-inner,
+  .card:focus-within .card-inner {
+    transform: none;
+  }
+
+  .card-front,
+  .card-back {
+    position: static;
+    inset: auto;
+    transform: none;
+    backface-visibility: visible;
+    background: none;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    padding: 0;
+  }
+
+  .card-meta,
+  .card-cta {
+    display: none;
+  }
 }
 
 .project-card__mockup {
