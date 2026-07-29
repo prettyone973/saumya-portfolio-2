@@ -208,8 +208,8 @@ if (
   const FLIGHT_END_SCALE = 0.6;
 
   const imgSrc = window.location.pathname.includes("/case-studies/")
-    ? "../assets/img/butterfly.png"
-    : "assets/img/butterfly.png";
+    ? "../assets/img/butterfly.png?v=2"
+    : "assets/img/butterfly.png?v=2";
 
   function pageRect(el) {
     const r = el.getBoundingClientRect();
