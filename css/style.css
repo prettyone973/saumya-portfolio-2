@@ -1445,3 +1445,45 @@ section + section {
   color: var(--ink-secondary);
   text-align: center;
 }
+
+/* ---- Custom cursor -------------------------------------------------------
+   Desktop only: a fine (mouse-class) pointer and no reduced-motion
+   preference. Native `cursor` property, not a JS element trailing the
+   mouse — that always lags a frame and reads as fake. Interactive
+   elements keep the normal pointer/hand cursor as the click affordance.
+   ---------------------------------------------------------------------- */
+
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  body {
+    cursor: url("../assets/img/cursor.png") 4 4, auto;
+  }
+
+  a,
+  button,
+  [role="button"],
+  .glass-btn,
+  .glass-nav-pill,
+  input,
+  select,
+  textarea,
+  label {
+    cursor: pointer;
+  }
+}
+
+/* ---- Sparkle trail --------------------------------------------------------
+   Spawned/animated entirely by js/main.js inside .sparkle-zone elements
+   (the project cards). This is just the shared visual for each spawned
+   star: fixed positioning so it tracks the viewport not any scrolling
+   ancestor, and only transform/opacity ever get touched per frame (GPU),
+   set once at creation and left alone otherwise.
+   ---------------------------------------------------------------------- */
+
+.sparkle {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 20;
+  will-change: transform, opacity;
+}
