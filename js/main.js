@@ -129,6 +129,158 @@ if (sparkleZones.length > 0) {
   );
 }
 
+// Butterfly easter egg: two per page, injected into hand-placed
+// .butterfly-slot anchors in the page's HTML (never auto-placed). Fully
+// skipped — not just visually hidden — under reduced motion or below the
+// 768px breakpoint, and per-butterfly once it's flown away this session.
+const butterflySlots = document.querySelectorAll(".butterfly-slot");
+
+if (
+  butterflySlots.length > 0 &&
+  !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+  window.innerWidth >= 768
+) {
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const FLAP_MIN_DELAY = 3000; // ms
+  const FLAP_MAX_DELAY = 9000; // ms
+  const FLIGHT_DURATION = 1200; // ms
+  const FLIGHT_OVERSHOOT = 120; // px past the nearest edge
+  const FLIGHT_ARC = 60; // px, perpendicular bow of the curved path
+  const FLIGHT_END_SCALE = 0.6;
+
+  let gradientCounter = 0;
+
+  function buildButterflySvg() {
+    gradientCounter += 1;
+    const gradientId = `butterfly-grad-${gradientCounter}`;
+
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("viewBox", "0 0 32 32");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    svg.classList.add("butterfly");
+    // Purely decorative and mouse-only: no tabindex, no role, so it's
+    // naturally excluded from the tab order without extra work.
+    svg.innerHTML = `
+      <defs>
+        <linearGradient id="${gradientId}" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#F0C8CE"/>
+          <stop offset="0.5" stop-color="#F2DFC0"/>
+          <stop offset="1" stop-color="#D6DEEA"/>
+        </linearGradient>
+      </defs>
+      <g class="butterfly__wing butterfly__wing-left" style="fill: url(#${gradientId});">
+        <ellipse cx="9" cy="12" rx="7" ry="8.5"/>
+        <ellipse cx="11" cy="21" rx="4.5" ry="5"/>
+      </g>
+      <g class="butterfly__wing butterfly__wing-right" style="fill: url(#${gradientId});">
+        <ellipse cx="23" cy="12" rx="7" ry="8.5"/>
+        <ellipse cx="21" cy="21" rx="4.5" ry="5"/>
+      </g>
+      <path class="butterfly__body" d="M16 6 C14.5 6 14 7 14 9 L14 24 C14 25.5 15 25.8 16 25.8 C17 25.8 18 25.5 18 24 L18 9 C18 7 17.5 6 16 6 Z"/>
+      <path class="butterfly__antenna" d="M15 7 C13.5 4.5 12 4 11 3.5 M17 7 C18.5 4.5 20 4 21 3.5" fill="none"/>
+    `;
+    return svg;
+  }
+
+  function easeOutCubic(x) {
+    return 1 - Math.pow(1 - x, 3);
+  }
+
+  function flyAway(butterfly, wings, storageKey) {
+    const rect = butterfly.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    const distanceToEdge = {
+      left: rect.left,
+      right: vw - rect.right,
+      top: rect.top,
+      bottom: vh - rect.bottom,
+    };
+    const nearestEdge = Object.keys(distanceToEdge).reduce((a, b) =>
+      distanceToEdge[a] < distanceToEdge[b] ? a : b
+    );
+
+    let targetX = 0;
+    let targetY = 0;
+    if (nearestEdge === "left") targetX = -(rect.left + FLIGHT_OVERSHOOT);
+    if (nearestEdge === "right") targetX = vw - rect.right + FLIGHT_OVERSHOOT;
+    if (nearestEdge === "top") targetY = -(rect.top + FLIGHT_OVERSHOOT);
+    if (nearestEdge === "bottom") targetY = vh - rect.bottom + FLIGHT_OVERSHOOT;
+
+    // Curved (quadratic bezier) path: bow the control point perpendicular
+    // to the straight start->target line so it arcs instead of flying straight.
+    const bow = FLIGHT_ARC * (Math.random() < 0.5 ? -1 : 1);
+    let controlX = targetX / 2;
+    let controlY = targetY / 2;
+    if (targetX !== 0) controlY += bow;
+    else controlX += bow;
+
+    const rotationTarget = (Math.random() * 30 - 15) + (targetX > 0 ? 20 : targetX < 0 ? -20 : 0);
+    const start = performance.now();
+
+    wings.forEach((wing) => {
+      wing.classList.remove("is-flapping");
+      wing.classList.add("is-launching");
+    });
+
+    function tick(now) {
+      const linear = Math.min((now - start) / FLIGHT_DURATION, 1);
+      const t = easeOutCubic(linear);
+      const inv = 1 - t;
+
+      const x = 2 * inv * t * controlX + t * t * targetX;
+      const y = 2 * inv * t * controlY + t * t * targetY;
+      const scale = 1 - (1 - FLIGHT_END_SCALE) * t;
+      const rotate = rotationTarget * t;
+
+      butterfly.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg) scale(${scale})`;
+      butterfly.style.opacity = String(1 - t);
+
+      if (linear < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        butterfly.remove();
+        sessionStorage.setItem(storageKey, "1");
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  butterflySlots.forEach((slot) => {
+    const id = slot.dataset.butterflyId;
+    if (!id) return;
+
+    const storageKey = `butterfly-flown:${id}`;
+    if (sessionStorage.getItem(storageKey)) return; // already flown this session
+
+    const butterfly = buildButterflySvg();
+    slot.appendChild(butterfly);
+    const wings = butterfly.querySelectorAll(".butterfly__wing");
+
+    wings.forEach((wing) => {
+      wing.addEventListener("animationend", (e) => {
+        if (e.animationName === "butterfly-flap") {
+          wing.classList.remove("is-flapping", "is-launching");
+        }
+      });
+    });
+
+    function scheduleFlap() {
+      const delay = FLAP_MIN_DELAY + Math.random() * (FLAP_MAX_DELAY - FLAP_MIN_DELAY);
+      setTimeout(() => {
+        if (!butterfly.isConnected) return; // flown away — stop rescheduling
+        wings.forEach((wing) => wing.classList.add("is-flapping"));
+        scheduleFlap();
+      }, delay);
+    }
+    scheduleFlap();
+
+    butterfly.addEventListener("click", () => flyAway(butterfly, wings, storageKey));
+  });
+}
+
 // About page: copy email to clipboard (button/note only present on about.html).
 const copyEmailBtn = document.getElementById("copy-email-btn");
 const copiedNote = document.getElementById("copied-note");

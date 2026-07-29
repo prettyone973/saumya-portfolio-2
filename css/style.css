@@ -1487,3 +1487,89 @@ section + section {
   z-index: 20;
   will-change: transform, opacity;
 }
+
+/* ---- Butterfly easter egg -------------------------------------------------
+   Two per page, injected by js/main.js into hand-placed .butterfly-slot
+   anchors (see each page's HTML) — never auto-placed, never near real
+   controls. Hidden entirely below 768px and whenever the resting-flap
+   scheduler/click handling in main.js decides not to run (reduced motion,
+   already flown this session). No cursor override on hover — it must stay
+   discoverable without looking like a normal clickable control.
+   ---------------------------------------------------------------------- */
+
+.butterfly-slot {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  overflow: visible;
+}
+
+@media (max-width: 767px) {
+  .butterfly-slot {
+    display: none;
+  }
+}
+
+.butterfly {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  /* The reset's `svg { max-width: 100% }` would otherwise resolve against
+     .butterfly-slot's zero-width containing block and clamp this to 0. */
+  max-width: none;
+  transition: transform 0.2s ease;
+}
+
+.butterfly:hover {
+  transform: scale(1.08);
+}
+
+.butterfly__wing {
+  transform-box: fill-box;
+  fill-opacity: 0.62;
+}
+
+.butterfly__wing-left {
+  transform-origin: 100% 50%;
+}
+
+.butterfly__wing-right {
+  transform-origin: 0% 50%;
+}
+
+.butterfly__body {
+  fill: rgba(55, 30, 30, 0.35);
+}
+
+.butterfly__antenna {
+  stroke: rgba(55, 30, 30, 0.35);
+  stroke-width: 0.6;
+}
+
+/* One flap: close then open, played once per trigger (never a looping
+   cycle — that reads as a GIF). Resting uses the slower duration; the
+   launch burst reuses the same keyframes at a faster pace, 3 times. */
+@keyframes butterfly-flap {
+  0%,
+  100% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(0.18);
+  }
+}
+
+.butterfly__wing.is-flapping {
+  animation: butterfly-flap 0.5s ease-in-out 1;
+}
+
+.butterfly__wing.is-launching {
+  animation: butterfly-flap 0.18s ease-in-out 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .butterfly-slot {
+    display: none;
+  }
+}
