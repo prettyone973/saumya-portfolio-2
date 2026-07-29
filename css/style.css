@@ -657,22 +657,16 @@ section + section {
 }
 
 /* ---- Project grid -------------------------------------------------------
-   3-col desktop, 2-col tablet, 1-col mobile.
+   2-col desktop, 1-col mobile — matches the previous portfolio's grid.
    ---------------------------------------------------------------------- */
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-lg);
 }
 
-@media (max-width: 1024px) {
-  .project-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .project-grid {
     grid-template-columns: 1fr;
   }
@@ -728,9 +722,6 @@ section + section {
   inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
   padding: var(--space-lg);
   /* Thick frosted glass slab: the warm under-glow bleeding from the bottom
      edge (the second box-shadow layer) is what reads as light passing
@@ -759,6 +750,64 @@ section + section {
   transform: rotateY(180deg);
 }
 
+/* Front: image left (~40%), content right. */
+.card-front {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.card-front__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  min-width: 0; /* let the description ellipsis truncate instead of forcing width */
+}
+
+.card-description {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--font-body);
+  color: var(--ink-secondary);
+}
+
+/* Back: title, then the metadata table. */
+.card-back {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.card-meta-table {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.card-meta-row {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.card-meta-row dt {
+  flex: 0 0 5.5rem; /* consistent second column across all four rows */
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 13px;
+  color: rgba(91, 57, 64, 0.7);
+}
+
+.card-meta-row dd {
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
+  font-size: 19px;
+  color: #5b3940;
+}
+
 .card-link {
   color: inherit;
 }
@@ -770,29 +819,17 @@ section + section {
   z-index: 1;
 }
 
-.card-back .card-meta {
-  font-size: 14px;
-  color: rgba(91, 57, 64, 0.8);
-}
-
-.card-link-back {
-  margin-top: auto;
-  font-family: var(--font-display);
-  font-weight: var(--fw-bold);
-  color: var(--ink-primary);
-}
-
 .flip-btn {
   position: absolute;
-  bottom: 14px;
-  right: 14px;
+  top: 18px;
+  right: 18px;
   z-index: 2; /* above .card-link's stretched overlay, or the link swallows its clicks */
   width: 36px;
   height: 36px;
   display: grid;
   place-items: center;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.45);
   border: 1px solid rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -802,7 +839,7 @@ section + section {
 }
 
 .flip-btn:hover {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.62);
   transform: scale(1.06);
 }
 
@@ -893,10 +930,9 @@ section + section {
 }
 
 .project-card__mockup {
-  align-self: center;
-  width: 100%;
-  max-width: 160px;
-  aspect-ratio: 316 / 650;
+  width: 40%;
+  height: 100%;
+  flex-shrink: 0;
   object-fit: contain;
 }
 
@@ -905,32 +941,23 @@ section + section {
   align-self: flex-start;
   padding: var(--space-xs) var(--space-md);
   border-radius: var(--radius-button);
-  background: var(--ink-primary);
-  color: #ffffff;
+  background: rgba(152, 52, 73, 0.9);
+  color: #fdf6f3;
   font-family: var(--font-display);
   font-weight: var(--fw-bold);
-  font-size: var(--fs-small);
+  font-size: 15px;
 }
 
 .project-card h3 {
   font-size: var(--fs-h3);
   line-height: var(--lh-h3);
-}
-
-.project-card p {
-  color: var(--ink-secondary);
+  font-weight: var(--fw-black);
 }
 
 .tag-list {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-}
-
-.tag-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-md);
 }
 
 .tag {
@@ -941,9 +968,9 @@ section + section {
   color: var(--ink-secondary);
 }
 
-.tag img {
-  width: 1.25rem;
-  height: 1.25rem;
+.tag svg {
+  width: 22px;
+  height: 22px;
   flex-shrink: 0;
 }
 
