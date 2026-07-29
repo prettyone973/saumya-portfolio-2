@@ -105,7 +105,7 @@ if (sparkleZones.length > 0) {
     const hueRotate = Math.random() * 50 - 25; // -25deg to +25deg
 
     const img = document.createElement("img");
-    img.src = "assets/img/sparkle.png";
+    img.src = "assets/img/sparkle.png?v=2";
     img.alt = "";
     img.draggable = false;
     img.classList.add("sparkle");
@@ -182,23 +182,29 @@ if (sparkleZones.length > 0) {
 // of computed "safe zones" (viewport edge margins + the whitespace gaps
 // between sections) rather than fixed anchor points, so they never fall
 // into the same rhythm relative to the content. Fully skipped — not just
-// visually hidden — under reduced motion or below the 768px breakpoint,
-// and per-butterfly once it's flown away this session.
+// visually hidden — under reduced motion or below the 768px breakpoint.
+// A repeatable delight, not a one-time easter egg: no sessionStorage, so
+// they're back on every load/navigation.
 if (
   !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
   window.innerWidth >= 768
 ) {
   const BUTTERFLY_COUNT = 2;
-  const SIZE_MIN = 44; // px
-  const SIZE_MAX = 52; // px
+  const SIZE_MIN = 58; // px
+  const SIZE_MAX = 70; // px
   const CLEARANCE = 20; // px min gap from any obstacle or other butterfly
   const MARGIN_ZONE_WIDTH = 140; // px strip in from each viewport edge
   const MAX_SAMPLES_PER_ZONE = 25;
-  const FLAP_MIN_DELAY = 3000; // ms
-  const FLAP_MAX_DELAY = 9000; // ms
-  const FLIGHT_DURATION = 1200; // ms
-  const FLIGHT_OVERSHOOT = 120; // px past the nearest edge
-  const FLIGHT_ARC = 60; // px, perpendicular bow of the curved path
+  const FLAP_MIN_DELAY = 60000; // ms — fully autonomous, never hover-triggered
+  const FLAP_MAX_DELAY = 120000; // ms
+  const WANDER_DURATION = 1500; // ms — the fluttering, still-near-home part of a flee
+  const EXIT_DURATION = 1000; // ms — the final carry-out-of-view part (~2.5s total)
+  const WANDER_CURVES = 2; // gentle curve segments during the wander phase
+  const WANDER_DRIFT = 45; // px, how far each wander waypoint drifts from the last
+  const WANDER_BOB_AMPLITUDE = 8; // px, small sinusoidal vertical bobbing during wander
+  const WANDER_ARC = 28; // px, perpendicular bow of each wander curve
+  const EXIT_OVERSHOOT = 120; // px past the nearest edge
+  const EXIT_ARC = 60; // px, perpendicular bow of the final curve
   const FLIGHT_END_SCALE = 0.6;
 
   const imgSrc = window.location.pathname.includes("/case-studies/")
@@ -303,7 +309,14 @@ if (
     return 1 - Math.pow(1 - x, 3);
   }
 
-  function flyAway(butterfly, img, storageKey) {
+  // A click doesn't just slide the butterfly off-screen: it flees along a
+  // short wandering path near where it started (2 gentle curves, a little
+  // rotation, small vertical bobbing — ~1.5s), then carries on out past
+  // the nearest edge and fades (~1s), for ~2.5s total. Built as a chain of
+  // quadratic bezier segments (a spline) through a few waypoints, so the
+  // whole thing reads as one continuous flight rather than two stitched
+  // animations; only the final exit segment eases out.
+  function flyAway(butterfly, img) {
     const rect = butterfly.getBoundingClientRect();
     const vw = window.innerWidth;
     const vh = window.innerHeight;
@@ -318,45 +331,81 @@ if (
       distanceToEdge[a] < distanceToEdge[b] ? a : b
     );
 
-    let targetX = 0;
-    let targetY = 0;
-    if (nearestEdge === "left") targetX = -(rect.left + FLIGHT_OVERSHOOT);
-    if (nearestEdge === "right") targetX = vw - rect.right + FLIGHT_OVERSHOOT;
-    if (nearestEdge === "top") targetY = -(rect.top + FLIGHT_OVERSHOOT);
-    if (nearestEdge === "bottom") targetY = vh - rect.bottom + FLIGHT_OVERSHOOT;
+    let exitX = 0;
+    let exitY = 0;
+    if (nearestEdge === "left") exitX = -(rect.left + EXIT_OVERSHOOT);
+    if (nearestEdge === "right") exitX = vw - rect.right + EXIT_OVERSHOOT;
+    if (nearestEdge === "top") exitY = -(rect.top + EXIT_OVERSHOOT);
+    if (nearestEdge === "bottom") exitY = vh - rect.bottom + EXIT_OVERSHOOT;
 
-    // Curved (quadratic bezier) path: bow the control point perpendicular
-    // to the straight start->target line so it arcs instead of flying straight.
-    const bow = FLIGHT_ARC * (Math.random() < 0.5 ? -1 : 1);
-    let controlX = targetX / 2;
-    let controlY = targetY / 2;
-    if (targetX !== 0) controlY += bow;
-    else controlX += bow;
+    const points = [{ x: 0, y: 0 }];
+    for (let i = 0; i < WANDER_CURVES; i += 1) {
+      const prev = points[points.length - 1];
+      points.push({
+        x: prev.x + (Math.random() * 2 - 1) * WANDER_DRIFT,
+        y: prev.y + (Math.random() * 2 - 1) * WANDER_DRIFT * 0.4,
+      });
+    }
+    points.push({ x: exitX, y: exitY });
 
-    const rotationTarget = (Math.random() * 30 - 15) + (targetX > 0 ? 20 : targetX < 0 ? -20 : 0);
+    const segmentDurations = points.slice(1, -1).map(() => WANDER_DURATION / WANDER_CURVES);
+    segmentDurations.push(EXIT_DURATION);
+    const totalDuration = WANDER_DURATION + EXIT_DURATION;
+
+    // Bow each segment's control point perpendicular to its own straight
+    // start->end line, so every leg curves rather than flying straight.
+    const segmentControls = points.slice(0, -1).map((p, i) => {
+      const next = points[i + 1];
+      const isExitSegment = i === points.length - 2;
+      const bow = (isExitSegment ? EXIT_ARC : WANDER_ARC) * (Math.random() < 0.5 ? -1 : 1);
+      let cx = (p.x + next.x) / 2;
+      let cy = (p.y + next.y) / 2;
+      if (Math.abs(next.x - p.x) > Math.abs(next.y - p.y)) cy += bow;
+      else cx += bow;
+      return { x: cx, y: cy };
+    });
+
+    const rotationTarget = (Math.random() * 30 - 15) + (exitX > 0 ? 20 : exitX < 0 ? -20 : 0);
     const start = performance.now();
 
     img.classList.remove("is-flapping");
     img.classList.add("is-launching");
 
     function tick(now) {
-      const linear = Math.min((now - start) / FLIGHT_DURATION, 1);
-      const t = easeOutCubic(linear);
-      const inv = 1 - t;
+      const elapsed = now - start;
+      const totalT = Math.min(elapsed / totalDuration, 1);
 
-      const x = 2 * inv * t * controlX + t * t * targetX;
-      const y = 2 * inv * t * controlY + t * t * targetY;
-      const scale = 1 - (1 - FLIGHT_END_SCALE) * t;
-      const rotate = rotationTarget * t;
+      let segIndex = 0;
+      let segStart = 0;
+      while (segIndex < segmentDurations.length - 1 && elapsed >= segStart + segmentDurations[segIndex]) {
+        segStart += segmentDurations[segIndex];
+        segIndex += 1;
+      }
+      const isExitSegment = segIndex === segmentDurations.length - 1;
+      const segLinear = Math.min(Math.max((elapsed - segStart) / segmentDurations[segIndex], 0), 1);
+      const segT = isExitSegment ? easeOutCubic(segLinear) : segLinear;
+
+      const p0 = points[segIndex];
+      const p1 = points[segIndex + 1];
+      const c = segmentControls[segIndex];
+      const inv = 1 - segT;
+      const x = inv * inv * p0.x + 2 * inv * segT * c.x + segT * segT * p1.x;
+      const bob = isExitSegment ? 0 : Math.sin(totalT * Math.PI * 4) * WANDER_BOB_AMPLITUDE;
+      const y = inv * inv * p0.y + 2 * inv * segT * c.y + segT * segT * p1.y + bob;
+
+      const scale = 1 - (1 - FLIGHT_END_SCALE) * totalT;
+      const wobble = isExitSegment ? 0 : Math.sin(totalT * Math.PI * 3) * 6;
+      const rotate = rotationTarget * totalT + wobble;
+      const opacity = isExitSegment ? 1 - segT : 1;
 
       butterfly.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg) scale(${scale})`;
-      butterfly.style.opacity = String(1 - t);
+      butterfly.style.opacity = String(opacity);
 
-      if (linear < 1) {
+      if (totalT < 1) {
         requestAnimationFrame(tick);
       } else {
+        img.classList.remove("is-launching");
         butterfly.remove();
-        sessionStorage.setItem(storageKey, "1");
       }
     }
     requestAnimationFrame(tick);
@@ -369,9 +418,6 @@ if (
     const placedRects = [];
 
     for (let i = 0; i < BUTTERFLY_COUNT; i += 1) {
-      const storageKey = `butterfly-flown:${window.location.pathname}:${i}`;
-      if (sessionStorage.getItem(storageKey)) continue; // already flown this session
-
       const size = SIZE_MIN + Math.random() * (SIZE_MAX - SIZE_MIN);
       let placement = null;
       for (const zone of shuffled(zones)) {
@@ -413,7 +459,7 @@ if (
         }, delay);
       })();
 
-      butterfly.addEventListener("click", () => flyAway(butterfly, img, storageKey));
+      butterfly.addEventListener("click", () => flyAway(butterfly, img));
     }
   });
 }
