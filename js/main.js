@@ -1,5 +1,41 @@
 // Portfolio 2 — shared site script.
 
+// Page transitions: native cross-document View Transitions (Chromium via
+// the @view-transition CSS rule) need no JS at all — this block only runs
+// the manual fade+slide fallback, and only when the inline <head> script
+// decided this browser lacks native support and motion isn't reduced (that
+// script also does the reduced-motion check, so it doubles as this whole
+// feature's off-switch here).
+if (document.documentElement.classList.contains("page-transitions-js")) {
+  requestAnimationFrame(() => {
+    document.documentElement.classList.add("page-entered");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+    const link = e.target.closest("a[href]");
+    if (!link) return;
+    if (link.target && link.target !== "_self") return;
+
+    let url;
+    try {
+      url = new URL(link.href, window.location.href);
+    } catch {
+      return;
+    }
+    if (url.origin !== window.location.origin) return; // external link: normal navigation
+    if (url.pathname === window.location.pathname && url.hash) return; // same-page anchor, no page change
+
+    e.preventDefault();
+    document.documentElement.classList.remove("page-entered");
+    document.documentElement.classList.add("page-leaving");
+    setTimeout(() => {
+      window.location.href = link.href;
+    }, 400); // matches the outgoing fade's duration in style.css
+  });
+}
+
 // Home page: the nav is fixed, but its backdrop isn't — it starts over the
 // dark hero photo (white brand text) and ends up over the light mesh
 // gradient once scrolled past (needs the normal dark ink-primary text).

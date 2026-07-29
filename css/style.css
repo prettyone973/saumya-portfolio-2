@@ -356,6 +356,8 @@ h1 em {
    ---------------------------------------------------------------------- */
 
 .glass-card {
+  position: relative;
+  overflow: hidden;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.34));
   backdrop-filter: blur(14px) saturate(150%);
   -webkit-backdrop-filter: blur(14px) saturate(150%);
@@ -552,6 +554,8 @@ section + section {
    ---------------------------------------------------------------------- */
 
 .hero-glass-panel {
+  position: relative;
+  overflow: hidden;
   width: min(80%, 1100px);
   padding: var(--space-2xl);
   text-align: center;
@@ -1572,4 +1576,114 @@ section + section {
   .butterfly-slot {
     display: none;
   }
+}
+
+/* ---- Glass sheen sweep -----------------------------------------------
+   A soft diagonal highlight travelling across the glass — light passing
+   over it, not a bar wiping through, so it stays capped at ~.25 alpha.
+   The gradient's own transparent edges (not opacity toggling) are what
+   hide it at rest: translateX(-120%) parks the visible band entirely
+   outside the element, both before the animation starts and after it
+   ends, so no fill-mode bookkeeping is needed either way.
+   .glass-card sweeps on hover; .hero-glass-panel sweeps once, shortly
+   after the page settles, to draw the eye to it on load.
+   ---------------------------------------------------------------------- */
+
+.glass-card::after,
+.hero-glass-panel::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(115deg, transparent 45%, rgba(255, 255, 255, 0.25) 50%, transparent 55%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+.glass-card:hover::after {
+  animation: glass-sheen 800ms ease-out;
+}
+
+.hero-glass-panel::after {
+  animation: glass-sheen 800ms ease-out 500ms;
+}
+
+@keyframes glass-sheen {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-card::after,
+  .hero-glass-panel::after {
+    display: none;
+  }
+}
+
+/* ---- Page transitions ---------------------------------------------------
+   Cross-document View Transitions (native, no JS) where supported; a
+   manual fade+slide fallback driven from js/main.js otherwise. Both layers
+   move within the same 400ms window but with complementary easing —
+   outgoing ease-in, incoming ease-out+translateY — rather than a linear
+   cross-fade. Two 50%-opacity layers fading at identical linear rates
+   visibly dim at the midpoint (they don't sum back to a solid image), so
+   giving the outgoing layer an ease-in curve (lingers near opaque, then
+   drops fast) and the incoming layer ease-out (rises fast, then eases into
+   place) keeps the combined result close to full brightness throughout.
+   ---------------------------------------------------------------------- */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: page-transition-out 400ms ease-in both;
+}
+
+::view-transition-new(root) {
+  animation: page-transition-in 400ms ease-out both;
+}
+
+@keyframes page-transition-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-transition-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* JS fallback for browsers without cross-document View Transitions.
+   `.page-transitions-js` is added synchronously by an inline script in
+   <head> (before first paint — see every page's <head>), so body's
+   "start hidden" state below applies from the very first frame instead of
+   flashing fully visible first. main.js flips `.page-entered` on load to
+   reveal, and `.page-leaving` on an intercepted internal link click. */
+.page-transitions-js body {
+  transition: opacity 400ms ease-out, transform 400ms ease-out;
+}
+
+.page-transitions-js:not(.page-entered) body {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-transitions-js.page-leaving body {
+  transition: opacity 400ms ease-in;
+  opacity: 0;
 }
