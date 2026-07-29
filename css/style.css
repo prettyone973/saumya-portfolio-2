@@ -280,7 +280,16 @@ body > * {
   content: "";
   position: absolute;
   inset: -4%;
+  /* image-set() is the CSS-background equivalent of <picture>/<source> —
+     there's no HTML element here for a real <picture> to attach to, since
+     this is a pseudo-element background, not an <img>. Plain url() first
+     for browsers that don't support image-set(); ?v=2 cache-busts the
+     webp specifically, since it's the file that actually changed. */
   background-image: url("../assets/img/hero-coral-desktop.jpg");
+  background-image: image-set(
+    url("../assets/img/hero-coral-desktop.webp?v=2") type("image/webp"),
+    url("../assets/img/hero-coral-desktop.jpg") type("image/jpeg")
+  );
   background-size: cover;
   background-position: center;
   filter: blur(2px);
