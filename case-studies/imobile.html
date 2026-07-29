@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iMobile — Saumya Mehta</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <nav class="site-nav">
+    <span class="site-nav__brand">Saumya Mehta • Product designer</span>
+    <div class="site-nav__links">
+      <a class="glass-nav-pill" href="../index.html">Home</a>
+      <a class="glass-nav-pill" href="../about.html">About me</a>
+      <a class="glass-nav-pill is-active" href="../work.html">My work</a>
+    </div>
+  </nav>
+
+  <main class="page-content">
+    <div class="container">
+      <div class="case-header">
+        <a class="glass-btn back-link" href="../work.html" aria-label="Back to my work">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <h1 style="font-size: var(--fs-h2);">iMobile App Redesign</h1>
+      </div>
+
+      <div class="glass-card case-jump-nav">
+        <a href="#heuristic-evaluation">Heuristic Evaluation</a>
+        <a href="#design-system">Design System</a>
+        <a href="#before-after">Before &amp; After</a>
+        <a href="#prototype">Prototype</a>
+      </div>
+
+      <section style="margin-top: var(--space-2xl);">
+        <h2>Project Overview</h2>
+
+        <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1.5rem;">
+          <div class="glass-card" style="padding: var(--space-xl);">
+            <p class="eyebrow">The Problem</p>
+            <p style="margin-top: 0.75rem;">
+              The app's screen is cluttered, with excessive use of icons and inconsistent colour.
+              The navigation seems complicated and confusing, with the same icons used for several
+              features. Overusing icons for the same feature in multiple places becomes
+              overwhelming for users. A cluttered screen, too many icons, and inconsistent colours
+              prevent users from having a seamless experience.
+            </p>
+          </div>
+          <div class="glass-card" style="padding: var(--space-xl);">
+            <p class="eyebrow">The Solution</p>
+            <p style="margin-top: 0.75rem;">
+              Rearranging the home screen to remove clutter and lessen cognitive load. Making the
+              navigation simple and easy to understand by removing unnecessary steps. Creating
+              consistency in colours and icons. Building a seamless and easy-to-understand user
+              experience.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section style="margin-top: var(--space-3xl);">
+        <h2>How I got there</h2>
+
+        <section id="heuristic-evaluation" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">01</span>
+          <h3>Heuristic Evaluation</h3>
+          <p style="margin-top: 0.5rem; color: var(--ink-secondary); font-size: var(--fs-small);">
+            Device: Android device &middot; Evaluated against: iMobile app by ICICI Bank
+          </p>
+
+          <div class="glass-card severity-key" style="margin-top: 1.5rem;">
+            <p class="eyebrow">Severity rating</p>
+            <div class="severity-key__row"><span class="severity-dot" style="background:#99e876;"></span><span><strong>0</strong> — I don't agree that this is a usability problem at all</span></div>
+            <div class="severity-key__row"><span class="severity-dot" style="background:#65aff8;"></span><span><strong>1</strong> — Cosmetic problem only: fix if time is available</span></div>
+            <div class="severity-key__row"><span class="severity-dot" style="background:#f7c284;"></span><span><strong>2</strong> — Minor usability problem: fixing this should be given low priority</span></div>
+            <div class="severity-key__row"><span class="severity-dot" style="background:#f4f75e;"></span><span><strong>3</strong> — Major usability problem: important to fix, given high priority</span></div>
+            <div class="severity-key__row"><span class="severity-dot" style="background:#ff7c70;"></span><span><strong>4</strong> — Usability catastrophe: fix this before product can be released</span></div>
+          </div>
+
+          <div class="heuristic-list">
+            <div class="glass-card heuristic-card">
+              <div class="heuristic-card__head">
+                <div><h3>1. Visibility of system status</h3><p>Always keep users informed about what is going on, through appropriate feedback within reasonable time.</p></div>
+                <div class="severity-badge" style="background:#99e876;">0</div>
+              </div>
+              <div class="heuristic-card__body">
+                <div><h4>Observations</h4><ul><li>The app keeps user informed about what is going on during a task or an action through an appropriate and timely feedback.</li></ul></div>
+                <div><h4>Recommendation</h4><ul><li>Can make it look a bit smoother</li></ul></div>
+              </div>
+            </div>
+
+            <div class="glass-card heuristic-card">
+              <div class="heuristic-card__head">
+                <div><h3>2. Match between system and the real world</h3><p>Follow real-world conventions, making information appear in a natural and logical order.</p></div>
+                <div class="severity-badge" style="background:#f7c284;">2</div>
+              </div>
+              <div class="heuristic-card__body">
+                <div><h4>Observations</h4><ul><li>Overall the language is a bit unfamiliar to the user.</li><li>Icons are doing better job in explaining the feature.</li></ul></div>
+                <div><h4>Recommendation</h4><ul><li>Use more familiar and easy, simple words.</li></ul></div>
+              </div>
+            </div>
+
+            <div class="glass-card heuristic-card">
+              <div class="heuristic-card__head">
+                <div><h3>3. User control and freedom</h3><p>Users should leave the unwanted state without having to go through an extended dialogue. Undo and redo.</p></div>
+                <div class="severity-badge" style="background:#f4f75e;">3</div>
+              </div>
+              <div class="heuristic-card__body">
+                <div><h4>Observations</h4><ul><li>User are in control of the task they do.</li><li>They can exit app or any task at any time.</li><li>Since it is a banking app, some actions such as transactions cannot be undone easily or immediately.</li></ul></div>
+                <div><h4>Recommendation</h4><ul><li>Login process can be smoother. The session timeout duration can be longer so the user doesn't have to login again and again.</li></ul></div>
+              </div>
+            </div>
+
+            <div class="glass-card heuristic-card">
+              <div class="heuristic-card__head">
+                <div><h3>4. Consistency and standards</h3><p>Users should not have to wonder whether different words, situations, or actions mean the same thing.</p></div>
+                <div class="severity-badge" style="background:#ff7c70;">4</div>
+              </div>
+              <div class="heuristic-card__body">
+                <div><h4>Observations</h4><ul><li>Icons are not very consistent</li><li>Confusing words</li><li>Same kind of words for different features</li></ul></div>
+                <div><h4>Recommendation</h4><ul><li>Remove unnecessary features with same names</li><li>Have features under their designated category in one place</li></ul></div>
+              </div>
+            </div>
+
+            <div class="glass-card heuristic-card">
+              <div class="heuristic-card__head">
+                <div><h3>5. Error prevention</h3><p>Either eliminate error-prone conditions or check for them and present users with a confirmation option before they commit to the action.</p></div>
+                <div class="severity-badge" style="background:#99e876;">0</div>
+              </div>
+              <div class="heuristic-card__body">
+                <div><h4>Observations</h4><ul><li>Basic actions are designed in a simple way that leaves little to no room for errors</li><li>When user does an error, the system gives appropriate feedback.</li></ul></div>
+                <div><h4>Recommendation</h4><ul><li>&mdash;</li></ul></div>
+              </div>
+            </div>
+
+            <div class="glass-card heuristic-card">
+              <div class="heuristic-card__head">
+                <div><h3>6. Recognition rather than recall</h3><p>Minimize the user's memory load by making objects, actions, and options visible.</p></div>
+                <div class="severity-badge" style="background:#f4f75e;">3</div>
+              </div>
+              <div class="heuristic-card__body">
+                <div><h4>Observations</h4><ul><li>The options and features are visible to users.</li><li>They do not have to remember any previous information while doing a task.</li></ul></div>
+                <div><h4>Recommendation</h4><ul><li>The options and features can be organized in a better way.</li></ul></div>
+              </div>
+            </div>
+
+            <div class="glass-card heuristic-card">
+              <div class="heuristic-card__head">
+                <div><h3>7. Flexibility and efficiency of use</h3><p>Accelerators. Allow users to tailor frequent actions.</p></div>
+                <div class="severity-badge" style="background:#65aff8;">1</div>
+              </div>
+              <div class="heuristic-card__body">
+                <div><h4>Observations</h4><ul><li>Basic actions such as financial transactions can be done by person with medium technical literacy.</li><li>They can access some features quickly before logging in</li></ul></div>
+                <div><h4>Recommendation</h4><ul><li>Making every feature and action easy to understand by a tip or a description.</li></ul></div>
+              </div>
+            </div>
+
+            <div class="glass-card heuristic-card">
+              <div class="heuristic-card__head">
+                <div><h3>8. Aesthetic and minimalist design</h3><p>Dialogues should not contain information which is irrelevant or rarely needed.</p></div>
+                <div class="severity-badge" style="background:#ff7c70;">4</div>
+              </div>
+              <div class="heuristic-card__body">
+                <div><h4>Observations</h4><ul><li>There are too many icons and features that are unnecessary on the same screen.</li><li>Colors and too many icons are overwhelming</li><li>Bottom navigation is distracting</li></ul></div>
+                <div><h4>Recommendation</h4><ul><li>Declutter the home screen</li><li>Use of limited icons</li><li>Consistent colors</li></ul></div>
+              </div>
+            </div>
+
+            <div class="glass-card heuristic-card">
+              <div class="heuristic-card__head">
+                <div><h3>9. Help users recognize, diagnose, and recover from errors</h3><p>Error messages should be expressed in plain language (no codes), precisely indicate the problem, and constructively suggest a solution.</p></div>
+                <div class="severity-badge" style="background:#99e876;">0</div>
+              </div>
+              <div class="heuristic-card__body">
+                <div><h4>Observations</h4><ul><li>Error messages are explained in a simple way.</li><li>Messages contain exactly what user needs to do to prevent errors</li></ul></div>
+                <div><h4>Recommendation</h4><ul><li>&mdash;</li></ul></div>
+              </div>
+            </div>
+
+            <div class="glass-card heuristic-card">
+              <div class="heuristic-card__head">
+                <div><h3>10. Help and documentation</h3><p>Even though it is better if the system can be used without documentation, it may be necessary to provide help and documentation.</p></div>
+                <div class="severity-badge" style="background:#f7c284;">2</div>
+              </div>
+              <div class="heuristic-card__body">
+                <div><h4>Observations</h4><ul><li>The app has a good help and support system</li><li>The information in these documents is easy to search and focuses on the task</li></ul></div>
+                <div><h4>Recommendation</h4><ul><li>The access to the help and support is confusing in the system. To make it easy, it can be given a specific place in the system rather than having it in multiple places.</li></ul></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="design-system" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">02</span>
+          <h3>Design System</h3>
+          <p style="margin-top: 0.5rem; color: var(--ink-secondary); font-size: var(--fs-small);">
+            Colors, typography, and style guide used in the redesign.
+          </p>
+
+          <h4 style="margin-top: 2rem; font-size: 1.1rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">Used Font Colors</h4>
+          <div class="swatch-grid">
+            <div class="glass-card font-swatch"><span style="color:#2B3565;">Text</span><span>#2B3565</span></div>
+            <div class="glass-card font-swatch"><span style="color:#1E1E1E;">Text</span><span>#1E1E1E</span></div>
+            <div class="glass-card font-swatch"><span style="color:#6B6B6B;">Text</span><span>#6B6B6B</span></div>
+            <div class="glass-card font-swatch"><span style="color:#E45E2D;">Text</span><span>#E45E2D</span></div>
+            <div class="glass-card font-swatch"><span style="color:#089436;">Text</span><span>#089436</span></div>
+            <div class="glass-card font-swatch"><span style="color:#929292;">Text</span><span>#929292</span></div>
+          </div>
+
+          <h4 style="margin-top: 2rem; font-size: 1.1rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">Used Primary Colours</h4>
+          <div class="color-swatch-row">
+            <div class="color-swatch" style="background:#DD683D;"><span>#DD683D</span></div>
+            <div class="color-swatch" style="background:#444D73;"><span>#444D73</span></div>
+          </div>
+
+          <h4 style="margin-top: 2rem; font-size: 1.1rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">Used Accent Colours</h4>
+          <p style="margin-top: 0.5rem;">None documented in this design.</p>
+        </section>
+
+        <section id="before-after" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">03</span>
+          <h3>Before &amp; After</h3>
+
+          <h4 style="margin-top: 1.5rem; font-size: 1.15rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">Before</h4>
+          <div class="before-after-row" style="margin-top: 1.25rem;">
+            <div class="before-after-item">
+              <div class="crop-frame phone-crop glass-card" style="aspect-ratio: 833.571 / 1660.578; padding: 0;">
+                <img src="../assets/img/case-studies/imobile/before-3.png" alt="" style="width: 504.43%; height: 183.29%; left: -201.97%; top: -41.53%;" />
+              </div>
+              <div class="callout"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M12 5 7 10M12 5l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Inconsistent colours</span></div>
+            </div>
+            <div class="before-after-item">
+              <div class="crop-frame phone-crop glass-card" style="aspect-ratio: 840.134 / 1660.578; padding: 0;">
+                <img src="../assets/img/case-studies/imobile/before-2.png" alt="" style="width: 494.41%; height: 180.89%; left: -197.05%; top: -40.41%;" />
+              </div>
+              <div class="callout"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M12 5 7 10M12 5l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Too many icons</span></div>
+            </div>
+            <div class="before-after-item">
+              <div class="crop-frame phone-crop glass-card" style="aspect-ratio: 846.698 / 1660.578; padding: 0;">
+                <img src="../assets/img/case-studies/imobile/before-1.png" alt="" style="width: 491.09%; height: 179.56%; left: -194.96%; top: -39.57%;" />
+              </div>
+              <div class="callout"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M12 5 7 10M12 5l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Confusing navigation</span></div>
+              <div class="callout"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M12 5 7 10M12 5l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>More cognitive load</span></div>
+            </div>
+          </div>
+
+          <h4 style="margin-top: 2.5rem; font-size: 1.15rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">After</h4>
+          <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 2rem;">
+            <div class="before-after-row">
+              <div class="before-after-item"><img class="after-image" src="../assets/img/case-studies/imobile/after-a2.png" alt="" /><div class="callout"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M12 5 7 10M12 5l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Visually appealing</span></div></div>
+              <div class="before-after-item"><img class="after-image" src="../assets/img/case-studies/imobile/after-a1.png" alt="" /><div class="callout"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M12 5 7 10M12 5l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Less clutter</span></div></div>
+            </div>
+            <div class="before-after-row">
+              <div class="before-after-item"><img class="after-image" src="../assets/img/case-studies/imobile/after-b1.png" alt="" /></div>
+              <div class="before-after-item"><img class="after-image" src="../assets/img/case-studies/imobile/after-b2.png" alt="" /><div class="callout"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M12 5 7 10M12 5l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Consistent colours</span></div></div>
+              <div class="before-after-item"><img class="after-image" src="../assets/img/case-studies/imobile/after-b3.png" alt="" /></div>
+            </div>
+            <div class="before-after-row">
+              <div class="before-after-item"><img class="after-image" src="../assets/img/case-studies/imobile/after-c1.png" alt="" /></div>
+              <div class="before-after-item"><img class="after-image" src="../assets/img/case-studies/imobile/after-c2.png" alt="" /></div>
+            </div>
+            <div class="before-after-row">
+              <div class="before-after-item"><img class="after-image" src="../assets/img/case-studies/imobile/after-d1.png" alt="" /><div class="callout"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M12 5 7 10M12 5l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Less cognitive load</span></div></div>
+              <div class="before-after-item"><img class="after-image" src="../assets/img/case-studies/imobile/after-d2.png" alt="" /></div>
+              <div class="before-after-item"><img class="after-image" src="../assets/img/case-studies/imobile/after-d3.png" alt="" /></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="prototype" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">04</span>
+          <h3>Prototype</h3>
+          <p style="margin-top: 0.5rem; color: var(--ink-secondary); font-size: var(--fs-small);">
+            This is a linear prototype flow covering two specific interactions: onboarding and
+            changing the security PIN. It is not a full end-to-end prototype of the entire app.
+          </p>
+          <div class="prototype-embed" style="margin-top: 1.5rem;">
+            <iframe src="https://embed.figma.com/proto/6m30aEq6SThWwSXDeh4gtd/Redesign--Copy-?node-id=32-79&viewport=184%2C408%2C0.12&scaling=scale-down&content-scaling=fixed&starting-point-node-id=27%3A3&page-id=0%3A1&show-proto-sidebar=1&embed-host=share" allowfullscreen></iframe>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© 2026 Saumya Mehta</small>
+      <div class="footer-links">
+        <a href="mailto:saumyamehta252004@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="2.5" y="4.5" width="19" height="15" rx="2" stroke="currentColor" stroke-width="1.6" />
+            <path d="M3.5 6 12 12.5 20.5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          saumyamehta252004@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/saumyamehta2000" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 448 512" fill="currentColor" aria-hidden="true">
+            <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z" />
+          </svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

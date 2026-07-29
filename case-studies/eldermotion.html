@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ElderMotion — Saumya Mehta</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <nav class="site-nav">
+    <span class="site-nav__brand">Saumya Mehta • Product designer</span>
+    <div class="site-nav__links">
+      <a class="glass-nav-pill" href="../index.html">Home</a>
+      <a class="glass-nav-pill" href="../about.html">About me</a>
+      <a class="glass-nav-pill is-active" href="../work.html">My work</a>
+    </div>
+  </nav>
+
+  <main class="page-content">
+    <div class="container">
+      <div class="case-header">
+        <a class="glass-btn back-link" href="../work.html" aria-label="Back to my work">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <h1 style="font-size: var(--fs-h2);">ElderMotion — An accessible approach to the senior lifestyle</h1>
+      </div>
+
+      <div class="glass-card case-jump-nav">
+        <a href="#methods">Methods</a>
+        <a href="#functional-requirements">Functional Requirements</a>
+        <a href="#key-findings">Key Findings</a>
+        <a href="#limitations">Limitations</a>
+        <a href="#conclusion">Conclusion</a>
+        <a href="#information-architecture">Information Architecture</a>
+        <a href="#prototype">Prototype</a>
+      </div>
+
+      <section style="margin-top: var(--space-2xl);">
+        <h2>Project Overview</h2>
+
+        <div class="case-overview-grid" style="margin-top: 2rem;">
+          <div class="glass-card" style="padding: var(--space-xl);">
+            <p class="eyebrow">The Problem</p>
+            <p style="margin-top: 0.75rem;">
+              Older adults (65+) engaging with mobile health technology face a double burden:
+              age-related physical impairments (like hand tremors and low vision) and low digital
+              literacy. Existing solutions prioritize complex data visualization and fitness
+              culture, which alienates users who see activity as daily living rather than
+              structured exercise.
+            </p>
+          </div>
+          <img src="../assets/img/case-studies/eldermotion/problem-illustration.png" alt="" style="max-width: 260px;" />
+        </div>
+
+        <div class="case-overview-grid reverse" style="margin-top: 2.5rem;">
+          <div class="glass-card" style="padding: var(--space-xl);">
+            <p class="eyebrow">The Solution</p>
+            <p style="margin-top: 0.75rem;">
+              ElderMotion is a mobile app designed specially for senior citizens, with fun
+              activities that fit into everyday life, encouraging goal-setting instead of
+              intimidating targets, shared community activities, and a fully customizable
+              interface — including large text, dark mode, and accessibility-first options.
+            </p>
+          </div>
+          <img src="../assets/img/case-studies/eldermotion/solution-illustration.png" alt="" style="max-width: 260px;" />
+        </div>
+      </section>
+
+      <section style="margin-top: var(--space-3xl);">
+        <h2>How I got there</h2>
+        <p style="margin-top: 1rem; max-width: 46rem;">
+          Scroll through to explore the work, or jump to a section above.
+        </p>
+
+        <section id="methods" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">01</span>
+          <h3>Methods</h3>
+          <p style="margin-top: 1rem; max-width: 46rem;">
+            Our user group: older adults (65+) navigating age-related impairments (tremors, low
+            vision) and low digital literacy. Inspired by watching our own grandparents struggle
+            with everyday technology, we grounded our approach in HCI and accessibility
+            literature — researching motor control barriers, mental models, and cognitive
+            health — and refined our focus from a broad "Health &amp; Fitness tracker" into a
+            targeted "Activity Companion" to prevent cognitive overload.
+          </p>
+        </section>
+
+        <section id="functional-requirements" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">02</span>
+          <h3>Functional Requirements</h3>
+          <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+            <div class="glass-card" style="padding: var(--space-lg);">
+              <h4 style="font-size: 1.1rem; color: var(--ink-primary);">Visual &amp; Motor Accessibility</h4>
+              <p style="margin-top: 0.5rem;">
+                Input tolerance with minimum target size of 2 finger widths; limited gestures with
+                emphasis on single-tap interactions; high-contrast, adjustable text sizes that
+                don't break the screen layout; clear signage with paired text and icons.
+              </p>
+            </div>
+            <div class="glass-card" style="padding: var(--space-lg);">
+              <h4 style="font-size: 1.1rem; color: var(--ink-primary);">Cognitive &amp; Social Accessibility</h4>
+              <p style="margin-top: 0.5rem;">
+                Simplified flow with a limited number of primary options per screen; reframed
+                mental models using everyday terms instead of technical jargon (e.g., 'Gardening'
+                instead of 'Cardio'); error forgiveness with confirmation states and 'Cancel'
+                options; positive reinforcement; multi-modal support via text-to-speech and voice
+                command accessibility.
+              </p>
+            </div>
+          </div>
+
+          <div class="before-after-row" style="margin-top: 2rem;">
+            <div class="screen-example">
+              <img src="../assets/img/case-studies/eldermotion/shopping-gardening-selection.png" alt="" />
+              <span>Shopping / Gardening activity selection</span>
+            </div>
+            <div class="screen-example">
+              <img src="../assets/img/case-studies/eldermotion/community-gardening.png" alt="" />
+              <span>Community Gardening — join activity</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="key-findings" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">03</span>
+          <h3>Key Findings</h3>
+          <p style="margin-top: 1rem; max-width: 46rem;">
+            By applying DDI principles and WCAG-informed design strategies — such as prioritizing
+            simplified flows, large text, exercise touch targets, and supportive language — we
+            reduced accessibility barriers and increased confidence for users facing visual,
+            cognitive, and motor impairments.
+          </p>
+        </section>
+
+        <section id="limitations" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">04</span>
+          <h3>Limitations</h3>
+          <p style="margin-top: 1rem; max-width: 46rem;">
+            Our design primarily represents older adults with lower activity levels and higher
+            accessibility needs, which guided our focus on simplicity and support. As a result,
+            more active older adults who may prefer higher-intensity or more challenging
+            activities were not fully represented. Future work would include a broader range of
+            users to better balance accessibility with flexibility for different activity levels.
+          </p>
+        </section>
+
+        <section id="conclusion" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">05</span>
+          <h3>Conclusion</h3>
+          <p style="margin-top: 1rem; max-width: 46rem;">
+            Older adults navigating mobile technologies face a significant amount of barriers from
+            age-related impairments and low digital literacy, while existing fitness apps
+            emphasize complex flows, data, and gestures. Our project demonstrates integrating
+            physical activity into the everyday lives of older adults through an inclusive and
+            interactive fitness app that better aligns with their abilities, needs, and mental
+            models.
+          </p>
+        </section>
+
+        <section id="information-architecture" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">06</span>
+          <h3>Information Architecture</h3>
+          <p style="margin-top: 1rem; max-width: 46rem;">
+            After defining functional requirements, I mapped out the app's information
+            architecture to structure navigation around simplicity — minimizing options per
+            screen and prioritizing the most frequently used features.
+          </p>
+          <div class="sitemap" style="margin-top: 1.5rem;">
+            <div class="sitemap-pill">Home screen</div>
+            <div class="tree-connector"></div>
+            <div class="sitemap-grid sitemap-grid--4">
+              <div class="glass-card sitemap-box">
+                <h3>Bottom Navigation</h3>
+                <ul><li>Accessibility</li><li>Home button</li><li>Settings</li></ul>
+              </div>
+              <div class="glass-card sitemap-box">
+                <h3>Search bar</h3>
+              </div>
+              <div class="glass-card sitemap-box">
+                <h3>Profile name and avatar icon</h3>
+              </div>
+              <div class="glass-card sitemap-box">
+                <h3>Cards</h3>
+                <ul><li>Daily goals</li><li>Your activities</li><li>Measure sugar/blood pressure etc.</li><li>Join friends</li><li>Reports</li></ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="prototype" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">07</span>
+          <h3>Prototype</h3>
+          <p style="margin-top: 0.5rem; color: var(--ink-secondary); font-size: var(--fs-small);">
+            Explore the interactive prototype below.
+          </p>
+          <div class="prototype-embed" style="margin-top: 1.5rem;">
+            <iframe src="https://embed.figma.com/proto/iueHfNiwsepLHyAKEnrH3h/Elder-Fitness-App?node-id=315-820&page-id=0%3A1&starting-point-node-id=315%3A820&scaling=scale-down&content-scaling=fixed&embed-host=share" allowfullscreen></iframe>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© 2026 Saumya Mehta</small>
+      <div class="footer-links">
+        <a href="mailto:saumyamehta252004@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="2.5" y="4.5" width="19" height="15" rx="2" stroke="currentColor" stroke-width="1.6" />
+            <path d="M3.5 6 12 12.5 20.5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          saumyamehta252004@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/saumyamehta2000" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 448 512" fill="currentColor" aria-hidden="true">
+            <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z" />
+          </svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sizzle — Saumya Mehta</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <nav class="site-nav">
+    <span class="site-nav__brand">Saumya Mehta • Product designer</span>
+    <div class="site-nav__links">
+      <a class="glass-nav-pill" href="../index.html">Home</a>
+      <a class="glass-nav-pill" href="../about.html">About me</a>
+      <a class="glass-nav-pill is-active" href="../work.html">My work</a>
+    </div>
+  </nav>
+
+  <main class="page-content">
+    <div class="container">
+      <div class="case-header">
+        <a class="glass-btn back-link" href="../work.html" aria-label="Back to my work">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <h1 style="font-size: var(--fs-h2);">Sizzle- a cooking buddy</h1>
+      </div>
+
+      <div class="glass-card case-jump-nav">
+        <a href="#competitor-analysis">Competitor Analysis</a>
+        <a href="#empathize">Empathize</a>
+        <a href="#define">Define</a>
+        <a href="#ideate">Ideate</a>
+        <a href="#wireframes">Wireframes</a>
+        <a href="#prototype">Prototype</a>
+      </div>
+
+      <section style="margin-top: var(--space-2xl);">
+        <h2>Project Overview</h2>
+
+        <div class="case-overview-grid" style="margin-top: 2rem;">
+          <div class="glass-card" style="padding: var(--space-xl);">
+            <p class="eyebrow">The Problem</p>
+            <p style="margin-top: 0.75rem; font-weight: var(--fw-bold); font-size: 1.2rem; color: var(--ink-primary);">
+              Cooking is overwhelming without the right tools.
+            </p>
+            <p style="margin-top: 0.75rem;">
+              Users want a smart cooking app that understands their preferences and offers
+              customizable meal plans, personalized recipe recommendations, and smart shopping
+              lists — all in one place.
+            </p>
+          </div>
+          <div class="cart-illustration">
+            <img src="../assets/img/case-studies/sizzle/cart-illustration-base.svg" alt="" style="inset: 26.5% 71.22% 0 0;" />
+            <img src="../assets/img/case-studies/sizzle/cart-illustration-1.svg" alt="" style="inset: 21.85% 12.18% 47% 43.35%;" />
+            <img src="../assets/img/case-studies/sizzle/cart-illustration-2.svg" alt="" style="inset: 0 9.2% 89.62% 67.18%;" />
+            <img src="../assets/img/case-studies/sizzle/cart-illustration-3.svg" alt="" style="inset: 14.82% 0.04% 75.92% 73.71%;" />
+            <img src="../assets/img/case-studies/sizzle/cart-illustration-4.svg" alt="" style="inset: 8.67% 41.39% 82.66% 34.48%;" />
+          </div>
+        </div>
+
+        <div class="case-overview-grid reverse" style="margin-top: 2.5rem;">
+          <div class="glass-card" style="padding: var(--space-xl);">
+            <p class="eyebrow">The Solution</p>
+            <p style="margin-top: 0.75rem; font-weight: var(--fw-bold); font-size: 1.2rem; color: var(--ink-primary);">
+              A personal chef in your pocket.
+            </p>
+            <p style="margin-top: 0.75rem;">
+              Sizzle helps users find recipes by their requirements through personalized
+              recommendations. It offers voice-guided cooking, smart meal planning, pantry
+              management, and intelligent grocery lists.
+            </p>
+          </div>
+          <img src="../assets/img/case-studies/sizzle/online-groceries.svg" alt="" style="max-width: 260px;" />
+        </div>
+      </section>
+
+      <section style="margin-top: var(--space-3xl);">
+        <h2>How I got there</h2>
+        <p class="eyebrow" style="margin-top: 1.5rem;">The Design Process</p>
+        <p style="margin-top: 0.5rem; max-width: 46rem;">
+          A human-centered design process from stakeholder interviews to low-fidelity wireframes.
+          Scroll through to explore the work, or jump to a section above.
+        </p>
+
+        <section id="competitor-analysis" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">01</span>
+          <h3>Competitor Analysis</h3>
+          <div style="margin-top: 1.5rem; overflow-x: auto;">
+            <table class="competitor-table glass-card">
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Yuumly</th>
+                  <th>Paprika</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Target audience</td><td>16-45</td><td>16-45</td></tr>
+                <tr><td>Description</td><td>Find &amp; manage food recipes</td><td>Find, manage &amp; create recipes</td></tr>
+                <tr><td>Unique Features</td><td>Smart thermometer, meal planning</td><td>Menu feature, offline recipe download</td></tr>
+                <tr><td>Look &amp; Feel</td><td>Good, simple UI</td><td>Below average UI</td></tr>
+                <tr><td>Usability</td><td>Can be overwhelming</td><td>Complicated navigation</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="empathize" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">02</span>
+          <h3>Understanding the User</h3>
+          <div class="case-overview-grid" style="margin-top: 1rem;">
+            <p style="flex: 2;">
+              To understand users' real needs, goals, and constraints, I conducted a mixed-methods
+              research approach combining quantitative and qualitative methods.
+            </p>
+            <img src="../assets/img/case-studies/sizzle/interview-illustration.svg" alt="" style="max-width: 220px; flex: 1;" />
+          </div>
+          <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+            <div class="glass-card" style="padding: var(--space-lg);">
+              <h4 style="font-size: 1.1rem; color: var(--ink-primary);">User Interviews</h4>
+              <p style="margin-top: 0.5rem;">
+                in-person interviews to deeply understand motivators, frustrations, and goals.
+                Uncovered nuanced behaviors that surveys couldn't capture.
+              </p>
+            </div>
+            <div class="glass-card" style="padding: var(--space-lg);">
+              <h4 style="font-size: 1.1rem; color: var(--ink-primary);">User surveys</h4>
+              <p style="margin-top: 0.5rem;">
+                Distributed through Google Forms to gather broad quantitative insights on cooking
+                habits, pain points, and app preferences across different demographics.
+              </p>
+            </div>
+            <div class="glass-card" style="padding: var(--space-lg);">
+              <h4 style="font-size: 1.1rem; color: var(--ink-primary);">Affinity Mapping</h4>
+              <p style="margin-top: 0.5rem;">
+                Survey responses were captured, grouped, and labeled to surface patterns and
+                common themes across user responses.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="define" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">03</span>
+          <h3>Defining the Problem Space</h3>
+          <p style="margin-top: 1rem; max-width: 46rem;">
+            To understand users' real needs, goals, and constraints, I conducted a mixed-methods
+            research approach combining quantitative and qualitative methods.
+          </p>
+
+          <h4 style="margin-top: 2rem; font-size: 1.2rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">
+            Research Findings
+          </h4>
+          <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1.25rem;">
+            <div class="glass-card" style="padding: var(--space-lg);">
+              <span style="font-size: 1.75rem;">🍕</span>
+              <h4 style="margin-top: 0.5rem; font-size: 1.1rem; color: var(--ink-primary);">Cook with what you have</h4>
+              <p style="margin-top: 0.5rem;">
+                Users want to find recipes based on ingredients already in their pantry — not be
+                forced to buy a long list of new items every time.
+              </p>
+            </div>
+            <div class="glass-card" style="padding: var(--space-lg);">
+              <span style="font-size: 1.75rem;">📅</span>
+              <h4 style="margin-top: 0.5rem; font-size: 1.1rem; color: var(--ink-primary);">Flexible meal planning</h4>
+              <p style="margin-top: 0.5rem;">
+                Users want to chart out meals for the week but with flexibility — the ability to
+                swap, adjust, and adapt plans without starting over.
+              </p>
+            </div>
+            <div class="glass-card" style="padding: var(--space-lg);">
+              <span style="font-size: 1.75rem;">🎯</span>
+              <h4 style="margin-top: 0.5rem; font-size: 1.1rem; color: var(--ink-primary);">Personalized recommendations</h4>
+              <p style="margin-top: 0.5rem;">
+                Generic recipe feeds don't work. Users expect the app to learn their preferences
+                and surface food they'll actually want to make.
+              </p>
+            </div>
+            <div class="glass-card" style="padding: var(--space-lg);">
+              <span style="font-size: 1.75rem;">⚡</span>
+              <h4 style="margin-top: 0.5rem; font-size: 1.1rem; color: var(--ink-primary);">Wide filter options</h4>
+              <p style="margin-top: 0.5rem;">
+                Specific filters matter: under 30 minutes, no chopping required, 5 ingredients or
+                less. Users want control over how simple their cooking experience is.
+              </p>
+            </div>
+          </div>
+
+          <h4 style="margin-top: 2.5rem; font-size: 1.2rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">
+            User Personas
+          </h4>
+          <p style="margin-top: 0.75rem; max-width: 46rem;">
+            Two personas grounded in the research — a budget-conscious student and a time-poor
+            young professional — shaped every decision from here on.
+          </p>
+
+          <div class="persona-row" style="margin-top: 1.5rem;">
+            <div class="glass-card persona-card">
+              <div class="persona-card__header">
+                <div class="persona-card__avatar">P</div>
+                <div>
+                  <h3>Priya</h3>
+                  <p>College Student</p>
+                </div>
+              </div>
+              <div class="trait-row">
+                <span class="trait-pill">Charismatic</span>
+                <span class="trait-pill">Topper</span>
+                <span class="trait-pill">Ambivert</span>
+                <span class="trait-pill">Helpful</span>
+              </div>
+              <div>
+                <h4>Demographics</h4>
+                <ul>
+                  <li>Age: 21</li>
+                  <li>Location: Ahmedabad</li>
+                  <li>Education: B.Com</li>
+                  <li>Status: Single</li>
+                  <li>Occupation: Student</li>
+                </ul>
+              </div>
+              <div>
+                <h4>About</h4>
+                <p style="font-size: var(--fs-small);">
+                  Priya is a college student who stays in an apartment with roommates. Between
+                  classes, extra coaching for her MBA, and assignments, her schedule is packed.
+                  She loves eating out and exploring new cuisines, but as a student on a tight
+                  budget she cooks in her apartment several times a week — looking for something
+                  new, quick, and mess-free.
+                </p>
+              </div>
+              <div class="persona-lists">
+                <div>
+                  <h4>Goals</h4>
+                  <ul>
+                    <li>Staying under budget</li>
+                    <li>Managing her schedule effectively</li>
+                    <li>Avoiding unhealthy food where possible</li>
+                    <li>Performing well academically</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4>Motivators</h4>
+                  <ul>
+                    <li>Loves experimenting with recipes</li>
+                    <li>Exploring different cuisines</li>
+                    <li>Staying in good shape</li>
+                    <li>Keeping focus while studying</li>
+                    <li>Building better cooking skills</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4>Frustrations</h4>
+                  <ul>
+                    <li>Limited budget</li>
+                    <li>Stress from college exams</li>
+                    <li>Not enough time to shop for groceries</li>
+                    <li>Exhaustion after classes</li>
+                    <li>Limited cooking appliances</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4>Brands</h4>
+                  <p style="font-size: var(--fs-small);">Westside · McDonald's · Maybelline</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card persona-card">
+              <div class="persona-card__header">
+                <div class="persona-card__avatar">V</div>
+                <div>
+                  <h3>Vivek</h3>
+                  <p>Junior Software Engineer</p>
+                </div>
+              </div>
+              <div class="trait-row">
+                <span class="trait-pill">Driven</span>
+                <span class="trait-pill">Hard working</span>
+                <span class="trait-pill">Extrovert</span>
+                <span class="trait-pill">Outgoing</span>
+              </div>
+              <div>
+                <h4>Demographics</h4>
+                <ul>
+                  <li>Age: 23</li>
+                  <li>Location: Mumbai</li>
+                  <li>Education: B.Sc. Computer Science</li>
+                  <li>Status: Single</li>
+                  <li>Occupation: Junior Software Engineer at an IT company</li>
+                </ul>
+              </div>
+              <div>
+                <h4>About</h4>
+                <p style="font-size: var(--fs-small);">
+                  Vivek works as a junior software engineer at an IT company in Mumbai. He lives
+                  alone, commutes by public transport, and — having started his job recently —
+                  tries to save money wherever he can. He has to cook for himself but has little
+                  time or skill to work with.
+                </p>
+              </div>
+              <div class="persona-lists">
+                <div>
+                  <h4>Goals</h4>
+                  <ul>
+                    <li>Working efficiently toward a raise</li>
+                    <li>Saving money</li>
+                    <li>Building a strong career</li>
+                    <li>Becoming financially stable within a few years</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4>Motivators</h4>
+                  <ul>
+                    <li>Cooking at home to save money</li>
+                    <li>Avoiding eating out to stay healthy</li>
+                    <li>Making quick meals</li>
+                    <li>Wanting a kitchen with better appliances</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4>Frustrations</h4>
+                  <ul>
+                    <li>Limited cooking skills</li>
+                    <li>Little free time due to work</li>
+                    <li>No personal vehicle, so grocery runs are a hassle</li>
+                    <li>Tight budget as someone new to the workforce</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4>Brands</h4>
+                  <p style="font-size: var(--fs-small);">Adidas · Adobe · Spotify · Netflix</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="ideate" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">04</span>
+          <h3>Structuring the Experience</h3>
+          <p style="margin-top: 1rem; max-width: 46rem;">
+            After defining user needs, I mapped out the app's information architecture and core
+            user flows to structure the experience before moving into wireframes.
+          </p>
+
+          <h4 style="margin-top: 2rem; font-size: 1.2rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">
+            A. Sitemap
+          </h4>
+          <p style="margin-top: 0.5rem; color: var(--ink-secondary); font-size: var(--fs-small);">
+            The full information architecture, from sign-up to every core section.
+          </p>
+          <div class="sitemap" style="margin-top: 1.5rem;">
+            <div class="sitemap-pill">Login/Sign up</div>
+            <div class="tree-connector"></div>
+            <div class="sitemap-pill">Home</div>
+            <div class="tree-connector"></div>
+            <div class="sitemap-grid">
+              <div class="glass-card sitemap-box">
+                <h3>Recipe Page</h3>
+                <ul><li>Search &amp; Scan</li><li>Filter</li><li>Pantry Staples</li><li>Reviews</li><li>Voice Guide</li></ul>
+              </div>
+              <div class="glass-card sitemap-box">
+                <h3>Cabinet</h3>
+                <ul><li>Grocery List</li><li>Pantry</li><li>Cart</li><li>Add / Scan</li><li>Make something</li></ul>
+              </div>
+              <div class="glass-card sitemap-box">
+                <h3>Planner</h3>
+                <ul><li>Breakfast</li><li>Lunch</li><li>Dinner</li><li>Daily/Weekly</li><li>Calorie Goals</li></ul>
+              </div>
+              <div class="glass-card sitemap-box">
+                <h3>My Recipes</h3>
+                <ul><li>Saved / Liked</li><li>Uploaded</li><li>Drafts</li><li>AI Assist</li><li>Templates</li></ul>
+              </div>
+            </div>
+            <div class="tree-connector"></div>
+            <div class="glass-card sitemap-box" style="max-width: 340px; width: 100%;">
+              <h3>Profile Page</h3>
+              <ul><li>Preferences</li><li>Points &amp; Rewards</li><li>Settings</li><li>Privacy</li><li>Logout</li></ul>
+            </div>
+          </div>
+
+          <h4 style="margin-top: 3rem; font-size: 1.2rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">
+            B. User Flow
+          </h4>
+          <p style="margin-top: 0.5rem; color: var(--ink-secondary); font-size: var(--fs-small);">
+            Step-by-step flow for uploading a recipe, manually or with AI assistance.
+          </p>
+          <div class="flow" style="margin-top: 1.5rem;">
+            <div class="flow-step">Login / Sign up</div>
+            <div class="flow-connector"></div>
+            <div class="flow-diamond"><span>Already have an account?</span></div>
+            <div class="flow-connector"></div>
+            <div class="flow-branches">
+              <div class="flow-branch">
+                <span class="flow-branch-label">Yes</span>
+                <div class="flow-step">Sign in</div>
+              </div>
+              <div class="flow-branch">
+                <span class="flow-branch-label">No</span>
+                <div class="flow-step">Create account</div>
+              </div>
+            </div>
+            <div class="flow-connector"></div>
+            <div class="flow-step">Home screen</div>
+            <div class="flow-connector"></div>
+            <div class="flow-step">My Recipes</div>
+            <div class="flow-connector"></div>
+            <div class="flow-step">Uploaded recipes</div>
+            <div class="flow-connector"></div>
+            <div class="flow-step">Upload new</div>
+            <div class="flow-connector"></div>
+            <div class="flow-step">Recipe template</div>
+            <div class="flow-connector"></div>
+            <div class="flow-diamond"><span>Manual template or AI assistant?</span></div>
+            <div class="flow-connector"></div>
+            <div class="flow-branches">
+              <div class="flow-branch">
+                <span class="flow-branch-label">Manual template</span>
+                <div class="flow-step">Add title, time &amp; ingredients</div>
+                <div class="flow-connector"></div>
+                <div class="flow-step">Add instructions &amp; photo</div>
+                <div class="flow-connector"></div>
+                <div class="flow-step">Review the recipe</div>
+              </div>
+              <div class="flow-branch">
+                <span class="flow-branch-label">AI assistant</span>
+                <div class="flow-step">Upload the video</div>
+                <div class="flow-connector"></div>
+                <div class="flow-step">AI builds the template</div>
+                <div class="flow-connector"></div>
+                <div class="flow-step">Review the recipe</div>
+              </div>
+            </div>
+            <div class="flow-connector"></div>
+            <div class="flow-step">Upload the recipe</div>
+
+            <div class="flow-notes">
+              <div class="glass-card">
+                The process is simple, the user is given a pre-decided template and they just
+                have to add the necessary details. When adding the instructions, the user is also
+                given the option to voice type to make the process easier.
+              </div>
+              <div class="glass-card">
+                A user with low social media presence and low technical literacy wants to upload a
+                new recipe they made in a simple way.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="wireframes" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">05</span>
+          <h3>From Flows to Frames</h3>
+          <p style="margin-top: 1rem; max-width: 46rem;">
+            Low-fidelity wireframes were used to quickly validate layout decisions and flow logic
+            across onboarding, the home feed, recipe detail, meal planner, pantry cabinet, and
+            both the manual and AI-assisted recipe upload paths — before investing in
+            high-fidelity design.
+          </p>
+          <div class="wireframe-stack" style="margin-top: 1.5rem;">
+            <div class="crop-frame glass-card" style="aspect-ratio: 826 / 638.608; padding: 0;">
+              <img src="../assets/img/case-studies/sizzle/wireframes-row-1.png" alt="" style="width: 100%; height: 124.89%; left: 0; top: 0;" />
+            </div>
+            <div class="crop-frame glass-card" style="aspect-ratio: 826 / 659.363; padding: 0;">
+              <img src="../assets/img/case-studies/sizzle/wireframes-row-2.png" alt="" style="width: 112%; height: 106.32%; left: -3.48%; top: -2.4%;" />
+            </div>
+            <div class="crop-frame glass-card" style="aspect-ratio: 826 / 367.371; padding: 0;">
+              <img src="../assets/img/case-studies/sizzle/wireframes-row-3.png" alt="" style="width: 111.05%; height: 209.57%; left: -3.68%; top: 0;" />
+            </div>
+          </div>
+        </section>
+
+        <section id="prototype" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">06</span>
+          <h3>Prototype</h3>
+          <p style="margin-top: 0.5rem; color: var(--ink-secondary); font-size: var(--fs-small);">
+            An interactive walkthrough of the final high-fidelity prototype.
+          </p>
+          <div class="prototype-embed" style="margin-top: 1.5rem;">
+            <iframe src="https://embed.figma.com/proto/5hfMEy6fnQC31Nq930BiJv/Sizzle-screens?node-id=46-1870&viewport=-114%2C209%2C0.02&scaling=scale-down&content-scaling=fixed&page-id=29%3A161&embed-host=share" allowfullscreen></iframe>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© 2026 Saumya Mehta</small>
+      <div class="footer-links">
+        <a href="mailto:saumyamehta252004@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="2.5" y="4.5" width="19" height="15" rx="2" stroke="currentColor" stroke-width="1.6" />
+            <path d="M3.5 6 12 12.5 20.5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          saumyamehta252004@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/saumyamehta2000" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 448 512" fill="currentColor" aria-hidden="true">
+            <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z" />
+          </svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

@@ -7,9 +7,127 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header class="hero"></header>
+  <nav class="site-nav">
+    <span class="site-nav__brand">Saumya Mehta • Product designer</span>
+    <div class="site-nav__links">
+      <a class="glass-nav-pill is-active" href="index.html">Home</a>
+      <a class="glass-nav-pill" href="about.html">About me</a>
+      <a class="glass-nav-pill" href="work.html">My work</a>
+    </div>
+  </nav>
 
-  <!-- Home page content goes here -->
+  <header class="hero">
+    <div class="glass-card hero-panel">
+      <h1>Designs that <em>actually work</em></h1>
+      <p class="lede">
+        Designing solutions that actually work, with an interdisciplinary mindset and
+        human-centred approach.
+      </p>
+      <div class="hero-actions">
+        <a class="glass-btn" href="work.html">View my work</a>
+        <a class="glass-btn" href="about.html#contact">Contact me</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="container section-spacing">
+      <h2>My projects</h2>
+
+      <div class="project-grid" style="margin-top: 2.5rem">
+        <a class="glass-card project-card" href="case-studies/eldermotion.html">
+          <img
+            class="project-card__mockup"
+            src="assets/img/projects/eldermotion-mockup.png"
+            alt=""
+          />
+          <span class="badge">UX Case Study</span>
+          <h3>ElderMotion</h3>
+          <p>
+            An accessible fitness app designed to help senior citizens stay active through
+            simple, encouraging, and customizable experiences.
+          </p>
+          <div class="tag-list">
+            <div class="tag-row">
+              <span class="tag"><img src="assets/img/icons/app-store.svg" alt="" />Mobile app</span>
+              <span class="tag"><img src="assets/img/icons/health-wellness.svg" alt="" />Health &amp; Wellness</span>
+            </div>
+            <div class="tag-row">
+              <span class="tag"><img src="assets/img/icons/ux-circle.svg" alt="" />UX Design</span>
+            </div>
+            <div class="tag-row">
+              <span class="tag"><img src="assets/img/icons/accessibility.svg" alt="" />Accessibility · Group Project</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="glass-card project-card" href="case-studies/sizzle.html">
+          <img class="project-card__mockup" src="assets/img/projects/sizzle-mockup.png" alt="" />
+          <span class="badge">UX case study</span>
+          <h3>Sizzle- a cooking buddy</h3>
+          <p>
+            A smart cooking assistant app that makes home cooking accessible, personalized, and
+            joy-filled for everyone.
+          </p>
+          <div class="tag-list">
+            <div class="tag-row">
+              <span class="tag"><img src="assets/img/icons/app-store.svg" alt="" />Mobile app</span>
+              <span class="tag"><img src="assets/img/icons/food-bank.svg" alt="" />Food and Lifestyle</span>
+            </div>
+            <div class="tag-row">
+              <span class="tag"><img src="assets/img/icons/ux-circle.svg" alt="" />UX design</span>
+            </div>
+            <div class="tag-row">
+              <span class="tag"><img src="assets/img/icons/research.svg" alt="" />Research · IA · Wireframes</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="glass-card project-card" href="case-studies/imobile.html">
+          <img class="project-card__mockup" src="assets/img/projects/imobile-mockup.png" alt="" />
+          <span class="badge">UI Case Study</span>
+          <h3>iMobile- Fintech redesign</h3>
+          <p>
+            A redesign of ICICI Bank's mobile banking app — making everyday banking clearer,
+            calmer, and less overwhelming.
+          </p>
+          <div class="tag-list">
+            <div class="tag-row">
+              <span class="tag"><img src="assets/img/icons/app-store-2.svg" alt="" />Mobile app</span>
+              <span class="tag"><img src="assets/img/icons/fintech.svg" alt="" />Fintech / Banking</span>
+            </div>
+            <div class="tag-row">
+              <span class="tag"><img src="assets/img/icons/design-services.svg" alt="" />App Redesign</span>
+            </div>
+            <div class="tag-row">
+              <span class="tag"><img src="assets/img/icons/research.svg" alt="" />Heuristic Evaluation · UI Redesign</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© 2026 Saumya Mehta</small>
+      <div class="footer-links">
+        <a href="mailto:saumyamehta252004@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="2.5" y="4.5" width="19" height="15" rx="2" stroke="currentColor" stroke-width="1.6" />
+            <path d="M3.5 6 12 12.5 20.5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          saumyamehta252004@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/saumyamehta2000" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 448 512" fill="currentColor" aria-hidden="true">
+            <path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z" />
+          </svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </footer>
 
   <script src="js/main.js" defer></script>
 </body>
