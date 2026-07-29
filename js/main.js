@@ -71,6 +71,44 @@ if (
   );
 }
 
+// Project card flip: each card has two .flip-btn buttons (one per face,
+// sharing the same aria-controls target) that toggle .is-flipped on the
+// card. Besides the class itself, this also keeps the currently-hidden
+// face's interactive elements (the title link, the other flip button) out
+// of the tab order via tabindex="-1" — backface-visibility: hidden makes a
+// face invisible, but doesn't remove it from the tab order on its own.
+function setCardFlipped(card, flipped) {
+  card.classList.toggle("is-flipped", flipped);
+
+  const front = card.querySelector(".card-front");
+  const back = card.querySelector(".card-back");
+  if (!front || !back) return;
+
+  front.querySelectorAll("a, button").forEach((el) => {
+    if (flipped) el.setAttribute("tabindex", "-1");
+    else el.removeAttribute("tabindex");
+  });
+  back.querySelectorAll("a, button").forEach((el) => {
+    if (flipped) el.removeAttribute("tabindex");
+    else el.setAttribute("tabindex", "-1");
+  });
+
+  card.querySelectorAll(".flip-btn").forEach((btn) => {
+    btn.setAttribute("aria-expanded", String(flipped));
+  });
+}
+
+document.querySelectorAll(".card").forEach((card) => setCardFlipped(card, false));
+
+document.querySelectorAll(".flip-btn").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const card = btn.closest(".card");
+    if (!card) return;
+    setCardFlipped(card, !card.classList.contains("is-flipped"));
+  });
+});
+
 // Sparkle trail: inside .sparkle-zone elements only (the project cards).
 // Desktop pointer + no reduced-motion preference only — `sparkleTrailEnabled()`
 // is re-checked on every pointer move rather than once at load, so it also

@@ -681,26 +681,23 @@ section + section {
 /* ---- Flip card (project cards) --------------------------------------------
    .card sets up the 3D scene (perspective) and a fixed aspect-ratio so both
    faces have somewhere to live; .card-inner is the piece that actually
-   rotates on hover/focus. The two faces sit absolutely positioned on top of
-   each other inside it — the back pre-rotated 180deg, both with
-   backface-visibility: hidden — so only one is ever actually visible.
+   rotates. The two faces sit absolutely positioned on top of each other
+   inside it — the back pre-rotated 180deg, both with backface-visibility:
+   hidden — so only one is ever actually visible.
+
+   The card itself isn't a link: .card-link (the title, on the front) is a
+   real <a>, stretched to cover the whole front face via ::after so the
+   front reads as one big click target without nesting an <a> in an <a>.
+   .flip-btn sits above that stretched overlay (z-index: 2 vs its 1) so it
+   still gets its own clicks. Hover previews the flip only while it hasn't
+   been toggled by the button (.is-flipped, set by js/main.js) — once
+   toggled, that state sticks regardless of hover.
    ---------------------------------------------------------------------- */
 
 .card {
-  display: block;
   position: relative;
   perspective: 1200px;
-  aspect-ratio: 3 / 4.85;
-  transition: transform 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-}
-
-.card:focus-visible {
-  outline: 2px solid var(--ink-primary);
-  outline-offset: 4px;
+  aspect-ratio: 3 / 3.4;
 }
 
 .card-inner {
@@ -711,8 +708,17 @@ section + section {
   transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.card:hover .card-inner,
-.card:focus-within .card-inner {
+.card.is-flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+/* :not(:has(.flip-btn:hover)) matters: without it, hovering the button
+   itself (which any mouse click passes through on the way to clicking)
+   previews the flip, and once that finishes the button is the thing
+   that gets hidden/rotated away — right as the click was about to land
+   on it. Excluding the button from the trigger keeps it clickable
+   throughout the hover. */
+.card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-inner {
   transform: rotateY(180deg);
 }
 
@@ -753,16 +759,61 @@ section + section {
   transform: rotateY(180deg);
 }
 
-.card-meta {
+.card-link {
+  color: inherit;
+}
+
+.card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.card-back .card-meta {
   font-size: 14px;
   color: rgba(91, 57, 64, 0.8);
 }
 
-.card-cta {
+.card-link-back {
   margin-top: auto;
   font-family: var(--font-display);
   font-weight: var(--fw-bold);
   color: var(--ink-primary);
+}
+
+.flip-btn {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  z-index: 2; /* above .card-link's stretched overlay, or the link swallows its clicks */
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--ink-primary);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.flip-btn:hover {
+  background: rgba(255, 255, 255, 0.6);
+  transform: scale(1.06);
+}
+
+.flip-btn:focus-visible {
+  outline: 2px solid var(--ink-primary);
+  outline-offset: 2px;
+}
+
+.flip-btn svg {
+  width: 16px;
+  height: 16px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -770,8 +821,8 @@ section + section {
     transition: none;
   }
 
-  .card:hover .card-inner,
-  .card:focus-within .card-inner {
+  .card.is-flipped .card-inner,
+  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-inner {
     transform: none;
   }
 
@@ -784,6 +835,11 @@ section + section {
     transition: opacity 0.25s ease;
   }
 
+  /* Without the rotation, both faces sit at the same position — the
+     invisible one needs pointer-events: none, or it silently intercepts
+     clicks meant for whichever face is actually showing. Targeting `*`
+     too because SVG shape elements (the icon paths) don't reliably
+     inherit pointer-events: none from an ancestor in every browser. */
   .card-front {
     opacity: 1;
   }
@@ -792,66 +848,47 @@ section + section {
     opacity: 0;
   }
 
-  .card:hover .card-front,
-  .card:focus-within .card-front {
+  .card-front,
+  .card-front * {
+    pointer-events: auto;
+  }
+
+  .card-back,
+  .card-back * {
+    pointer-events: none;
+  }
+
+  .card.is-flipped .card-front,
+  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-front {
     opacity: 0;
   }
 
-  .card:hover .card-back,
-  .card:focus-within .card-back {
+  .card.is-flipped .card-front,
+  .card.is-flipped .card-front *,
+  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-front,
+  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-front * {
+    pointer-events: none;
+  }
+
+  .card.is-flipped .card-back,
+  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-back {
     opacity: 1;
+  }
+
+  .card.is-flipped .card-back,
+  .card.is-flipped .card-back *,
+  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-back,
+  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-back * {
+    pointer-events: auto;
   }
 }
 
-/* Touch: no hover state to flip from, so there's no hidden face to reveal —
-   show everything in one flat stack instead (description directly under
-   the title), and let the whole card keep working as a single tap target.
-   The glass-slab look moves to .card itself since .card-front/.card-back
-   are no longer separate stacked layers here. */
+/* Touch: no true persistent hover, so the hover-preview flip is disabled
+   entirely — .flip-btn (still tappable) is the only way to flip, and
+   tapping the rest of the front face just navigates. */
 @media (pointer: coarse) {
-  .card {
-    aspect-ratio: auto;
-    padding: var(--space-lg);
-    border-radius: 20px;
-    background: linear-gradient(155deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.38));
-    backdrop-filter: blur(16px) saturate(155%);
-    -webkit-backdrop-filter: blur(16px) saturate(155%);
-    border: 1px solid rgba(255, 255, 255, 0.85);
-    box-shadow:
-      0 2px 0 rgba(255, 255, 255, 0.9) inset,
-      0 -18px 30px -12px rgba(247, 190, 150, 0.55),
-      0 18px 40px -14px rgba(126, 42, 60, 0.2);
-  }
-
-  .card-inner {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-    transition: none;
-  }
-
-  .card:hover .card-inner,
-  .card:focus-within .card-inner {
+  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-inner {
     transform: none;
-  }
-
-  .card-front,
-  .card-back {
-    position: static;
-    inset: auto;
-    transform: none;
-    backface-visibility: visible;
-    background: none;
-    border: none;
-    box-shadow: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    padding: 0;
-  }
-
-  .card-meta,
-  .card-cta {
-    display: none;
   }
 }
 
