@@ -818,7 +818,20 @@ section + section {
 
 .card-back {
   transform: rotateY(180deg);
-  background: linear-gradient(155deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  /* Frosted, slightly pebbled glass, not clear glass: the glass gradient
+     stays as before, with a very faint iridescent wash underneath it
+     (kept under .18 alpha on purpose — any stronger and it reads as
+     rainbow foil instead of textured glass catching light) and a fine
+     grain layer on top via ::after. */
+  background-image:
+    linear-gradient(155deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)),
+    linear-gradient(
+      120deg,
+      rgba(242, 196, 206, 0.16) 0%,
+      rgba(214, 222, 234, 0.14) 38%,
+      rgba(246, 222, 190, 0.12) 66%,
+      rgba(220, 205, 230, 0.16) 100%
+    );
   backdrop-filter: blur(18px) saturate(170%) brightness(1.05);
   -webkit-backdrop-filter: blur(18px) saturate(170%) brightness(1.05);
   border: 1px solid rgba(255, 255, 255, 0.92);
@@ -826,6 +839,17 @@ section + section {
     inset 0 1px 0 rgba(255, 255, 255, 1),
     inset 0 -1px 0 rgba(255, 255, 255, 0.4),
     0 18px 40px -14px rgba(126, 42, 60, 0.2);
+}
+
+.card-back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+  opacity: 0.085;
+  mix-blend-mode: overlay;
 }
 
 /* Front: image left (~40%), content right. */
@@ -1020,7 +1044,11 @@ section + section {
 .tag-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: 14px; /* was --space-sm (8px) - more room between icon rows */
+  /* .card-front__body's own gap already adds 8px before this — the extra
+     20px here brings the description-to-first-row gap to ~28px total,
+     without changing the (unmentioned) badge/title/description gaps. */
+  margin-top: 20px;
 }
 
 .tag {
@@ -1077,6 +1105,18 @@ section + section {
   font-size: 19px;
   line-height: 1.7;
   color: var(--ink-secondary);
+}
+
+/* The takeaway line: same size/measure as .about-intro, but bolder and
+   ink-primary, with a bit of extra top margin so it reads as a separate,
+   final beat rather than a continuation. */
+.about-takeaway {
+  margin-top: 1.25rem;
+  max-width: 62ch;
+  font-size: 19px;
+  line-height: 1.7;
+  font-weight: var(--fw-bold);
+  color: var(--ink-primary);
 }
 
 .hobby-art {
@@ -1891,7 +1931,7 @@ html.js .reveal.is-revealed {
   .glass-card,
   .glass-nav-pill,
   .email-pill button {
-    cursor: image-set(url("../assets/img/cursor.png") 1x, url("../assets/img/cursor@2x.png") 2x) 4 4, auto;
+    cursor: image-set(url("../assets/img/cursor.png") 1x, url("../assets/img/cursor@2x.png") 2x) 3 3, auto;
   }
 }
 
