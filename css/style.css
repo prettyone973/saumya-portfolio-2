@@ -1566,6 +1566,22 @@ section + section {
   flex-shrink: 0;
 }
 
+/* Real photo instead of a lettered circle — same circular treatment, just
+   bigger and filled with an <img> (object-fit: cover) instead of a solid
+   background colour + initial. */
+.persona-card__avatar--photo {
+  width: 6rem;
+  height: 6rem;
+  background: none;
+  overflow: hidden;
+}
+
+.persona-card__avatar--photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .persona-card__header h3 {
   font-size: 1.1rem;
 }
@@ -1603,11 +1619,18 @@ section + section {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
+  padding-left: 1.1em;
 }
 
 .persona-card li {
   font-size: var(--fs-small);
   color: var(--ink-secondary);
+  line-height: 1.6;
+  list-style: disc;
+}
+
+.persona-card li::marker {
+  color: var(--ink-primary);
 }
 
 .persona-lists {
@@ -2244,13 +2267,11 @@ section + section {
   height: 1.1rem;
 }
 
-/* ---- UI kit / design system (inside an artifact overlay) ------------------
-   Two different rulebooks in one component, deliberately: the surrounding
-   presentation (group titles, descriptions, layout) uses the portfolio's own
-   type/colour system like everything else on the page. The uikit-* pieces
-   below are the opposite — Sizzle's own colours, radii and proportions,
-   preserved from the reference file rather than restyled, because this is a
-   record of that project's actual design decisions.
+/* ---- Design system (inside an artifact overlay) ---------------------------
+   The assets themselves (Sizzle's actual exported PNGs) are untouched —
+   only the framing is the portfolio's: group titles/descriptions in the
+   portfolio's own type system, each asset sitting in a plain glass card
+   (site radius/border/shadow) rather than restyled or rebuilt.
    ---------------------------------------------------------------------- */
 
 .uikit-group + .uikit-group {
@@ -2271,174 +2292,31 @@ section + section {
   max-width: 46rem;
 }
 
-.uikit-swatch-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-top: 1.25rem;
-}
-
-.uikit-swatch {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.uikit-swatch__chip {
-  display: block;
-  width: 84px;
-  height: 84px;
-  border-radius: 12px;
-}
-
-.uikit-swatch__label {
-  font-family: var(--font-body);
-  font-size: var(--fs-small);
-  font-weight: var(--fw-bold);
-  color: var(--ink-secondary);
-}
-
-.uikit-type-row {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1.25rem;
-}
-
-.uikit-type-sample {
-  display: flex;
-  align-items: baseline;
-  gap: 1.25rem;
-}
-
-.uikit-type-sample__label {
-  font-family: var(--font-body);
-  font-size: var(--fs-small);
-  color: var(--ink-secondary);
-  min-width: 130px;
-  flex-shrink: 0;
-}
-
-.uikit-component-row {
+.uikit-asset-row {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 2.5rem;
+  gap: 1.25rem;
   margin-top: 1.25rem;
 }
 
-/* Sizzle's own recipe card: radius, image-first layout, and title-over-image
-   treatment preserved from the reference — only the placeholder image area
-   is new (the real food photography isn't a UI style element to rebuild). */
-.uikit-recipe-card {
-  width: 200px;
-  border-radius: 16px;
-  overflow: hidden;
-  background: #ffffff;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
-  font-family: var(--font-body);
-}
-
-.uikit-recipe-card__image {
-  height: 140px;
-  background: linear-gradient(160deg, #d99a4e, #920010);
+.uikit-asset-card {
   display: flex;
-  align-items: flex-end;
-  padding: 0.75rem;
-}
-
-.uikit-recipe-card__image span {
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 1.05rem;
-}
-
-.uikit-recipe-card__meta {
-  padding: 0.6rem 0.85rem 0.85rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  color: #6b6b6b;
-}
-
-.uikit-field {
-  display: inline-block;
-  width: 220px;
-  padding: 0.75rem 1rem;
-  border-radius: 12px;
-  background: rgba(146, 0, 16, 0.08);
-  color: rgba(146, 0, 16, 0.4);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-}
-
-.uikit-stepper {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid #920010;
-  color: #920010;
-  background: transparent;
+  padding: var(--space-lg);
 }
 
-.uikit-stepper svg {
-  width: 18px;
-  height: 18px;
+.uikit-asset-card img {
+  max-height: 220px;
+  max-width: 100%;
+  object-fit: contain;
 }
 
-.uikit-stepper--filled {
-  background: #920010;
-  color: #ffffff;
-}
-
-.uikit-close-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1.5px solid #c9c9c9;
-  color: #9a9a9a;
-}
-
-.uikit-close-btn svg {
-  width: 16px;
-  height: 16px;
-}
-
-.uikit-progress {
-  width: 220px;
-  height: 6px;
-  border-radius: 999px;
-  background: #e5e5e5;
-  overflow: hidden;
-}
-
-.uikit-progress__fill {
-  height: 100%;
-  background: #920010;
-  border-radius: 999px;
-}
-
-.uikit-icon-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  color: #9a9a9a;
-}
-
-.uikit-icon-label svg {
-  width: 22px;
-  height: 22px;
+.uikit-asset-card--palette img {
+  max-height: none;
+  width: 100%;
+  max-width: 440px;
 }
 
 /* ---- Scroll reveal ---------------------------------------------------------
