@@ -1522,6 +1522,10 @@ section + section {
 
   .case-overview-grid.reverse {
     flex-direction: row-reverse;
+    /* Scoped to .reverse (the Solution row) rather than the base rule, so
+       the Problem row's cart illustration — already correct — keeps its
+       vertical centering. */
+    align-items: flex-start;
   }
 }
 
@@ -1533,6 +1537,24 @@ section + section {
   width: 100%;
   max-width: 280px;
   margin-inline: auto;
+}
+
+/* online-groceries.svg (and any illustration relying on auto height) was
+   rendering at the browser's fallback 300x150 replaced-element ratio
+   instead of its real one: this SVG's root has width="100%" height="100%"
+   (a Figma export artifact) rather than absolute values, so a plain <img>
+   with only max-width set can't resolve an intrinsic aspect ratio from the
+   viewBox and silently substitutes the generic 2:1 default — hence the
+   squash. Setting aspect-ratio explicitly (from the real viewBox, 314 x
+   296.812) bypasses that broken fallback entirely. !important on height
+   guards against .case-overview-grid img or any future shared rule
+   reintroducing a fixed/stretched height ahead of this in the cascade. */
+.solution-illustration {
+  width: 100%;
+  height: auto !important;
+  aspect-ratio: 314 / 296.812;
+  object-fit: contain;
+  max-height: none;
 }
 
 /* ---- Persona card -------------------------------------------------------- */
@@ -2324,11 +2346,12 @@ section + section {
    background. This is backdrop only, behind the untouched asset; it never
    touches the image itself. */
 .ds-component-tile {
-  background: radial-gradient(120% 100% at 20% 15%, #f5cfc0 0%, transparent 58%),
-    radial-gradient(110% 95% at 82% 25%, #efc6d3 0%, transparent 55%),
-    radial-gradient(120% 100% at 75% 85%, #c6c5d4 0%, transparent 58%), #faf1ec;
+  background: radial-gradient(120% 100% at 18% 12%, #efb79e 0%, transparent 60%),
+    radial-gradient(110% 95% at 84% 22%, #e3a6b8 0%, transparent 58%),
+    radial-gradient(120% 100% at 72% 88%, #a9a8c4 0%, transparent 60%),
+    radial-gradient(110% 95% at 15% 85%, #d98f9e 0%, transparent 58%), #f3dcd2;
   border-radius: 16px;
-  padding: 28px;
+  padding: 32px;
   display: grid;
   place-items: center;
 }
