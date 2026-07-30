@@ -742,12 +742,12 @@ if (
   }
 }
 
-// Wireframe grid (inside an artifact overlay): captions are derived from
-// each image's filename rather than hand-typed, so dropping in a new
-// numbered file is enough to add it to the grid. Clicking a thumbnail swaps
-// in a nested "enlarge" view within the same overlay — grid and lightbox
-// toggle via the hidden attribute, so only one set of controls is ever
-// present for the overlay's own focus trap to find.
+// Wireframe grid (inside an artifact overlay): no visible caption, but each
+// thumbnail still needs an accessible name, derived from its filename rather
+// than hand-typed so dropping in a new numbered file is enough to add it to
+// the grid. Clicking a thumbnail swaps in a nested "enlarge" view within the
+// same overlay — grid and lightbox toggle via the hidden attribute, so only
+// one set of controls is ever present for the overlay's own focus trap to find.
 {
   const grids = document.querySelectorAll(".wireframe-grid");
 
@@ -770,7 +770,6 @@ if (
     grid.querySelectorAll(".wireframe-thumb").forEach((thumb) => {
       const img = thumb.querySelector("img");
       const label = deriveWireframeLabel(img.getAttribute("src"));
-      thumb.querySelector(".wireframe-thumb__label").textContent = label;
       thumb.setAttribute("aria-label", label);
 
       thumb.addEventListener("click", () => {

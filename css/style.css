@@ -99,19 +99,25 @@ html {
   scrollbar-color: rgba(152, 52, 73, 0.45) transparent;
 }
 
-/* Chrome, Edge, Safari */
+/* Chrome, Edge, Safari — ::-webkit-scrollbar itself paints the whole gutter
+   (not just ::-webkit-scrollbar-track), so it needs its own transparent
+   background too or that gutter shows as a solid white strip. */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-track {
   background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 ::-webkit-scrollbar-thumb {
   background: rgba(152, 52, 73, 0.45);
   border-radius: 999px;
+  border: none;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -2122,15 +2128,18 @@ section + section {
 }
 
 /* ---- Wireframe grid (inside an artifact overlay) --------------------------
-   3 desktop / 2 tablet / 1 mobile, per the mobile-first defaults below.
-   Captions are filled in by main.js from each <img>'s filename, not
-   hand-typed here — see deriveWireframeLabel().
+   2 mobile / 3 tablet / 4 desktop. No card/wrapper background behind each
+   image — these are transparent PNGs meant to float directly over the
+   overlay's own glass panel, not sit in a white box. Accessible names are
+   still set on each button by main.js (from the filename), just not
+   rendered as a visible caption.
    ---------------------------------------------------------------------- */
 
 .wireframe-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-lg);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  justify-items: center;
 }
 
 /* Author rules always beat the UA's bare [hidden]{display:none}, hidden or
@@ -2143,52 +2152,50 @@ section + section {
 
 @media (min-width: 640px) {
   .wireframe-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (min-width: 980px) {
   .wireframe-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
 .wireframe-thumb {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-md);
+  justify-content: center;
+  width: 100%;
   font-family: inherit;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: var(--radius-card);
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  background: none;
+  border: 0;
+  padding: 0;
+  transition: transform 0.2s ease;
 }
 
 .wireframe-thumb:hover,
 .wireframe-thumb:focus-visible {
-  background: rgba(255, 255, 255, 0.65);
-  box-shadow: 0 8px 20px var(--glass-shadow-color);
+  transform: scale(1.04);
 }
 
 .wireframe-thumb:focus-visible {
   outline: 2px solid var(--ink-primary);
-  outline-offset: 2px;
+  outline-offset: 4px;
 }
 
 .wireframe-thumb img {
-  width: 100%;
-  aspect-ratio: 1310 / 2708;
+  max-height: 360px;
+  max-width: 100%;
+  width: auto;
   object-fit: contain;
 }
 
-.wireframe-thumb__label {
-  font-size: var(--fs-small);
-  font-weight: var(--fw-bold);
-  color: var(--ink-secondary);
-  text-align: center;
+@media (prefers-reduced-motion: reduce) {
+  .wireframe-thumb {
+    transition: none;
+  }
 }
 
 /* Nested "enlarge" view within the same overlay — toggled by main.js, which
@@ -2235,6 +2242,203 @@ section + section {
 .wireframe-lightbox__close svg {
   width: 1.1rem;
   height: 1.1rem;
+}
+
+/* ---- UI kit / design system (inside an artifact overlay) ------------------
+   Two different rulebooks in one component, deliberately: the surrounding
+   presentation (group titles, descriptions, layout) uses the portfolio's own
+   type/colour system like everything else on the page. The uikit-* pieces
+   below are the opposite — Sizzle's own colours, radii and proportions,
+   preserved from the reference file rather than restyled, because this is a
+   record of that project's actual design decisions.
+   ---------------------------------------------------------------------- */
+
+.uikit-group + .uikit-group {
+  margin-top: 2.5rem;
+}
+
+.uikit-group__title {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  color: var(--ink-primary);
+  font-size: 1.2rem;
+}
+
+.uikit-group__desc {
+  margin-top: 0.4rem;
+  color: var(--ink-secondary);
+  font-size: var(--fs-small);
+  max-width: 46rem;
+}
+
+.uikit-swatch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.uikit-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.uikit-swatch__chip {
+  display: block;
+  width: 84px;
+  height: 84px;
+  border-radius: 12px;
+}
+
+.uikit-swatch__label {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  color: var(--ink-secondary);
+}
+
+.uikit-type-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.uikit-type-sample {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+}
+
+.uikit-type-sample__label {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  color: var(--ink-secondary);
+  min-width: 130px;
+  flex-shrink: 0;
+}
+
+.uikit-component-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2.5rem;
+  margin-top: 1.25rem;
+}
+
+/* Sizzle's own recipe card: radius, image-first layout, and title-over-image
+   treatment preserved from the reference — only the placeholder image area
+   is new (the real food photography isn't a UI style element to rebuild). */
+.uikit-recipe-card {
+  width: 200px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+  font-family: var(--font-body);
+}
+
+.uikit-recipe-card__image {
+  height: 140px;
+  background: linear-gradient(160deg, #d99a4e, #920010);
+  display: flex;
+  align-items: flex-end;
+  padding: 0.75rem;
+}
+
+.uikit-recipe-card__image span {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.uikit-recipe-card__meta {
+  padding: 0.6rem 0.85rem 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #6b6b6b;
+}
+
+.uikit-field {
+  display: inline-block;
+  width: 220px;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgba(146, 0, 16, 0.08);
+  color: rgba(146, 0, 16, 0.4);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+}
+
+.uikit-stepper {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #920010;
+  color: #920010;
+  background: transparent;
+}
+
+.uikit-stepper svg {
+  width: 18px;
+  height: 18px;
+}
+
+.uikit-stepper--filled {
+  background: #920010;
+  color: #ffffff;
+}
+
+.uikit-close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #c9c9c9;
+  color: #9a9a9a;
+}
+
+.uikit-close-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.uikit-progress {
+  width: 220px;
+  height: 6px;
+  border-radius: 999px;
+  background: #e5e5e5;
+  overflow: hidden;
+}
+
+.uikit-progress__fill {
+  height: 100%;
+  background: #920010;
+  border-radius: 999px;
+}
+
+.uikit-icon-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: #9a9a9a;
+}
+
+.uikit-icon-label svg {
+  width: 22px;
+  height: 22px;
 }
 
 /* ---- Scroll reveal ---------------------------------------------------------
