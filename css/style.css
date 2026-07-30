@@ -2319,6 +2319,20 @@ section + section {
   max-width: 440px;
 }
 
+/* Sizzle's own components (text fields, buttons, the recipe card) were
+   designed as glass/transparent UI — they disappear against a plain
+   background. This is backdrop only, behind the untouched asset; it never
+   touches the image itself. */
+.ds-component-tile {
+  background: radial-gradient(120% 100% at 20% 15%, #f5cfc0 0%, transparent 58%),
+    radial-gradient(110% 95% at 82% 25%, #efc6d3 0%, transparent 55%),
+    radial-gradient(120% 100% at 75% 85%, #c6c5d4 0%, transparent 58%), #faf1ec;
+  border-radius: 16px;
+  padding: 28px;
+  display: grid;
+  place-items: center;
+}
+
 /* ---- Scroll reveal ---------------------------------------------------------
    The hidden-until-revealed state only exists under html.js (set by an
    inline, synchronous <head> script, same pattern as page-transitions-js)
