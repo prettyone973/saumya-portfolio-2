@@ -36,6 +36,47 @@ if (document.documentElement.classList.contains("page-transitions-js")) {
   });
 }
 
+// Scroll reveal: fade + slide elements in as they enter the viewport, once
+// only (never re-hidden on scroll up). The hidden state only exists under
+// html.js (added synchronously in <head>, same pattern as
+// page-transitions-js), so content is always visible if this never runs.
+// Siblings sharing a parent (e.g. each card in a project grid) are
+// staggered 90ms apart, in DOM order, via an inline transition-delay —
+// skipped under reduced motion, where style.css also drops the
+// transform/transition entirely so reveals are instant instead of eased.
+{
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const revealTargets = document.querySelectorAll(".reveal");
+
+  if (revealTargets.length > 0) {
+    // Staggered by position among reveal-siblings under the same parent,
+    // not global DOM order, so each new group (a row of cards, a list of
+    // skills) restarts its own 0/90/180ms sequence.
+    const staggerIndex = new Map();
+    revealTargets.forEach((el) => {
+      const parent = el.parentElement;
+      const i = staggerIndex.get(parent) || 0;
+      staggerIndex.set(parent, i + 1);
+      if (!reduceMotion) {
+        el.style.transitionDelay = `${i * 90}ms`;
+      }
+    });
+
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-revealed");
+          revealObserver.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -80px 0px" }
+    );
+
+    revealTargets.forEach((el) => revealObserver.observe(el));
+  }
+}
+
 // Hero parallax: background drifts at ~0.5x scroll speed while the page's
 // actual content scrolls at the normal 1x. The native CSS scroll-timeline
 // in style.css handles this with zero JS on supporting browsers; this rAF
@@ -108,6 +149,30 @@ document.querySelectorAll(".flip-btn").forEach((btn) => {
     setCardFlipped(card, !card.classList.contains("is-flipped"));
   });
 });
+
+// Card height equalizer: .card-inner's grid-stacked faces already make a
+// card's own front/back match each other (sized to the taller one), and
+// CSS Grid's default row-stretch already matches cards that share a grid
+// row. Neither covers an odd-numbered row-mate-less card (3 cards in a
+// 2-column grid always leaves one alone on its own row) — this sets an
+// explicit min-height, per .project-grid, to the tallest card's natural
+// height so every card matches regardless of row pairing.
+function equalizeCardHeights() {
+  document.querySelectorAll(".project-grid").forEach((grid) => {
+    const cards = Array.from(grid.querySelectorAll(".card"));
+    if (cards.length === 0) return;
+    cards.forEach((c) => {
+      c.style.minHeight = "";
+    });
+    const tallest = Math.max(...cards.map((c) => c.getBoundingClientRect().height));
+    cards.forEach((c) => {
+      c.style.minHeight = `${tallest}px`;
+    });
+  });
+}
+
+window.addEventListener("load", equalizeCardHeights);
+window.addEventListener("resize", equalizeCardHeights);
 
 // Sparkle trail: inside .sparkle-zone elements only (the project cards).
 // Desktop pointer + no reduced-motion preference only — `sparkleTrailEnabled()`

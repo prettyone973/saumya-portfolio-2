@@ -31,6 +31,14 @@
 
 @font-face {
   font-family: "Lato";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/lato-700-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Lato";
   font-style: normal;
   font-weight: 900;
   font-display: swap;
@@ -409,6 +417,16 @@ h1 em {
   color: var(--ink-primary);
 }
 
+/* Hero title only (not the sitewide h1 default, which other pages still
+   use at --fw-black) — dropped one step to --fw-bold. h1 em inherits its
+   weight from h1, so both the white half and the wine italic half move
+   together automatically. Lato 700 italic is a real @font-face (not just
+   700 normal + 900 italic), so this doesn't fall back to a synthesised/
+   faux italic. */
+.hero-glass-panel h1 {
+  font-weight: var(--fw-bold);
+}
+
 /* ---- Components: glass ----------------------------------------------------
    backdrop-filter barely does anything over the smooth mesh gradient — there's
    no detail behind it to blur. The border, the inset top highlight, and the
@@ -733,11 +751,24 @@ section + section {
 .card {
   position: relative;
   perspective: 1200px;
-  aspect-ratio: 3 / 3.9;
+  /* .project-grid is a grid; grid items default to min-width: auto, which
+     won't let a 1fr track shrink below its content's natural min-content
+     width (the same issue fixed on .flow-branch) — without this, the
+     card forced the grid wider than its container on narrow screens. */
+  min-width: 0;
 }
 
+/* Content-driven height instead of a fixed aspect-ratio: .card-front and
+   .card-back share the same grid cell (grid-area: 1/1), so the (single,
+   implicit) row sizes to whichever face's natural content is tallest,
+   and CSS Grid stretches both to fill it — that's what keeps the two
+   faces the same height without measuring anything in JS. The same
+   stretch-to-tallest-in-row behavior is what then makes every card in
+   a .project-grid row match the tallest card, since .card itself has
+   no fixed height either. */
 .card-inner {
   position: relative;
+  display: grid;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
@@ -750,8 +781,9 @@ section + section {
 
 .card-front,
 .card-back {
-  position: absolute;
-  inset: 0;
+  grid-area: 1 / 1;
+  min-width: 0; /* same grid-item shrink issue as .card itself, one level in */
+  position: relative;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   padding: var(--space-lg);
@@ -815,10 +847,6 @@ section + section {
    (it isn't a single line there either). */
 .card-description {
   width: 100%;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
   font-family: var(--font-body);
   color: var(--ink-secondary);
 }
@@ -1092,10 +1120,18 @@ section + section {
   display: inline-flex;
   align-items: center;
   gap: var(--space-sm);
+  max-width: 100%;
   padding: var(--space-sm) var(--space-lg);
   border-radius: var(--radius-button);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.34));
   border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+/* The email address itself: let it wrap (it has no natural break points)
+   instead of forcing the pill past the viewport edge on narrow screens. */
+.email-pill span:not(.copied-note) {
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .email-pill button {
@@ -1639,6 +1675,11 @@ section + section {
   flex-direction: column;
   align-items: center;
   gap: var(--space-sm);
+  /* Grid items default to min-width: auto, which refuses to let a 1fr
+     track shrink below its content's natural width — without this, the
+     branch (and its .flow-step text) forced .flow-branches wider than
+     its container on narrow screens instead of wrapping. */
+  min-width: 0;
 }
 
 .flow-branch-label {
@@ -1794,6 +1835,38 @@ section + section {
   font-weight: var(--fw-bold);
   color: var(--ink-secondary);
   text-align: center;
+}
+
+/* ---- Scroll reveal ---------------------------------------------------------
+   The hidden-until-revealed state only exists under html.js (set by an
+   inline, synchronous <head> script, same pattern as page-transitions-js)
+   — .reveal elements are fully visible in the base CSS, so content never
+   depends on js/main.js's IntersectionObserver actually running to be
+   seen. .is-revealed (added once per element, never removed) is what
+   fades/slides it in; the stagger between siblings is a per-element
+   transition-delay set inline by JS, not in this CSS.
+   ---------------------------------------------------------------------- */
+
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+html.js .reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .reveal {
+    transform: none;
+  }
+
+  html.js .reveal.is-revealed {
+    transform: none;
+    transition: none;
+  }
 }
 
 /* ---- Custom cursor -------------------------------------------------------
