@@ -426,8 +426,7 @@ h1 em {
   box-shadow: 0 8px 24px var(--glass-shadow-color), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
-.glass-btn,
-.glass-nav-pill {
+.glass-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -437,6 +436,8 @@ h1 em {
   text-align: center;
   cursor: pointer;
   border-radius: var(--radius-button);
+  padding: var(--space-sm) var(--space-lg);
+  font-size: var(--fs-body);
   /* Rest state: thin, transparent, background disperses through. */
   background: linear-gradient(200deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.32));
   backdrop-filter: blur(8px) saturate(140%);
@@ -448,20 +449,9 @@ h1 em {
     box-shadow 0.35s ease;
 }
 
-.glass-btn {
-  padding: var(--space-sm) var(--space-lg);
-  font-size: var(--fs-body);
-}
-
-.glass-nav-pill {
-  padding: var(--space-xs) var(--space-md);
-  font-size: var(--fs-small);
-}
-
 /* Hover: frost thickens, light source swings from 200deg to 45deg (135deg
    gradient angle) — the rotation is what makes the reflection travel. */
-.glass-btn:hover,
-.glass-nav-pill:hover {
+.glass-btn:hover {
   backdrop-filter: blur(20px) saturate(150%);
   -webkit-backdrop-filter: blur(20px) saturate(150%);
   background: linear-gradient(
@@ -473,18 +463,49 @@ h1 em {
   box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.55), 0 8px 24px var(--glass-shadow-color);
 }
 
+/* Plain text nav links — no pill, no glass. Default color matches the
+   brand text's (ink-primary on the light gradient pages; white only on
+   index.html's hero via .site-nav--on-hero, same pattern as the brand
+   text next to it, since these sit on a dark photo there and a light
+   background everywhere else). */
+.glass-nav-pill {
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-small);
+  color: var(--ink-primary);
+  text-decoration: none;
+  text-underline-offset: 4px;
+  transition: opacity 0.2s ease;
+}
+
+.site-nav--on-hero .glass-nav-pill {
+  color: #ffffff;
+}
+
+.glass-nav-pill:hover {
+  text-decoration: underline;
+}
+
+.glass-nav-pill:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.site-nav__links .glass-nav-pill.is-active {
+  text-decoration: underline;
+}
+
 /* Where backdrop-filter isn't supported there's no blur to obscure what's
    behind these, so the low rest-state alpha reads as barely-there. Raise it
    to a flatter, more opaque white so cards and buttons stay legible. */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .glass-card,
-  .glass-btn,
-  .glass-nav-pill {
+  .glass-btn {
     background: rgba(255, 255, 255, 0.7);
   }
 
-  .glass-btn:hover,
-  .glass-nav-pill:hover {
+  .glass-btn:hover {
     background: rgba(255, 255, 255, 0.7);
   }
 }
@@ -516,10 +537,10 @@ section + section {
    Not sticky: position: absolute (not fixed), so it sits at the top of the
    page/hero and scrolls away with it like any other content, rather than
    staying pinned as the user scrolls. It's still full-width and
-   transparent — no backing strip, matching the Figma hero reference
-   exactly (brand text and pills float directly on whatever's behind them).
-   The right-hand links are full .glass-nav-pill components, which already
-   carry their own frosted background, so they stay legible regardless.
+   transparent — no backing strip. The right-hand links are plain text
+   (.glass-nav-pill, despite the name — no pill/glass treatment), so they
+   need the same per-page color handling as the brand text right next to
+   them: ink-primary by default, white only on the hero.
    The brand text is ink-primary by default (reads fine directly on the
    light mesh gradient on every non-hero page) and white via the static
    `.site-nav--on-hero` modifier on index.html only, where the brand text
@@ -562,10 +583,6 @@ section + section {
   align-items: center;
   gap: var(--space-sm);
   flex-wrap: wrap;
-}
-
-.site-nav__links .glass-nav-pill.is-active {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.46) 0%, rgba(255, 255, 255, 0.26) 45%, rgba(255, 255, 255, 0.34) 100%);
 }
 
 /* ---- Site footer ------------------------------------------------------ */
@@ -629,17 +646,31 @@ section + section {
   flex-direction: column;
   align-items: center;
   gap: var(--space-lg);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.75);
+  /* Clear glass with refraction, not frosted: less blur, less white fill —
+     definition comes from the edges (the bright inset top edge especially)
+     rather than an opaque backing. */
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.09));
+  backdrop-filter: blur(10px) saturate(165%) brightness(1.04);
+  -webkit-backdrop-filter: blur(10px) saturate(165%) brightness(1.04);
+  border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: var(--radius-card);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 10px 40px rgba(126, 42, 60, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.35),
+    0 12px 40px rgba(126, 42, 60, 0.12);
 }
 
 .hero-glass-panel .lede {
   max-width: 46ch;
   color: var(--ink-secondary);
+}
+
+/* The panel's white fill dropped substantially to read as clear glass
+   instead of frosted — this shadow is what keeps the white half of the
+   headline readable against the photo now that there's less backing
+   behind it. */
+.hero-glass-panel h1 {
+  text-shadow: 0 1px 14px rgba(126, 42, 60, 0.4);
 }
 
 /* Every other page's h1 is a plain heading, not the hero's two-tone
@@ -683,9 +714,10 @@ section + section {
    real <a>, stretched to cover the whole front face via ::after so the
    front reads as one big click target without nesting an <a> in an <a>.
    .flip-btn sits above that stretched overlay (z-index: 2 vs its 1) so it
-   still gets its own clicks. Hover previews the flip only while it hasn't
-   been toggled by the button (.is-flipped, set by js/main.js) — once
-   toggled, that state sticks regardless of hover.
+   still gets its own clicks. Click-only: the only thing that ever flips
+   a card is .flip-btn toggling .is-flipped (in js/main.js) — no hover
+   trigger. Hovering still deepens the shadow/under-glow below, just
+   never rotates anything.
    ---------------------------------------------------------------------- */
 
 .card {
@@ -703,16 +735,6 @@ section + section {
 }
 
 .card.is-flipped .card-inner {
-  transform: rotateY(180deg);
-}
-
-/* :not(:has(.flip-btn:hover)) matters: without it, hovering the button
-   itself (which any mouse click passes through on the way to clicking)
-   previews the flip, and once that finishes the button is the thing
-   that gets hidden/rotated away — right as the click was about to land
-   on it. Excluding the button from the trigger keeps it clickable
-   throughout the hover. */
-.card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-inner {
   transform: rotateY(180deg);
 }
 
@@ -858,8 +880,7 @@ section + section {
     transition: none;
   }
 
-  .card.is-flipped .card-inner,
-  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-inner {
+  .card.is-flipped .card-inner {
     transform: none;
   }
 
@@ -895,37 +916,22 @@ section + section {
     pointer-events: none;
   }
 
-  .card.is-flipped .card-front,
-  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-front {
+  .card.is-flipped .card-front {
     opacity: 0;
   }
 
   .card.is-flipped .card-front,
-  .card.is-flipped .card-front *,
-  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-front,
-  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-front * {
+  .card.is-flipped .card-front * {
     pointer-events: none;
   }
 
-  .card.is-flipped .card-back,
-  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-back {
+  .card.is-flipped .card-back {
     opacity: 1;
   }
 
   .card.is-flipped .card-back,
-  .card.is-flipped .card-back *,
-  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-back,
-  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-back * {
+  .card.is-flipped .card-back * {
     pointer-events: auto;
-  }
-}
-
-/* Touch: no true persistent hover, so the hover-preview flip is disabled
-   entirely — .flip-btn (still tappable) is the only way to flip, and
-   tapping the rest of the front face just navigates. */
-@media (pointer: coarse) {
-  .card:not(.is-flipped):hover:not(:has(.flip-btn:hover)) .card-inner {
-    transform: none;
   }
 }
 
