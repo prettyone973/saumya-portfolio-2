@@ -28,14 +28,15 @@
         <h1 style="font-size: var(--fs-h2);">ElderMotion — An accessible approach to the senior lifestyle</h1>
       </div>
 
-      <div class="glass-card case-jump-nav">
-        <a href="#methods">Methods</a>
-        <a href="#functional-requirements">Functional Requirements</a>
-        <a href="#key-findings">Key Findings</a>
-        <a href="#limitations">Limitations</a>
-        <a href="#conclusion">Conclusion</a>
-        <a href="#information-architecture">Information Architecture</a>
-        <a href="#prototype">Prototype</a>
+      <div class="case-jump-nav">
+        <a class="glass-nav-pill" href="#methods">Methods</a>
+        <a class="glass-nav-pill" href="#functional-requirements">Functional Requirements</a>
+        <a class="glass-nav-pill" href="#key-findings">Key Findings</a>
+        <a class="glass-nav-pill" href="#limitations">Limitations</a>
+        <a class="glass-nav-pill" href="#conclusion">Conclusion</a>
+        <a class="glass-nav-pill" href="#information-architecture">Information Architecture</a>
+        <a class="glass-nav-pill" href="#wireframes">Wireframes</a>
+        <a class="glass-nav-pill" href="#prototype">Prototype</a>
       </div>
 
       <section style="margin-top: var(--space-2xl);">
@@ -86,6 +87,18 @@
             health — and refined our focus from a broad "Health &amp; Fitness tracker" into a
             targeted "Activity Companion" to prevent cognitive overload.
           </p>
+
+          <h4 style="margin-top: 2rem; font-size: 1.2rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">
+            User Persona
+          </h4>
+          <p style="margin-top: 0.5rem; color: var(--ink-secondary); font-size: var(--fs-small);">
+            Elias grounded every decision that followed — from text size to how much a screen asks of him at once.
+          </p>
+          <img
+            src="../assets/img/case-studies/eldermotion/persona-elias.png"
+            alt="Persona: Elias, 85, retired architect. About: a decrease in vision and slight hand tremor over the years; uses digital technology often but struggles when apps don't allow increased text size or make him re-enter information. Constraints: small text, complicated login steps, apps that don't save information so he has to enter it every time, breadcrumbs that make it hard to remember where he is. Goals: staying in touch with family, reading the news, ordering groceries."
+            style="margin-top: 1.5rem; width: min(640px, 100%); border-radius: var(--radius-card);"
+          />
         </section>
 
         <section id="functional-requirements" class="reveal" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
@@ -110,17 +123,6 @@
                 command accessibility.
               </p>
             </div>
-          </div>
-
-          <div style="margin-top: 2rem;">
-            <button type="button" class="artifact-card" aria-expanded="false" aria-controls="overlay-eldermotion-screens">
-              <span class="artifact-card__number">02A</span>
-              <span class="artifact-card__body">
-                <span class="artifact-card__title">High-fidelity Wireframes</span>
-                <span class="artifact-card__desc">Two annotated screens from the activity-selection and community flows.</span>
-              </span>
-              <svg class="artifact-card__arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
           </div>
         </section>
 
@@ -175,8 +177,23 @@
           </div>
         </section>
 
-        <section id="prototype" class="reveal" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+        <section id="wireframes" class="reveal" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
           <span class="section-number">07</span>
+          <h3>High-fidelity Wireframes</h3>
+          <div style="margin-top: 1.5rem;">
+            <button type="button" class="artifact-card" aria-expanded="false" aria-controls="overlay-eldermotion-wireframes">
+              <span class="artifact-card__number">07</span>
+              <span class="artifact-card__body">
+                <span class="artifact-card__title">High-fidelity Wireframes</span>
+                <span class="artifact-card__desc">The full flow, screen by screen, from onboarding to community and accessibility.</span>
+              </span>
+              <svg class="artifact-card__arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </section>
+
+        <section id="prototype" class="reveal" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
+          <span class="section-number">08</span>
           <h3>Prototype</h3>
           <p style="margin-top: 0.5rem; color: var(--ink-secondary); font-size: var(--fs-small);">
             Explore the interactive prototype below.
@@ -215,24 +232,37 @@
     </div>
   </footer>
 
-  <div class="artifact-overlay" id="overlay-eldermotion-screens" hidden>
-    <div class="artifact-overlay__panel" role="dialog" aria-modal="true" aria-labelledby="overlay-eldermotion-screens-title">
+  <div class="artifact-overlay" id="overlay-eldermotion-wireframes" hidden>
+    <div class="artifact-overlay__panel" role="dialog" aria-modal="true" aria-labelledby="overlay-eldermotion-wireframes-title">
       <div class="artifact-overlay__header">
-        <h2 class="artifact-overlay__title" id="overlay-eldermotion-screens-title">High-fidelity Wireframes</h2>
+        <h2 class="artifact-overlay__title" id="overlay-eldermotion-wireframes-title">High-fidelity Wireframes</h2>
         <button type="button" class="artifact-overlay__close" aria-label="Close">
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
       <div class="artifact-overlay__content">
-        <div class="before-after-row" style="margin-top: 0;">
-          <div class="screen-example">
-            <img src="../assets/img/case-studies/eldermotion/shopping-gardening-selection.png" alt="" />
-            <span>Shopping / Gardening activity selection</span>
-          </div>
-          <div class="screen-example">
-            <img src="../assets/img/case-studies/eldermotion/community-gardening.png" alt="" />
-            <span>Community Gardening — join activity</span>
-          </div>
+        <div class="wireframe-grid">
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/01-splash-screen.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/02-onboarding-welcome.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/03-onboarding-avatar.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/04-onboarding-features.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/05-onboarding-name.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/06-home-screen-light.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/07-choose-activity.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/08-duration-of-activity.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/09-almost-done.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/10-enjoy-message.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/11-activity-overview.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/12-community.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/13-home-screen-dark.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+          <button type="button" class="wireframe-thumb"><img src="../assets/img/case-studies/eldermotion/wireframes/14-accessibility-dark.png" alt="" loading="lazy" decoding="async" /><span class="wireframe-thumb__label"></span></button>
+        </div>
+
+        <div class="wireframe-lightbox" hidden>
+          <button type="button" class="wireframe-lightbox__close" aria-label="Back to grid">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <img class="wireframe-lightbox__img" src="" alt="" />
         </div>
       </div>
     </div>

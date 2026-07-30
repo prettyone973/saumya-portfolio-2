@@ -577,6 +577,21 @@ if (
 
       butterfly.addEventListener("click", () => flyAway(butterfly, img));
     }
+
+    // Placement above is computed once against the viewport at load time;
+    // narrowing the window afterward (not a fresh load — an actual resize)
+    // would otherwise leave a butterfly's left edge past the new right
+    // edge, producing a real horizontal scrollbar. Re-clamp on resize
+    // rather than re-running the full safe-zone placement.
+    window.addEventListener("resize", () => {
+      const maxLeft = window.innerWidth - 8;
+      document.querySelectorAll(".butterfly").forEach((el) => {
+        const size = el.offsetWidth;
+        if (parseFloat(el.style.left) + size > maxLeft) {
+          el.style.left = `${Math.max(8, maxLeft - size)}px`;
+        }
+      });
+    });
   });
 }
 
@@ -725,6 +740,55 @@ if (
       });
     });
   }
+}
+
+// Wireframe grid (inside an artifact overlay): captions are derived from
+// each image's filename rather than hand-typed, so dropping in a new
+// numbered file is enough to add it to the grid. Clicking a thumbnail swaps
+// in a nested "enlarge" view within the same overlay — grid and lightbox
+// toggle via the hidden attribute, so only one set of controls is ever
+// present for the overlay's own focus trap to find.
+{
+  const grids = document.querySelectorAll(".wireframe-grid");
+
+  function deriveWireframeLabel(src) {
+    const filename = src.split("/").pop().replace(/\.[^.]+$/, "");
+    const withoutPrefix = filename.replace(/^\d+-/, "");
+    const words = withoutPrefix.replace(/-/g, " ");
+    return words.charAt(0).toUpperCase() + words.slice(1);
+  }
+
+  grids.forEach((grid) => {
+    const overlayContent = grid.closest(".artifact-overlay__content");
+    const lightbox = overlayContent?.querySelector(".wireframe-lightbox");
+    if (!lightbox) return;
+
+    const lightboxImg = lightbox.querySelector(".wireframe-lightbox__img");
+    const closeBtn = lightbox.querySelector(".wireframe-lightbox__close");
+    let lastThumb = null;
+
+    grid.querySelectorAll(".wireframe-thumb").forEach((thumb) => {
+      const img = thumb.querySelector("img");
+      const label = deriveWireframeLabel(img.getAttribute("src"));
+      thumb.querySelector(".wireframe-thumb__label").textContent = label;
+      thumb.setAttribute("aria-label", label);
+
+      thumb.addEventListener("click", () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = label;
+        lastThumb = thumb;
+        grid.hidden = true;
+        lightbox.hidden = false;
+        closeBtn.focus();
+      });
+    });
+
+    closeBtn.addEventListener("click", () => {
+      lightbox.hidden = true;
+      grid.hidden = false;
+      lastThumb?.focus();
+    });
+  });
 }
 
 // About page: copy email to clipboard (button/note only present on about.html).
