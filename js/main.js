@@ -580,6 +580,153 @@ if (
   });
 }
 
+// Case-study jump nav: highlights whichever numbered section the reader is
+// currently in. Watches each linked section itself (not just its heading) —
+// a thin rootMargin band positioned ~40% down the viewport still overlaps a
+// tall section (personas, heuristic lists) for the entire time it's
+// scrolling past, so the active link doesn't drop out partway through a
+// long section the way watching only the heading would.
+{
+  const jumpNav = document.querySelector(".case-jump-nav");
+
+  if (jumpNav) {
+    const links = Array.from(jumpNav.querySelectorAll("a[href^='#']"));
+    const linkForSection = new Map(
+      links.map((link) => [document.querySelector(link.getAttribute("href")), link]).filter(([section]) => section)
+    );
+
+    if (linkForSection.size > 0) {
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const link = linkForSection.get(entry.target);
+            if (!link) return;
+            links.forEach((l) => l.classList.remove("is-active"));
+            link.classList.add("is-active");
+          });
+        },
+        { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+      );
+
+      linkForSection.forEach((_link, section) => sectionObserver.observe(section));
+    }
+  }
+}
+
+// Case-study artifact cards: each .artifact-card is a button that opens its
+// matching .artifact-overlay (linked via aria-controls) as a centered modal.
+// Overlay markup lives at the end of <body>, so position: fixed only ever
+// needs the viewport as its containing block. Body scroll is locked with
+// position: fixed + a negative top offset (not overflow: hidden — that
+// doesn't reliably block background scroll on iOS) and unlocked back to the
+// exact same scrollY, so closing never jumps the page to top.
+{
+  const artifactCards = document.querySelectorAll(".artifact-card");
+
+  if (artifactCards.length > 0) {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const CLOSE_DELAY = reduceMotion ? 0 : 250; // matches .artifact-overlay's CSS transition duration
+
+    let activeOverlay = null;
+    let activeTrigger = null;
+    let lockedScrollY = 0;
+
+    function focusableIn(container) {
+      return Array.from(
+        container.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+      );
+    }
+
+    function onOverlayKeydown(e) {
+      if (!activeOverlay) return;
+
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeOverlay();
+        return;
+      }
+
+      if (e.key !== "Tab") return;
+      const focusable = focusableIn(activeOverlay);
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    function openOverlay(overlay, trigger) {
+      activeOverlay = overlay;
+      activeTrigger = trigger;
+      lockedScrollY = window.scrollY;
+
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${lockedScrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+
+      overlay.hidden = false;
+      overlay.getBoundingClientRect(); // force layout before .is-open so the transition has a rest state to move from
+      overlay.classList.add("is-open");
+
+      trigger.setAttribute("aria-expanded", "true");
+      document.addEventListener("keydown", onOverlayKeydown);
+
+      const closeBtn = overlay.querySelector(".artifact-overlay__close");
+      (closeBtn || overlay).focus();
+    }
+
+    function closeOverlay() {
+      if (!activeOverlay) return;
+      const overlay = activeOverlay;
+      const trigger = activeTrigger;
+
+      overlay.classList.remove("is-open");
+      document.removeEventListener("keydown", onOverlayKeydown);
+      trigger.setAttribute("aria-expanded", "false");
+
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      window.scrollTo(0, lockedScrollY);
+
+      if (CLOSE_DELAY === 0) {
+        overlay.hidden = true; // reduced motion: no transition to wait out
+      } else {
+        setTimeout(() => {
+          overlay.hidden = true;
+        }, CLOSE_DELAY);
+      }
+
+      trigger.focus();
+      activeOverlay = null;
+      activeTrigger = null;
+    }
+
+    artifactCards.forEach((card) => {
+      const overlay = document.getElementById(card.getAttribute("aria-controls"));
+      if (!overlay) return;
+
+      card.addEventListener("click", () => openOverlay(overlay, card));
+
+      const closeBtn = overlay.querySelector(".artifact-overlay__close");
+      closeBtn?.addEventListener("click", closeOverlay);
+
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) closeOverlay();
+      });
+    });
+  }
+}
+
 // About page: copy email to clipboard (button/note only present on about.html).
 const copyEmailBtn = document.getElementById("copy-email-btn");
 const copiedNote = document.getElementById("copied-note");

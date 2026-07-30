@@ -196,28 +196,16 @@
         <section id="design-system" class="reveal" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
           <span class="section-number">02</span>
           <h3>Design System</h3>
-          <p style="margin-top: 0.5rem; color: var(--ink-secondary); font-size: var(--fs-small);">
-            Colors, typography, and style guide used in the redesign.
-          </p>
-
-          <h4 style="margin-top: 2rem; font-size: 1.1rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">Used Font Colors</h4>
-          <div class="swatch-grid">
-            <div class="glass-card font-swatch"><span style="color:#2B3565;">Text</span><span>#2B3565</span></div>
-            <div class="glass-card font-swatch"><span style="color:#1E1E1E;">Text</span><span>#1E1E1E</span></div>
-            <div class="glass-card font-swatch"><span style="color:#6B6B6B;">Text</span><span>#6B6B6B</span></div>
-            <div class="glass-card font-swatch"><span style="color:#E45E2D;">Text</span><span>#E45E2D</span></div>
-            <div class="glass-card font-swatch"><span style="color:#089436;">Text</span><span>#089436</span></div>
-            <div class="glass-card font-swatch"><span style="color:#929292;">Text</span><span>#929292</span></div>
+          <div style="margin-top: 1.5rem;">
+            <button type="button" class="artifact-card" aria-expanded="false" aria-controls="overlay-imobile-design-system">
+              <span class="artifact-card__number">02</span>
+              <span class="artifact-card__body">
+                <span class="artifact-card__title">Design System</span>
+                <span class="artifact-card__desc">Colors, typography, and style guide used in the redesign.</span>
+              </span>
+              <svg class="artifact-card__arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
           </div>
-
-          <h4 style="margin-top: 2rem; font-size: 1.1rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">Used Primary Colours</h4>
-          <div class="color-swatch-row">
-            <div class="color-swatch" style="background:#DD683D;"><span>#DD683D</span></div>
-            <div class="color-swatch" style="background:#444D73;"><span>#444D73</span></div>
-          </div>
-
-          <h4 style="margin-top: 2rem; font-size: 1.1rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">Used Accent Colours</h4>
-          <p style="margin-top: 0.5rem;">None documented in this design.</p>
         </section>
 
         <section id="before-after" class="reveal" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
@@ -305,6 +293,39 @@
       </div>
     </div>
   </footer>
+
+  <div class="artifact-overlay" id="overlay-imobile-design-system" hidden>
+    <div class="artifact-overlay__panel" role="dialog" aria-modal="true" aria-labelledby="overlay-imobile-design-system-title">
+      <div class="artifact-overlay__header">
+        <h2 class="artifact-overlay__title" id="overlay-imobile-design-system-title">Design System</h2>
+        <button type="button" class="artifact-overlay__close" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="artifact-overlay__content">
+        <p>Colors, typography, and style guide used in the redesign.</p>
+
+        <h4 style="margin-top: 2rem; font-size: 1.1rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">Used Font Colors</h4>
+        <div class="swatch-grid">
+          <div class="glass-card font-swatch"><span style="color:#2B3565;">Text</span><span>#2B3565</span></div>
+          <div class="glass-card font-swatch"><span style="color:#1E1E1E;">Text</span><span>#1E1E1E</span></div>
+          <div class="glass-card font-swatch"><span style="color:#6B6B6B;">Text</span><span>#6B6B6B</span></div>
+          <div class="glass-card font-swatch"><span style="color:#E45E2D;">Text</span><span>#E45E2D</span></div>
+          <div class="glass-card font-swatch"><span style="color:#089436;">Text</span><span>#089436</span></div>
+          <div class="glass-card font-swatch"><span style="color:#929292;">Text</span><span>#929292</span></div>
+        </div>
+
+        <h4 style="margin-top: 2rem; font-size: 1.1rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">Used Primary Colours</h4>
+        <div class="color-swatch-row">
+          <div class="color-swatch" style="background:#DD683D;"><span>#DD683D</span></div>
+          <div class="color-swatch" style="background:#444D73;"><span>#444D73</span></div>
+        </div>
+
+        <h4 style="margin-top: 2rem; font-size: 1.1rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">Used Accent Colours</h4>
+        <p style="margin-top: 0.5rem;">None documented in this design.</p>
+      </div>
+    </div>
+  </div>
 
   <script src="../js/main.js" defer></script>
 </body>

@@ -112,15 +112,15 @@
             </div>
           </div>
 
-          <div class="before-after-row" style="margin-top: 2rem;">
-            <div class="screen-example">
-              <img src="../assets/img/case-studies/eldermotion/shopping-gardening-selection.png" alt="" />
-              <span>Shopping / Gardening activity selection</span>
-            </div>
-            <div class="screen-example">
-              <img src="../assets/img/case-studies/eldermotion/community-gardening.png" alt="" />
-              <span>Community Gardening — join activity</span>
-            </div>
+          <div style="margin-top: 2rem;">
+            <button type="button" class="artifact-card" aria-expanded="false" aria-controls="overlay-eldermotion-screens">
+              <span class="artifact-card__number">02A</span>
+              <span class="artifact-card__body">
+                <span class="artifact-card__title">High-fidelity Wireframes</span>
+                <span class="artifact-card__desc">Two annotated screens from the activity-selection and community flows.</span>
+              </span>
+              <svg class="artifact-card__arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
           </div>
         </section>
 
@@ -163,30 +163,15 @@
         <section id="information-architecture" class="reveal" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
           <span class="section-number">06</span>
           <h3>Information Architecture</h3>
-          <p style="margin-top: 1rem; max-width: 46rem;">
-            After defining functional requirements, I mapped out the app's information
-            architecture to structure navigation around simplicity — minimizing options per
-            screen and prioritizing the most frequently used features.
-          </p>
-          <div class="sitemap" style="margin-top: 1.5rem;">
-            <div class="sitemap-pill">Home screen</div>
-            <div class="tree-connector"></div>
-            <div class="sitemap-grid sitemap-grid--4">
-              <div class="glass-card sitemap-box">
-                <h3>Bottom Navigation</h3>
-                <ul><li>Accessibility</li><li>Home button</li><li>Settings</li></ul>
-              </div>
-              <div class="glass-card sitemap-box">
-                <h3>Search bar</h3>
-              </div>
-              <div class="glass-card sitemap-box">
-                <h3>Profile name and avatar icon</h3>
-              </div>
-              <div class="glass-card sitemap-box">
-                <h3>Cards</h3>
-                <ul><li>Daily goals</li><li>Your activities</li><li>Measure sugar/blood pressure etc.</li><li>Join friends</li><li>Reports</li></ul>
-              </div>
-            </div>
+          <div style="margin-top: 1.5rem;">
+            <button type="button" class="artifact-card" aria-expanded="false" aria-controls="overlay-eldermotion-sitemap">
+              <span class="artifact-card__number">06</span>
+              <span class="artifact-card__body">
+                <span class="artifact-card__title">Information Architecture</span>
+                <span class="artifact-card__desc">Navigation structured around simplicity, minimizing options per screen.</span>
+              </span>
+              <svg class="artifact-card__arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
           </div>
         </section>
 
@@ -229,6 +214,67 @@
       </div>
     </div>
   </footer>
+
+  <div class="artifact-overlay" id="overlay-eldermotion-screens" hidden>
+    <div class="artifact-overlay__panel" role="dialog" aria-modal="true" aria-labelledby="overlay-eldermotion-screens-title">
+      <div class="artifact-overlay__header">
+        <h2 class="artifact-overlay__title" id="overlay-eldermotion-screens-title">High-fidelity Wireframes</h2>
+        <button type="button" class="artifact-overlay__close" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="artifact-overlay__content">
+        <div class="before-after-row" style="margin-top: 0;">
+          <div class="screen-example">
+            <img src="../assets/img/case-studies/eldermotion/shopping-gardening-selection.png" alt="" />
+            <span>Shopping / Gardening activity selection</span>
+          </div>
+          <div class="screen-example">
+            <img src="../assets/img/case-studies/eldermotion/community-gardening.png" alt="" />
+            <span>Community Gardening — join activity</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="artifact-overlay" id="overlay-eldermotion-sitemap" hidden>
+    <div class="artifact-overlay__panel" role="dialog" aria-modal="true" aria-labelledby="overlay-eldermotion-sitemap-title">
+      <div class="artifact-overlay__header">
+        <h2 class="artifact-overlay__title" id="overlay-eldermotion-sitemap-title">Information Architecture</h2>
+        <button type="button" class="artifact-overlay__close" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="artifact-overlay__content">
+        <p>
+          After defining functional requirements, I mapped out the app's information
+          architecture to structure navigation around simplicity — minimizing options per
+          screen and prioritizing the most frequently used features.
+        </p>
+        <div class="sitemap" style="margin-top: 1.5rem;">
+          <div class="sitemap-pill">Home screen</div>
+          <div class="tree-connector"></div>
+          <div class="sitemap-grid sitemap-grid--4">
+            <div class="glass-card sitemap-box">
+              <h3>Bottom Navigation</h3>
+              <ul><li>Accessibility</li><li>Home button</li><li>Settings</li></ul>
+            </div>
+            <div class="glass-card sitemap-box">
+              <h3>Search bar</h3>
+            </div>
+            <div class="glass-card sitemap-box">
+              <h3>Profile name and avatar icon</h3>
+            </div>
+            <div class="glass-card sitemap-box">
+              <h3>Cards</h3>
+              <ul><li>Daily goals</li><li>Your activities</li><li>Measure sugar/blood pressure etc.</li><li>Join friends</li><li>Reports</li></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="../js/main.js" defer></script>
 </body>

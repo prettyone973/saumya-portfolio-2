@@ -347,130 +347,39 @@
             user flows to structure the experience before moving into wireframes.
           </p>
 
-          <h4 style="margin-top: 2rem; font-size: 1.2rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">
-            A. Sitemap
-          </h4>
-          <p style="margin-top: 0.5rem; color: var(--ink-secondary); font-size: var(--fs-small);">
-            The full information architecture, from sign-up to every core section.
-          </p>
-          <div class="sitemap" style="margin-top: 1.5rem;">
-            <div class="sitemap-pill">Login/Sign up</div>
-            <div class="tree-connector"></div>
-            <div class="sitemap-pill">Home</div>
-            <div class="tree-connector"></div>
-            <div class="sitemap-grid">
-              <div class="glass-card sitemap-box">
-                <h3>Recipe Page</h3>
-                <ul><li>Search &amp; Scan</li><li>Filter</li><li>Pantry Staples</li><li>Reviews</li><li>Voice Guide</li></ul>
-              </div>
-              <div class="glass-card sitemap-box">
-                <h3>Cabinet</h3>
-                <ul><li>Grocery List</li><li>Pantry</li><li>Cart</li><li>Add / Scan</li><li>Make something</li></ul>
-              </div>
-              <div class="glass-card sitemap-box">
-                <h3>Planner</h3>
-                <ul><li>Breakfast</li><li>Lunch</li><li>Dinner</li><li>Daily/Weekly</li><li>Calorie Goals</li></ul>
-              </div>
-              <div class="glass-card sitemap-box">
-                <h3>My Recipes</h3>
-                <ul><li>Saved / Liked</li><li>Uploaded</li><li>Drafts</li><li>AI Assist</li><li>Templates</li></ul>
-              </div>
-            </div>
-            <div class="tree-connector"></div>
-            <div class="glass-card sitemap-box" style="max-width: 340px; width: 100%;">
-              <h3>Profile Page</h3>
-              <ul><li>Preferences</li><li>Points &amp; Rewards</li><li>Settings</li><li>Privacy</li><li>Logout</li></ul>
-            </div>
-          </div>
+          <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1.25rem;">
+            <button type="button" class="artifact-card" aria-expanded="false" aria-controls="overlay-sizzle-sitemap">
+              <span class="artifact-card__number">04A</span>
+              <span class="artifact-card__body">
+                <span class="artifact-card__title">Information Architecture</span>
+                <span class="artifact-card__desc">The full information architecture, from sign-up to every core section.</span>
+              </span>
+              <svg class="artifact-card__arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
 
-          <h4 style="margin-top: 3rem; font-size: 1.2rem; color: var(--ink-primary); font-family: var(--font-display); font-weight: var(--fw-bold);">
-            B. User Flow
-          </h4>
-          <p style="margin-top: 0.5rem; color: var(--ink-secondary); font-size: var(--fs-small);">
-            Step-by-step flow for uploading a recipe, manually or with AI assistance.
-          </p>
-          <div class="flow" style="margin-top: 1.5rem;">
-            <div class="flow-step">Login / Sign up</div>
-            <div class="flow-connector"></div>
-            <div class="flow-diamond"><span>Already have an account?</span></div>
-            <div class="flow-connector"></div>
-            <div class="flow-branches">
-              <div class="flow-branch">
-                <span class="flow-branch-label">Yes</span>
-                <div class="flow-step">Sign in</div>
-              </div>
-              <div class="flow-branch">
-                <span class="flow-branch-label">No</span>
-                <div class="flow-step">Create account</div>
-              </div>
-            </div>
-            <div class="flow-connector"></div>
-            <div class="flow-step">Home screen</div>
-            <div class="flow-connector"></div>
-            <div class="flow-step">My Recipes</div>
-            <div class="flow-connector"></div>
-            <div class="flow-step">Uploaded recipes</div>
-            <div class="flow-connector"></div>
-            <div class="flow-step">Upload new</div>
-            <div class="flow-connector"></div>
-            <div class="flow-step">Recipe template</div>
-            <div class="flow-connector"></div>
-            <div class="flow-diamond"><span>Manual template or AI assistant?</span></div>
-            <div class="flow-connector"></div>
-            <div class="flow-branches">
-              <div class="flow-branch">
-                <span class="flow-branch-label">Manual template</span>
-                <div class="flow-step">Add title, time &amp; ingredients</div>
-                <div class="flow-connector"></div>
-                <div class="flow-step">Add instructions &amp; photo</div>
-                <div class="flow-connector"></div>
-                <div class="flow-step">Review the recipe</div>
-              </div>
-              <div class="flow-branch">
-                <span class="flow-branch-label">AI assistant</span>
-                <div class="flow-step">Upload the video</div>
-                <div class="flow-connector"></div>
-                <div class="flow-step">AI builds the template</div>
-                <div class="flow-connector"></div>
-                <div class="flow-step">Review the recipe</div>
-              </div>
-            </div>
-            <div class="flow-connector"></div>
-            <div class="flow-step">Upload the recipe</div>
-
-            <div class="flow-notes">
-              <div class="glass-card">
-                The process is simple, the user is given a pre-decided template and they just
-                have to add the necessary details. When adding the instructions, the user is also
-                given the option to voice type to make the process easier.
-              </div>
-              <div class="glass-card">
-                A user with low social media presence and low technical literacy wants to upload a
-                new recipe they made in a simple way.
-              </div>
-            </div>
+            <button type="button" class="artifact-card" aria-expanded="false" aria-controls="overlay-sizzle-flow">
+              <span class="artifact-card__number">04B</span>
+              <span class="artifact-card__body">
+                <span class="artifact-card__title">User Flows</span>
+                <span class="artifact-card__desc">Step-by-step flow for uploading a recipe, manually or with AI assistance.</span>
+              </span>
+              <svg class="artifact-card__arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
           </div>
         </section>
 
         <section id="wireframes" class="reveal" style="margin-top: var(--space-2xl); scroll-margin-top: var(--nav-height);">
           <span class="section-number">05</span>
           <h3>From Flows to Frames</h3>
-          <p style="margin-top: 1rem; max-width: 46rem;">
-            Low-fidelity wireframes were used to quickly validate layout decisions and flow logic
-            across onboarding, the home feed, recipe detail, meal planner, pantry cabinet, and
-            both the manual and AI-assisted recipe upload paths — before investing in
-            high-fidelity design.
-          </p>
-          <div class="wireframe-stack" style="margin-top: 1.5rem;">
-            <div class="crop-frame glass-card" style="aspect-ratio: 826 / 638.608; padding: 0;">
-              <img src="../assets/img/case-studies/sizzle/wireframes-row-1.png" alt="" style="width: 100%; height: 124.89%; left: 0; top: 0;" />
-            </div>
-            <div class="crop-frame glass-card" style="aspect-ratio: 826 / 659.363; padding: 0;">
-              <img src="../assets/img/case-studies/sizzle/wireframes-row-2.png" alt="" style="width: 112%; height: 106.32%; left: -3.48%; top: -2.4%;" />
-            </div>
-            <div class="crop-frame glass-card" style="aspect-ratio: 826 / 367.371; padding: 0;">
-              <img src="../assets/img/case-studies/sizzle/wireframes-row-3.png" alt="" style="width: 111.05%; height: 209.57%; left: -3.68%; top: 0;" />
-            </div>
+          <div style="margin-top: 1.5rem;">
+            <button type="button" class="artifact-card" aria-expanded="false" aria-controls="overlay-sizzle-wireframes">
+              <span class="artifact-card__number">05</span>
+              <span class="artifact-card__body">
+                <span class="artifact-card__title">Low-fidelity Wireframes</span>
+                <span class="artifact-card__desc">Quick layout and flow validation before investing in high-fidelity design.</span>
+              </span>
+              <svg class="artifact-card__arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
           </div>
         </section>
 
@@ -508,6 +417,154 @@
       </div>
     </div>
   </footer>
+
+  <div class="artifact-overlay" id="overlay-sizzle-sitemap" hidden>
+    <div class="artifact-overlay__panel" role="dialog" aria-modal="true" aria-labelledby="overlay-sizzle-sitemap-title">
+      <div class="artifact-overlay__header">
+        <h2 class="artifact-overlay__title" id="overlay-sizzle-sitemap-title">Information Architecture</h2>
+        <button type="button" class="artifact-overlay__close" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="artifact-overlay__content">
+        <p>The full information architecture, from sign-up to every core section.</p>
+        <div class="sitemap" style="margin-top: 1.5rem;">
+          <div class="sitemap-pill">Login/Sign up</div>
+          <div class="tree-connector"></div>
+          <div class="sitemap-pill">Home</div>
+          <div class="tree-connector"></div>
+          <div class="sitemap-grid">
+            <div class="glass-card sitemap-box">
+              <h3>Recipe Page</h3>
+              <ul><li>Search &amp; Scan</li><li>Filter</li><li>Pantry Staples</li><li>Reviews</li><li>Voice Guide</li></ul>
+            </div>
+            <div class="glass-card sitemap-box">
+              <h3>Cabinet</h3>
+              <ul><li>Grocery List</li><li>Pantry</li><li>Cart</li><li>Add / Scan</li><li>Make something</li></ul>
+            </div>
+            <div class="glass-card sitemap-box">
+              <h3>Planner</h3>
+              <ul><li>Breakfast</li><li>Lunch</li><li>Dinner</li><li>Daily/Weekly</li><li>Calorie Goals</li></ul>
+            </div>
+            <div class="glass-card sitemap-box">
+              <h3>My Recipes</h3>
+              <ul><li>Saved / Liked</li><li>Uploaded</li><li>Drafts</li><li>AI Assist</li><li>Templates</li></ul>
+            </div>
+          </div>
+          <div class="tree-connector"></div>
+          <div class="glass-card sitemap-box" style="max-width: 340px; width: 100%;">
+            <h3>Profile Page</h3>
+            <ul><li>Preferences</li><li>Points &amp; Rewards</li><li>Settings</li><li>Privacy</li><li>Logout</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="artifact-overlay" id="overlay-sizzle-flow" hidden>
+    <div class="artifact-overlay__panel" role="dialog" aria-modal="true" aria-labelledby="overlay-sizzle-flow-title">
+      <div class="artifact-overlay__header">
+        <h2 class="artifact-overlay__title" id="overlay-sizzle-flow-title">User Flows</h2>
+        <button type="button" class="artifact-overlay__close" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="artifact-overlay__content">
+        <p>Step-by-step flow for uploading a recipe, manually or with AI assistance.</p>
+        <div class="flow" style="margin-top: 1.5rem;">
+          <div class="flow-step">Login / Sign up</div>
+          <div class="flow-connector"></div>
+          <div class="flow-diamond"><span>Already have an account?</span></div>
+          <div class="flow-connector"></div>
+          <div class="flow-branches">
+            <div class="flow-branch">
+              <span class="flow-branch-label">Yes</span>
+              <div class="flow-step">Sign in</div>
+            </div>
+            <div class="flow-branch">
+              <span class="flow-branch-label">No</span>
+              <div class="flow-step">Create account</div>
+            </div>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">Home screen</div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">My Recipes</div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">Uploaded recipes</div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">Upload new</div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">Recipe template</div>
+          <div class="flow-connector"></div>
+          <div class="flow-diamond"><span>Manual template or AI assistant?</span></div>
+          <div class="flow-connector"></div>
+          <div class="flow-branches">
+            <div class="flow-branch">
+              <span class="flow-branch-label">Manual template</span>
+              <div class="flow-step">Add title, time &amp; ingredients</div>
+              <div class="flow-connector"></div>
+              <div class="flow-step">Add instructions &amp; photo</div>
+              <div class="flow-connector"></div>
+              <div class="flow-step">Review the recipe</div>
+            </div>
+            <div class="flow-branch">
+              <span class="flow-branch-label">AI assistant</span>
+              <div class="flow-step">Upload the video</div>
+              <div class="flow-connector"></div>
+              <div class="flow-step">AI builds the template</div>
+              <div class="flow-connector"></div>
+              <div class="flow-step">Review the recipe</div>
+            </div>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">Upload the recipe</div>
+
+          <div class="flow-notes">
+            <div class="glass-card">
+              The process is simple, the user is given a pre-decided template and they just
+              have to add the necessary details. When adding the instructions, the user is also
+              given the option to voice type to make the process easier.
+            </div>
+            <div class="glass-card">
+              A user with low social media presence and low technical literacy wants to upload a
+              new recipe they made in a simple way.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="artifact-overlay" id="overlay-sizzle-wireframes" hidden>
+    <div class="artifact-overlay__panel" role="dialog" aria-modal="true" aria-labelledby="overlay-sizzle-wireframes-title">
+      <div class="artifact-overlay__header">
+        <h2 class="artifact-overlay__title" id="overlay-sizzle-wireframes-title">Low-fidelity Wireframes</h2>
+        <button type="button" class="artifact-overlay__close" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="artifact-overlay__content">
+        <p>
+          Low-fidelity wireframes were used to quickly validate layout decisions and flow logic
+          across onboarding, the home feed, recipe detail, meal planner, pantry cabinet, and
+          both the manual and AI-assisted recipe upload paths — before investing in
+          high-fidelity design.
+        </p>
+        <div class="wireframe-stack" style="margin-top: 1.5rem;">
+          <div class="crop-frame glass-card" style="aspect-ratio: 826 / 638.608; padding: 0;">
+            <img src="../assets/img/case-studies/sizzle/wireframes-row-1.png" alt="" style="width: 100%; height: 124.89%; left: 0; top: 0;" />
+          </div>
+          <div class="crop-frame glass-card" style="aspect-ratio: 826 / 659.363; padding: 0;">
+            <img src="../assets/img/case-studies/sizzle/wireframes-row-2.png" alt="" style="width: 112%; height: 106.32%; left: -3.48%; top: -2.4%;" />
+          </div>
+          <div class="crop-frame glass-card" style="aspect-ratio: 826 / 367.371; padding: 0;">
+            <img src="../assets/img/case-studies/sizzle/wireframes-row-3.png" alt="" style="width: 111.05%; height: 209.57%; left: -3.68%; top: 0;" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="../js/main.js" defer></script>
 </body>
