@@ -2029,12 +2029,12 @@ section + section {
 .flow-notes {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-md);
+  gap: var(--space-lg);
   width: 100%;
-  margin-top: var(--space-xl);
+  margin-top: 1.5rem;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .flow-notes {
     grid-template-columns: 1fr 1fr;
   }
@@ -2042,7 +2042,10 @@ section + section {
 
 .flow-notes .glass-card {
   padding: var(--space-lg);
+  font-family: var(--font-body);
   font-size: var(--fs-small);
+  color: var(--ink-secondary);
+  line-height: 1.6;
 }
 
 /* ---- Wireframe rows / phone crops ------------------------------------------ */
