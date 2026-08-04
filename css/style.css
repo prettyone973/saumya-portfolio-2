@@ -604,6 +604,26 @@ section + section {
   padding-block: var(--space-3xl);
 }
 
+/* Home page only: "My projects" -> About preview. Both sections carry
+   .section-spacing (padding-block: 6rem each) AND the generic
+   `section + section` rule fires between them (another 6rem margin) —
+   three non-collapsing spacing values stacking to ~288px, since padding
+   never collapses with anything. Neither shared rule is wrong on its own
+   (both are used correctly elsewhere / nowhere else uses .section-spacing
+   at all, so this is scoped without side effects) — the fix is removing
+   the redundant margin for this specific pair and splitting a single
+   fluid gap between the two sides, rather than layering a negative
+   margin on top of three uncoordinated positive ones.
+   ~150px desktop (140-160 target), ~100px tablet, ~72px mobile. */
+.projects-section {
+  padding-bottom: clamp(36px, 21px + 3.7vw, 80px);
+}
+
+.about-preview {
+  margin-top: 0;
+  padding-top: clamp(36px, 21px + 3.7vw, 80px);
+}
+
 /* ---- Site nav ----------------------------------------------------------
    Not sticky: position: absolute (not fixed), so it sits at the top of the
    page/hero and scrolls away with it like any other content, rather than
