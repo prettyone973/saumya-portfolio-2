@@ -1146,10 +1146,18 @@ section + section {
 }
 
 /* One step above the standard --fs-h1 scale — the name is meant to be
-   the single largest thing on the page. */
+   the single largest thing on the page. Only true on the standalone about
+   page, where this IS the h1; reused inside .about-preview (the home page's
+   About section) it's a secondary h2 sitting below the hero's own h1, so it
+   needs to be sized back down to the standard --fs-h2 scale there or it
+   would visually outrank the hero title. */
 .about-name {
   font-size: clamp(2.5rem, 1.86rem + 3.2vw, 4.5rem);
   margin-top: 0.375rem;
+}
+
+.about-preview .about-name {
+  font-size: var(--fs-h2);
 }
 
 .about-intro {
@@ -1170,6 +1178,27 @@ section + section {
   line-height: 1.7;
   font-weight: var(--fw-bold);
   color: var(--ink-primary);
+}
+
+.about-more-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px; /* 44px minimum touch target, matching .glass-nav-pill */
+  margin-top: 1.25rem;
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
+  color: var(--ink-primary);
+  text-decoration: none;
+}
+
+.about-more-link:hover {
+  text-decoration: underline;
+}
+
+.about-more-link:focus-visible {
+  outline: 2px solid var(--ink-primary);
+  outline-offset: 4px;
+  border-radius: 2px;
 }
 
 .hobby-art {
@@ -2388,7 +2417,11 @@ section + section {
 .uikit-type-tile {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  /* align-items: stretch (the flex default) rather than flex-start — with
+     flex-start each child sizes to its own intrinsic/unwrapped content
+     width regardless of how narrow the tile itself has been constrained,
+     which is exactly what let the headline specimen overflow instead of
+     wrapping: the child never learned the width to wrap against. */
   gap: 0.6rem;
   padding: var(--space-lg);
   min-width: 160px;
@@ -2407,6 +2440,7 @@ section + section {
 .uikit-type-tile__sample {
   line-height: 1.15;
   max-width: 100%;
+  overflow-wrap: anywhere; /* last-resort break if a single word still doesn't fit at the narrowest widths */
 }
 
 .uikit-type-tile__caption {
