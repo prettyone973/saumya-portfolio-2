@@ -149,6 +149,7 @@ html {
 
 body {
   min-height: 100vh;
+  min-height: 100svh; /* small viewport height — excludes the space a mobile browser's address bar UI can occupy, so this never renders taller than what's actually visible on first paint */
 }
 
 img,
@@ -343,14 +344,23 @@ body > * {
 
 .hero {
   position: relative;
+  z-index: 1; /* explicit, rather than relying only on the generic `body > *` rule, so this can never accidentally out-rank .site-nav's z-index: 100 */
   min-height: 100vh;
+  min-height: 100svh; /* see body's own min-height above — same fix, same reason */
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--space-xl);
-  padding: var(--content-padding);
+  padding-inline: var(--content-padding);
+  padding-bottom: var(--content-padding);
+  /* Not just var(--nav-height): the nav wraps to two rows at every width
+     under ~460px (brand text + 3 links don't fit one row), rendering at
+     ~97px there rather than the 88px token — this clears that wrapped
+     height with margin to spare, at every width, without a separate
+     mobile-only override. */
+  padding-top: calc(var(--nav-height) + var(--space-xl));
   --hero-parallax-y: 0px;
 }
 
@@ -642,10 +652,19 @@ section + section {
    ---------------------------------------------------------------------- */
 
 .site-nav {
+  /* position: absolute (not relative) is deliberate — see the note above:
+     nav needs to sit OUT of normal flow, floating over the hero and
+     scrolling away with it, not occupying its own flow space above it.
+     absolute + a non-auto z-index already establishes a stacking context
+     the same way relative + z-index would; switching to relative would
+     reintroduce the nav's own box into flow and push the hero down by
+     its height. z-index raised from 10 to 100 — comfortably above
+     .hero's explicit z-index: 1 and everything nested inside it,
+     including .hero-glass-panel's own backdrop-filter stacking context. */
   position: absolute;
   inset-block-start: 0;
   inset-inline: 0;
-  z-index: 10;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -739,6 +758,7 @@ section + section {
 
 .hero-glass-panel {
   position: relative;
+  z-index: 1; /* explicit — backdrop-filter below creates its own local stacking context; this keeps it scoped under .site-nav's z-index: 100 rather than relying only on the generic `.hero > *` rule */
   overflow: hidden;
   width: min(80%, 1100px);
   padding: var(--space-2xl);
