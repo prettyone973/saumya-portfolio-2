@@ -186,6 +186,7 @@ select {
 
   --fw-regular: 400;
   --fw-medium: 500;
+  --fw-semibold: 600;
   --fw-bold: 700;
   --fw-black: 900;
 
@@ -1132,9 +1133,9 @@ section + section {
 }
 
 .project-card h3 {
-  font-size: var(--fs-body);
+  font-size: calc(var(--fs-body) + 4px);
   line-height: var(--lh-body);
-  font-weight: var(--fw-medium);
+  font-weight: var(--fw-semibold);
 }
 
 .tag-list {
